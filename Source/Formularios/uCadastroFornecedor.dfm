@@ -1,0 +1,900 @@
+inherited frmCadastroFornecedor: TfrmCadastroFornecedor
+  Caption = 'Cadastro de fornecedores'
+  ClientHeight = 598
+  ClientWidth = 1075
+  ExplicitWidth = 1091
+  ExplicitHeight = 636
+  PixelsPerInch = 96
+  TextHeight = 17
+  inherited pnlBotoes: TPanel
+    Top = 546
+    Width = 1075
+    ExplicitTop = 546
+    ExplicitWidth = 1075
+  end
+  inherited pgGeral: TPageControl
+    Width = 1075
+    Height = 546
+    ExplicitWidth = 1075
+    ExplicitHeight = 546
+    inherited tsConsulta: TTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 1067
+      ExplicitHeight = 510
+      inherited gridConsulta: TDBGridCBN
+        Width = 1049
+        Height = 477
+        ConfCores.Normal.Tipo.Height = -15
+        ConfCores.Normal.Tipo.Name = 'Segoe UI'
+        ConfCores.Zebrada.Tipo.Height = -15
+        ConfCores.Zebrada.Tipo.Name = 'Segoe UI'
+        ConfCores.Selecao.Tipo.Height = -15
+        ConfCores.Selecao.Tipo.Name = 'Segoe UI'
+        ConfCores.Destacado.Tipo.Height = -15
+        ConfCores.Destacado.Tipo.Name = 'Segoe UI'
+        ConfCores.Titulo.Tipo.Height = -15
+        ConfCores.Titulo.Tipo.Name = 'Segoe UI'
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'CODIGO'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'RAZAO'
+            Width = 575
+            Visible = True
+          end>
+      end
+      inherited lblAjudaSelecionar: TStaticText
+        Top = 485
+        Width = 301
+        ExplicitTop = 485
+      end
+    end
+    inherited tsDados: TTabSheet
+      inherited pnlDados: TPanel
+        Width = 1067
+        Height = 510
+        ExplicitWidth = 1067
+        ExplicitHeight = 510
+        inherited lblCamposObrigatorios: TLabel
+          Top = 485
+          ExplicitTop = 485
+        end
+        inherited lblAsterisco: TLabel
+          Top = 481
+          ExplicitTop = 481
+        end
+        object GroupBox1: TGroupBox
+          Left = 15
+          Top = 13
+          Width = 546
+          Height = 191
+          TabOrder = 0
+          object Label1: TLabel
+            Left = 17
+            Top = 8
+            Width = 85
+            Height = 21
+            Caption = 'Raz'#227'o social'
+          end
+          object Label2: TLabel
+            Left = 17
+            Top = 64
+            Width = 101
+            Height = 21
+            Caption = 'Nome fantasia'
+          end
+          object Label3: TLabel
+            Left = 213
+            Top = 122
+            Width = 12
+            Height = 21
+            Caption = 'IE'
+          end
+          object Label33: TLabel
+            Left = 404
+            Top = 122
+            Width = 95
+            Height = 21
+            Caption = 'Data cadastro'
+          end
+          object Label16: TLabel
+            Left = 231
+            Top = 113
+            Width = 11
+            Height = 32
+            Caption = '*'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clMaroon
+            Font.Height = -24
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object edtRazao: TEdit
+            Left = 18
+            Top = 31
+            Width = 507
+            Height = 29
+            CharCase = ecUpperCase
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 12418084
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            MaxLength = 60
+            ParentFont = False
+            TabOrder = 0
+          end
+          object edtFantasia: TEdit
+            Left = 18
+            Top = 87
+            Width = 507
+            Height = 29
+            CharCase = ecUpperCase
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 12418084
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            MaxLength = 60
+            ParentFont = False
+            TabOrder = 1
+          end
+          inline CpfCnpj: TMaskCpfCnpj
+            Left = 5
+            Top = 120
+            Width = 182
+            Height = 58
+            TabOrder = 2
+            ExplicitLeft = 5
+            ExplicitTop = 120
+            ExplicitWidth = 182
+            inherited Label19: TLabel
+              Left = 55
+              Font.Color = clMaroon
+              ExplicitLeft = 55
+            end
+            inherited stxTitulo: TStaticText [1]
+            end
+            inherited StaticText1: TStaticText [2]
+              Left = -70
+              ExplicitLeft = -70
+            end
+            inherited edtCpf: TMaskEdit
+              Left = 13
+              Width = 156
+              Height = 29
+              Font.Color = 12418084
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ExplicitLeft = 13
+              ExplicitWidth = 156
+              ExplicitHeight = 29
+            end
+            inherited comPessoa: TComboBox
+              Left = -75
+              Height = 29
+              Visible = False
+              ExplicitLeft = -75
+              ExplicitHeight = 29
+            end
+          end
+          object edtDataCadastro: TEdit
+            Left = 404
+            Top = 145
+            Width = 121
+            Height = 29
+            CharCase = ecUpperCase
+            Enabled = False
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 12418084
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            MaxLength = 8
+            ParentFont = False
+            TabOrder = 3
+          end
+          object edtIe: TEdit
+            Left = 212
+            Top = 145
+            Width = 155
+            Height = 29
+            CharCase = ecUpperCase
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 12418084
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            MaxLength = 14
+            ParentFont = False
+            TabOrder = 4
+          end
+        end
+        object GroupBox3: TGroupBox
+          Left = 575
+          Top = 3
+          Width = 474
+          Height = 87
+          Caption = ' Contato '
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 5197647
+          Font.Height = -15
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 2
+          inline Fone1: TFone
+            Left = 32
+            Top = 24
+            Width = 145
+            Height = 47
+            TabOrder = 0
+            ExplicitLeft = 32
+            ExplicitTop = 24
+            ExplicitWidth = 145
+            inherited Label12: TLabel
+              Top = -3
+              Width = 34
+              Height = 21
+              Font.Color = clBlack
+              Font.Height = -16
+              Font.Style = []
+              ExplicitTop = -3
+              ExplicitWidth = 34
+              ExplicitHeight = 21
+            end
+            inherited edtFone: TMaskEdit
+              Width = 126
+              Height = 28
+              Font.Color = 12418084
+              Font.Height = -15
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ExplicitWidth = 126
+              ExplicitHeight = 28
+            end
+          end
+          inline Fone2: TFone
+            Left = 208
+            Top = 24
+            Width = 145
+            Height = 47
+            TabOrder = 1
+            ExplicitLeft = 208
+            ExplicitTop = 24
+            ExplicitWidth = 145
+            inherited Label12: TLabel
+              Top = -3
+              Width = 49
+              Height = 21
+              Caption = 'Celular'
+              Font.Color = clBlack
+              Font.Height = -16
+              Font.Style = []
+              ExplicitTop = -3
+              ExplicitWidth = 49
+              ExplicitHeight = 21
+            end
+            inherited edtFone: TMaskEdit
+              Width = 126
+              Height = 28
+              Font.Color = 12418084
+              Font.Height = -15
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+              ExplicitWidth = 126
+              ExplicitHeight = 28
+            end
+          end
+        end
+        object GroupBox2: TGroupBox
+          Left = 15
+          Top = 218
+          Width = 546
+          Height = 257
+          Caption = ' Endere'#231'o '
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 5855577
+          Font.Height = -15
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 1
+          object Label4: TLabel
+            Left = 17
+            Top = 24
+            Width = 109
+            Height = 20
+            Caption = 'Rua/Logradouro'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -15
+            Font.Name = 'Segoe UI'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label5: TLabel
+            Left = 20
+            Top = 82
+            Width = 17
+            Height = 20
+            Caption = 'N'#186
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -15
+            Font.Name = 'Segoe UI'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label6: TLabel
+            Left = 103
+            Top = 82
+            Width = 40
+            Height = 20
+            Caption = 'Bairro'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -15
+            Font.Name = 'Segoe UI'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label7: TLabel
+            Left = 18
+            Top = 192
+            Width = 95
+            Height = 20
+            Caption = 'Complemento'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -15
+            Font.Name = 'Segoe UI'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label12: TLabel
+            Left = 430
+            Top = 83
+            Width = 27
+            Height = 21
+            Caption = 'CEP'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 3355443
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label8: TLabel
+            Left = 132
+            Top = 17
+            Width = 11
+            Height = 32
+            Caption = '*'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clMaroon
+            Font.Height = -24
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label11: TLabel
+            Left = 43
+            Top = 73
+            Width = 11
+            Height = 32
+            Caption = '*'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clMaroon
+            Font.Height = -24
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label13: TLabel
+            Left = 149
+            Top = 73
+            Width = 11
+            Height = 32
+            Caption = '*'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clMaroon
+            Font.Height = -24
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label14: TLabel
+            Left = 98
+            Top = 132
+            Width = 11
+            Height = 32
+            Caption = '*'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clMaroon
+            Font.Height = -24
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object edtCodigoEndereco: TCurrencyEdit
+            Left = 155
+            Top = 16
+            Width = 64
+            Height = 26
+            AutoSize = False
+            DisplayFormat = '0'
+            TabOrder = 6
+            Visible = False
+          end
+          object edtLogradouro: TEdit
+            Left = 18
+            Top = 47
+            Width = 507
+            Height = 29
+            CharCase = ecUpperCase
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 12418084
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            MaxLength = 80
+            ParentFont = False
+            TabOrder = 0
+          end
+          object edtNumero: TEdit
+            Left = 19
+            Top = 105
+            Width = 70
+            Height = 29
+            CharCase = ecUpperCase
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 12418084
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            MaxLength = 10
+            ParentFont = False
+            TabOrder = 1
+          end
+          object edtBairro: TEdit
+            Left = 103
+            Top = 105
+            Width = 315
+            Height = 29
+            CharCase = ecUpperCase
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 12418084
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            MaxLength = 50
+            ParentFont = False
+            TabOrder = 2
+          end
+          inline BuscaCidade1: TBuscaCidade
+            Left = 20
+            Top = 136
+            Width = 523
+            Height = 60
+            TabOrder = 4
+            ExplicitLeft = 20
+            ExplicitTop = 136
+            ExplicitWidth = 523
+            inherited StaticText3: TStaticText
+              Left = 474
+              Top = 1
+              Width = 23
+              Height = 25
+              Font.Name = 'Segoe UI'
+              ExplicitLeft = 474
+              ExplicitTop = 1
+              ExplicitWidth = 23
+              ExplicitHeight = 25
+            end
+            inherited StaticText2: TStaticText
+              Left = 115
+              Top = 1
+              Width = 52
+              Height = 25
+              Font.Name = 'Segoe UI'
+              ExplicitLeft = 115
+              ExplicitTop = 1
+              ExplicitWidth = 52
+              ExplicitHeight = 25
+            end
+            inherited StaticText1: TStaticText
+              Top = 1
+              Height = 25
+              Font.Name = 'Segoe UI'
+              ExplicitTop = 1
+              ExplicitHeight = 25
+            end
+            inherited edtCidade: TEdit
+              Left = 116
+              Width = 343
+              Height = 29
+              Font.Color = 12418084
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ExplicitLeft = 116
+              ExplicitWidth = 343
+              ExplicitHeight = 29
+            end
+            inherited btnBusca: TBitBtn
+              Left = 83
+              Top = 23
+              ExplicitLeft = 83
+              ExplicitTop = 23
+            end
+            inherited edtUF: TEdit
+              Left = 473
+              Width = 32
+              Height = 29
+              Font.Color = 12418084
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ExplicitLeft = 473
+              ExplicitWidth = 32
+              ExplicitHeight = 29
+            end
+            inherited edtCodCid: TCurrencyEdit
+              Top = 25
+              Width = 79
+              Height = 28
+              Font.Color = 12418084
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ExplicitTop = 25
+              ExplicitWidth = 79
+              ExplicitHeight = 28
+            end
+          end
+          object edtComplento: TEdit
+            Left = 19
+            Top = 215
+            Width = 507
+            Height = 29
+            CharCase = ecUpperCase
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 12418084
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            MaxLength = 200
+            ParentFont = False
+            TabOrder = 5
+          end
+          object edtCEP: TMaskEdit
+            Left = 431
+            Top = 105
+            Width = 92
+            Height = 29
+            EditMask = '00000\-000;0; '
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 12418084
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            MaxLength = 9
+            ParentFont = False
+            TabOrder = 3
+            Text = ''
+          end
+        end
+        object edtCodigo: TCurrencyEdit
+          Left = 1
+          Top = -8
+          Width = 64
+          Height = 26
+          AutoSize = False
+          DisplayFormat = '0'
+          TabOrder = 3
+          Visible = False
+        end
+        object GroupBox7: TGroupBox
+          Left = 575
+          Top = 101
+          Width = 474
+          Height = 210
+          Caption = ' E-mails '
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 4
+          object Label9: TLabel
+            Left = 17
+            Top = 187
+            Width = 261
+            Height = 15
+            Caption = 'Alterar - Duplo Click                Remover - Delete'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 7500402
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label10: TLabel
+            Left = 151
+            Top = 187
+            Width = 4
+            Height = 13
+            Caption = '|'
+            Enabled = False
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -11
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label15: TLabel
+            Left = 17
+            Top = 24
+            Width = 107
+            Height = 15
+            Caption = 'Endere'#231'o de e-mail'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 7697781
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object DBGrid1: TDBGrid
+            Left = 16
+            Top = 80
+            Width = 441
+            Height = 105
+            Ctl3D = True
+            DataSource = dsEmails
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 12418084
+            Font.Height = -15
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+            ParentCtl3D = False
+            ParentFont = False
+            ReadOnly = True
+            TabOrder = 0
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -11
+            TitleFont.Name = 'Segoe UI'
+            TitleFont.Style = [fsBold]
+            OnDblClick = DBGrid1DblClick
+            OnKeyDown = DBGrid1KeyDown
+            Columns = <
+              item
+                Expanded = False
+                FieldName = 'EMAIL'
+                Width = 392
+                Visible = True
+              end>
+          end
+          object btnCancela: TBitBtn
+            Left = 427
+            Top = 39
+            Width = 30
+            Height = 30
+            Hint = 'Confirma'
+            Enabled = False
+            Glyph.Data = {
+              36080000424D3608000000000000360000002800000020000000100000000100
+              2000000000000008000000000000000000000000000000000000FFFFFF00140E
+              AE001711B800100BA100FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00100BA1001711B800140EAE00FFFFFF009B9B9B000000
+              4A000000540000003D009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+              9B009B9B9B009B9B9B0000003D000000540000004A009B9B9B001F1AB5002522
+              E9002723F1001F1BD100130EA600FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF00130EA6001F1BD1002723F1002522E9001F1AB500000051000000
+              850000008D0000006D00000042009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+              9B009B9B9B000000420000006D0000008D0000008500000051003D3AC8004648
+              F6002425F1002A2BF3002121D400140FAD00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00140FAD002121D4002A2BF3002425F1004648F6003D3AC800000064000000
+              920000008D0000008F0000007000000049009B9B9B009B9B9B009B9B9B009B9B
+              9B00000049000000700000008F0000008D000000920000006400221CB6006262
+              E100444BF300262DEF002C33F2002326D7001812B300FFFFFF00FFFFFF001812
+              B3002326D7002C33F200262DEF00474DF4006262E100221CB600000052000000
+              7D0000008F0000008B0000008E000000730000004F009B9B9B009B9B9B000000
+              4F000000730000008E0000008B000000900000007D0000005200FFFFFF00241D
+              BB006566E3004853F3002934EF002F3BF200262BD9001A13BA001A13BA00262B
+              D9002F3BF2002834EF004752F3005F61DF00241DBA00FFFFFF009B9B9B000000
+              570001027F0000008F0000008B0000008E000000750000005600000056000000
+              750000008E0000008B0000008F0000007B00000056009B9B9B00FFFFFF00FFFF
+              FF002621C200656AE5004756F3002C3DF0003041F1002B36E4002B36E4003041
+              F1002D3DF0004A59F3005D5FE0002119BF00FFFFFF00FFFFFF009B9B9B009B9B
+              9B0000005E000106810000008F0000008C0000008D0000008000000080000000
+              8D0000008C0000008F0000007C0000005B009B9B9B009B9B9B00FFFFFF00FFFF
+              FF00FFFFFF002721C6006267E6004356F2003044F0003448F2003448F2003044
+              EF004255F2006166E500221AC400FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+              9B009B9B9B00000062000003820000008E0000008C0000008E0000008E000000
+              8B0000008E0000028100000060009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF002C23CC004551E900354DF100364CEF00364CEF00354D
+              F0004251EA002B23CD00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+              9B009B9B9B009B9B9B00000068000000850000008D0000008B0000008B000000
+              8C0000008600000069009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF001D14CE003240E6003C54F2003850F000384FF0003B54
+              F2003445E9001D15CE00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+              9B009B9B9B009B9B9B0000006A000000820000008E0000008C0000008C000000
+              8E000000850000006A009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+              FF00FFFFFF001F17D400313EE4003E58F1003953F000455EF200455FF2003A53
+              F0003E57F000303AE3001F15D300FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+              9B009B9B9B00000070000000800000008D0000008C0000008E0000008E000000
+              8C0000008C0000007F0000006F009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+              FF002018D9003542E700425FF3003D59F100556EF300737FF200737EF200566E
+              F3003D59F100425EF300313AE4001F16D900FFFFFF00FFFFFF009B9B9B009B9B
+              9B00000075000000830000008F0000008D00000A8F000F1B8E000F1A8E00000A
+              8F0000008D0000008F0000008000000075009B9B9B009B9B9B00FFFFFF002018
+              DE003744E9004663F200405DF1005C77F3006E76EF003028DF002E25DF007078
+              F0005D77F400405DF1004562F200333DE8002117DD00FFFFFF009B9B9B000000
+              7A000000850000008E0000008D0000138F000A128B0000007B0000007B000C14
+              8C000013900000008D0000008E0000008400000079009B9B9B00221BE2003947
+              EC004A69F3004462F2005F7AF300686EF000271FE200FFFFFF00FFFFFF002C23
+              E200717AF100607BF4004362F2004A69F3003846EB002019E20000007E000000
+              880000058F0000008E0000168F00040A8C0000007E009B9B9B009B9B9B000000
+              7E000D168D000017900000008E0000058F000000870000007E004144EC005372
+              F4004464F2006481F4006E76F200271EE600FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF002D25E700747CF2006480F4004564F2005270F3003D41EB0000008800000E
+              900000008E00001D90000A128E00000082009B9B9B009B9B9B009B9B9B009B9B
+              9B000000830010188E00001C900000008E00000C8F00000087004441ED007B8F
+              F5007A94F600737BF3002D24EA00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF002D24EA00737CF3007A93F6007A8FF6004441ED0000008900172B
+              9100163092000F178F00000086009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+              9B009B9B9B00000086000F188F00162F9200162B920000008900FFFFFF004845
+              F0005A59F2002D24ED00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF002D24ED005959F2004844F000FFFFFF009B9B9B000000
+              8C0000008E00000089009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+              9B009B9B9B009B9B9B000000890000008E0000008C009B9B9B00}
+            NumGlyphs = 2
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 1
+            TabStop = False
+            OnClick = btnCancelaClick
+          end
+          object edtEmail: TEdit
+            Left = 16
+            Top = 40
+            Width = 377
+            Height = 29
+            CharCase = ecUpperCase
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = 12418084
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
+            MaxLength = 60
+            ParentFont = False
+            TabOrder = 2
+            OnChange = edtEmailChange
+          end
+          object btnConfirma: TBitBtn
+            Left = 396
+            Top = 39
+            Width = 30
+            Height = 30
+            Hint = 'Confirma'
+            Enabled = False
+            Glyph.Data = {
+              36080000424D3608000000000000360000002800000020000000100000000100
+              2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF001AA41C001AA41C00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B0000400000004000009B9B9B009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF0022B72B002DCE3D0025BE2F0021B52900FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+              9B009B9B9B009B9B9B0000530000006A0000005A0000005100009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+              FF00FFFFFF0020B4270031D548002DD4410023CD350025BD2E0022B62A00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+              9B009B9B9B000050000000710000007000000069000000590000005200009B9B
+              9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+              FF001EB4240031D44A0030D74A004ADE63006DE4810025CE360024BF2F0021B5
+              2900FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+              9B00005000000070000000730000007A000009801D00006A0000005B00000051
+              00009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF001CB4
+              1E0033D44D0035DA530056E06D0051E167009BF1B00079E78D0022CE350024BD
+              2E001AA51E00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B000050
+              00000070000000760000007C0900007D0300378D4C0015832900006A00000059
+              0000004100009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B0092DD920030D1
+              4A0039DD5D005FE5780038C5400011B4130022BC2700A6F5B8006CE3810021CF
+              340021B529001FAE2600FFFFFF00FFFFFF00FFFFFF00FFFFFF002E792E00006D
+              0000007900000081140000610000005000000058000042915400087F1D00006B
+              000000510000004A00009B9B9B009B9B9B009B9B9B009B9B9B0030C7410041E1
+              690073E8910045CA4E000D9D0B00FFFFFF0011A310002DC03200AFF7C0005BDF
+              6F0022CF360025BE3000169A1800FFFFFF00FFFFFF00FFFFFF0000630000007D
+              05000F842D0000660000003900009B9B9B00003F0000005C00004B935C00007B
+              0B00006B0000005A0000003600009B9B9B009B9B9B009B9B9B002BC1350080EB
+              9E005BD36B000C9F0A00FFFFFF00FFFFFF00FFFFFF000EA70D0045C94E00B3F8
+              C50046DA5C0024D0380020AD250015981400FFFFFF00FFFFFF00005D00001C87
+              3A00006F0700003B00009B9B9B009B9B9B009B9B9B0000430000006500004F94
+              610000760000006C000000490000003400009B9B9B009B9B9B00FFFFFF0079CA
+              780079CA7800FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF000CA10B0053CE
+              6000B3F7C70041DA560026D039001CA92100159A1400FFFFFF009B9B9B001566
+              1400156614009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00003D0000006A
+              00004F93630000760000006C000000450000003600009B9B9B00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF000DA7
+              0C0074DC8200BFF9D10044DC5A0024CB360019A41C0092DD92009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B000043
+              000010781E005B956D000078000000670000004000002E792E00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF0017B71F0068DB7900B8F8CB004ADF5F0022C6330018A11B009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+              9B00005300000477150054946700007B000000620000003D0000FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF001ABA220054D464009DEEAD004FE167001FB52B009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+              9B009B9B9B000056000000700000398A4900007D030000510000FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF0016B81E0050D55F007EE690001CB627009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+              9B009B9B9B009B9B9B0000540000007100001A822C0000520000FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF003BCF4C0092DD9200FFFFFF009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B00006B00002E792E009B9B9B00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+              9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
+            NumGlyphs = 2
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 3
+            TabStop = False
+            OnClick = btnConfirmaClick
+          end
+        end
+      end
+    end
+  end
+  inherited cds: TClientDataSet
+    object cdsCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+    end
+    object cdsRAZAO: TStringField
+      FieldName = 'RAZAO'
+      Size = 60
+    end
+  end
+  inherited ds: TDataSource
+    Left = 170
+    Top = 166
+  end
+  object dsEmails: TDataSource
+    DataSet = cdsEmails
+    Left = 796
+    Top = 297
+  end
+  object cdsEmails: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 844
+    Top = 297
+    object cdsEmailsEMAIL: TStringField
+      FieldName = 'EMAIL'
+      Size = 60
+    end
+  end
+end
