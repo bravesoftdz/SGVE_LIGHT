@@ -2,7 +2,7 @@ unit Funcoes;
 
 interface
 
-uses Controls, Printers;
+uses Controls, Printers, WinInet;
 
 function substituiString(S, localizar, substituir :String): String;
 
@@ -40,13 +40,14 @@ function apenasNumeros(texto :String) :String;
 function stringVazia(texto :String) :Boolean;
 procedure verificaGenerator(generator, tabela :String);
 function UfPorCodigoEstado(codigo :integer) :String;
-function diretorioSistema :String;
+function diretorioExecutavel :String;
+function existeConexaoComInternet: boolean;
 
 implementation
 
 uses StrUtils, Windows, SysUtils, Types, Math, Dialogs, uModulo, DateUtils, Forms, MMSystem;
 
-function diretorioSistema :String;
+function diretorioExecutavel :String;
 begin
   result :=  ExtractFilePath( Application.ExeName );
 end;
@@ -61,6 +62,13 @@ begin
       Str[x] := SemAcento[Pos(Str[x], ComAcento)];
 
   Result := Str;
+end;
+
+function existeConexaoComInternet: boolean;
+var
+  nFlags: Cardinal;
+begin
+  result := InternetGetConnectedState(@nFlags, 0);
 end;
 
 function UfPorCodigoEstado(codigo :integer) :String;

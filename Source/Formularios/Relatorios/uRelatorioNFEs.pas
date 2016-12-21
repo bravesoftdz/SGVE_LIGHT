@@ -177,12 +177,12 @@ var caminhoWinRAR, comando, nomeArquivo :String;
 begin
   nomeArquivo  := 'XMLsNFe'+cmbMes.Items[cmbMes.ItemIndex]+cmbAno.Items[cmbAno.ItemIndex]+'.rar ';
 
-  if FileExists(diretorioSistema+'WinRAR.exe') then
-    caminhoWinRAR := diretorioSistema+'WinRAR.exe'
+  if FileExists(diretorioExecutavel+'WinRAR.exe') then
+    caminhoWinRAR := diretorioExecutavel+'WinRAR.exe'
   else if FileExists('C:\Program Files\WinRAR\WinRAR.exe') then
     caminhoWinRAR := 'C:\Program Files\WinRAR\WinRAR.exe';
 
-  comando := 'a -ep '+diretorioSistema+'Docs\XMLs\'+nomeArquivo + diretorioSistema+'Docs\';
+  comando := 'a -ep '+diretorioExecutavel+'Docs\XMLs\'+nomeArquivo + diretorioExecutavel+'Docs\';
 
   ShellExecute(0, 'open', PChar(caminhoWinRAR), PChar(comando), '', SW_HIDE);
 end;
@@ -196,7 +196,7 @@ begin
   try
     gerarPdf;
 
-    if not FileExists(diretorioSistema+'Docs\XMLs\'+nomeArquivo) then
+    if not FileExists(diretorioExecutavel+'Docs\XMLs\'+nomeArquivo) then
     begin
       avisar(1,'Nenhum arquivo, referente aos XMLs, foi encontrado para o envio');
       exit;
@@ -226,7 +226,7 @@ begin
                                   'www.cbninfo.com.br';
 
         ACBrMail1.AltBody.Text := ACBrMail1.Body.Text;
-        ACBrMail1.AddAttachment(TFileName( diretorioSistema+'Docs\XMLs\'+nomeArquivo));
+        ACBrMail1.AddAttachment(TFileName( diretorioExecutavel+'Docs\XMLs\'+nomeArquivo));
 
         Application.ProcessMessages;
         ACBrMail1.Send;
@@ -241,7 +241,7 @@ begin
         end;
     end;
   finally
-    limparDiretorio(diretorioSistema+'Docs\');
+    limparDiretorio(diretorioExecutavel+'Docs\');
   end;
 end;
 
@@ -263,8 +263,8 @@ var xmlsGerados :integer;
 begin
   xmlsGerados := 0;
 
-  if not DirectoryExists(diretorioSistema+'\Docs\XMLs') then
-    CreateDir(diretorioSistema+'\Docs\XMLs');
+  if not DirectoryExists(diretorioExecutavel+'\Docs\XMLs') then
+    CreateDir(diretorioExecutavel+'\Docs\XMLs');
 
   buscar;
   xmlsGerados := gerarXMLs;
@@ -276,7 +276,7 @@ begin
   SetRoundMode(rmNearest);
 
   RLPDFFilter1.ShowProgress := false;
-  RLPDFFilter1.FileName     := diretorioSistema+'\Docs\NFes' + cmbMes.Items[cmbMes.ItemIndex]+cmbAno.Items[cmbAno.ItemIndex]+'.PDF';
+  RLPDFFilter1.FileName     := diretorioExecutavel+'\Docs\NFes' + cmbMes.Items[cmbMes.ItemIndex]+cmbAno.Items[cmbAno.ItemIndex]+'.PDF';
   RLReport1.ShowProgress    := false;
   RLReport1.Prepare;
   RLPDFFilter1.FilterPages(RLReport1.Pages);
@@ -284,7 +284,7 @@ begin
   compactar;
   //aguarda o tempo da compactação
   sleep(tempoMedio);
-  limparDiretorio(diretorioSistema+'Docs\');
+  limparDiretorio(diretorioExecutavel+'Docs\');
 end;
 
 function TfrmRelatorioNFEs.gerarXMLs :integer;
@@ -293,9 +293,9 @@ begin
   qryNFe.First;
   while not qryNFe.Eof do
   begin
-    if not FileExists(diretorioSistema+'\Docs\NFe'+qryNFeNUMERO_NOTA_FISCAL.AsString+'.xml') then
+    if not FileExists(diretorioExecutavel+'\Docs\NFe'+qryNFeNUMERO_NOTA_FISCAL.AsString+'.xml') then
     begin
-      qryNFeXML.SaveToFile(diretorioSistema+'\Docs\NFe'+qryNFeNUMERO_NOTA_FISCAL.AsString+'.xml');
+      qryNFeXML.SaveToFile(diretorioExecutavel+'\Docs\NFe'+qryNFeNUMERO_NOTA_FISCAL.AsString+'.xml');
       inc(result);
     end;
 

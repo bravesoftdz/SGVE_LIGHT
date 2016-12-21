@@ -11,6 +11,7 @@ type
 
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormDestroy(Sender: TObject);
     
   private
     FFecharComEsc: Boolean;
@@ -88,6 +89,12 @@ begin
   Fdm := dm;
   self.FaguardaAtivo := false;
   padraoConfiguraGrid;
+end;
+
+procedure TfrmPadrao.FormDestroy(Sender: TObject);
+begin
+  if self.FaguardaAtivo then
+    self.FimAguarda();
 end;
 
 procedure TfrmPadrao.FormKeyDown(Sender: TObject; var Key: Word;

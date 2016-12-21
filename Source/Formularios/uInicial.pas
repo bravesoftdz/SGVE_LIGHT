@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, MIDASLIB,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, uPadrao, Vcl.Imaging.jpeg, Vcl.ExtCtrls, Vcl.Imaging.pngimage, RxAnimate,
   RxGIFCtrl, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Buttons;
 
 type
   TfrmInicial = class(TfrmPadrao)
@@ -48,6 +48,7 @@ type
     lbNFes: TLabel;
     Image6: TImage;
     RelatriodeNFes1: TMenuItem;
+    Atualizaodosistema1: TMenuItem;
     procedure Produtos1Click(Sender: TObject);
     procedure NCM1Click(Sender: TObject);
     procedure CFOP1Click(Sender: TObject);
@@ -80,6 +81,7 @@ type
     procedure Image6MouseLeave(Sender: TObject);
     procedure Image6Click(Sender: TObject);
     procedure RelatriodeNFes1Click(Sender: TObject);
+    procedure Atualizaodosistema1Click(Sender: TObject);
   private
     function existeNotasEmContingencia :Boolean;
     function servicoOperante :Boolean;
@@ -103,9 +105,17 @@ implementation
 uses uCadastroProduto, uCadastroCFOP, uCadastroNcmIBPT, uCadastroPadrao, uCadastroDadosEmpresa, uCadastroFornecedor, uCadastroCliente,
      uPedidoConsumidorFinal, uNFCes, uModulo, ServicoEmissorNFCe, ParametrosNFCe, Repositorio, FabricaRepositorio, uRelatorioNFCes,
      uCadastroContador, uEnviaXMLsContador, Parametros, TipoStatusUso, uTelaDesbloqueio, Criptografia, uMonitorControleNFe,
-     uCadastroTransportadora, uRelatorioNFes;
+     uCadastroTransportadora, uRelatorioNFes, uAtualizacaoSistema, Funcoes;
 
 {$R *.dfm}
+
+procedure TfrmInicial.Atualizaodosistema1Click(Sender: TObject);
+begin
+  if not existeConexaoComInternet then
+    avisar(1,'Nenhuma conexão com a internet foi detectada')
+  else
+    self.AbreForm(TfrmAtualizacaoSistema);
+end;
 
 procedure TfrmInicial.atualizaParametros(status :integer; datafinal :TDateTime; mensagem :String; ultimaConexao :TDateTime);
 var
@@ -120,7 +130,6 @@ begin
     dm.Parametros.ultima_conexao := ultimaConexao;
 
     Repositorio.Salvar(dm.Parametros);
-
   finally
     FreeAndNil(Repositorio);
   end;

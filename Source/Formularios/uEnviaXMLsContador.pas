@@ -71,7 +71,7 @@ begin
   arquivoNFes      := 'XMLsNFe'+cmbMes.Items[cmbMes.ItemIndex]+cmbAno.Items[cmbAno.ItemIndex]+'.rar';
   arquivoNFCes     := 'XMLsNFCe'+cmbMes.Items[cmbMes.ItemIndex]+cmbAno.Items[cmbAno.ItemIndex]+'.rar';
 
-  if not FileExists(diretorioSistema+'Docs\XMLs\'+arquivoNFes) and not FileExists(diretorioSistema+'Docs\XMLs\'+arquivoNFCes) then
+  if not FileExists(diretorioExecutavel+'Docs\XMLs\'+arquivoNFes) and not FileExists(diretorioExecutavel+'Docs\XMLs\'+arquivoNFCes) then
   begin
     avisar(1,'Nenhum arquivo, referente aos XMLs, foi encontrado para o envio');
     exit;
@@ -101,8 +101,8 @@ begin
                                 'www.cbninfo.com.br';
 
       ACBrMail1.AltBody.Text := ACBrMail1.Body.Text;
-      ACBrMail1.AddAttachment(TFileName( diretorioSistema+'Docs\XMLs\'+arquivoNFes));
-      ACBrMail1.AddAttachment(TFileName( diretorioSistema+'Docs\XMLs\'+arquivoNFCes));
+      ACBrMail1.AddAttachment(TFileName( diretorioExecutavel+'Docs\XMLs\'+arquivoNFes));
+      ACBrMail1.AddAttachment(TFileName( diretorioExecutavel+'Docs\XMLs\'+arquivoNFCes));
 
       Application.ProcessMessages;
       ACBrMail1.Send;

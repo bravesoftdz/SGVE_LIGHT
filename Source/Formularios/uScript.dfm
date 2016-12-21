@@ -809,4 +809,18 @@ object frmScript: TfrmScript
     TabOrder = 16
     WordWrap = False
   end
+  object versao18: TMemo
+    Left = 206
+    Top = 38
+    Width = 31
+    Height = 23
+    Ctl3D = False
+    Lines.Strings = (
+      'ALTER TABLE PARAMETROS'
+      'ADD VERSAO_EXECUTAVEL SMALLINT'
+      '^')
+    ParentCtl3D = False
+    TabOrder = 17
+    WordWrap = False
+  end
 end

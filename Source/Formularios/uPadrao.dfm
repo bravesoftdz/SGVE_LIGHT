@@ -13,6 +13,7 @@ object frmPadrao: TfrmPadrao
   OldCreateOrder = False
   Position = poDesktopCenter
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 17

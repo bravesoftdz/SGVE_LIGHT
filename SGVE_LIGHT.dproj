@@ -294,10 +294,6 @@
         </DCCReference>
         <DCCReference Include="Source\Infraestrutura\Persistencia\RepositorioParametros.pas"/>
         <DCCReference Include="Source\Dominio\Tipo\TipoStatusUso.pas"/>
-        <DCCReference Include="uTelaDesbloqueio.pas">
-            <Form>frmTelaDesbloqueio</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="Source\Formularios\uNotaFiscal.pas">
             <Form>frmNotaFiscal</Form>
             <FormType>dfm</FormType>
@@ -448,6 +444,14 @@
         <DCCReference Include="Source\Infraestrutura\Persistencia\RepositorioAliqInternaIcms.pas"/>
         <DCCReference Include="Source\Formularios\Relatorios\uRelatorioNFEs.pas">
             <Form>frmRelatorioNFEs</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\Formularios\uTelaDesbloqueio.pas">
+            <Form>frmTelaDesbloqueio</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\Formularios\uAtualizacaoSistema.pas">
+            <Form>frmAtualizacaoSistema</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

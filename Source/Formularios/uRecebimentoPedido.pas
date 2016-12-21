@@ -178,7 +178,7 @@ procedure TfrmRecebimentoPedido.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   inherited;
-  if (key = VK_F7) or (key = VK_F6) then
+  if (key = VK_F7) or (key = VK_F10) then
   begin
     if (key = VK_F10) and (edtCpf.Text = '') then
       FCc := false;

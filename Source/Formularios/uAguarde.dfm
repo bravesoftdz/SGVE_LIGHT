@@ -2,7 +2,6 @@ object frmAguarde: TfrmAguarde
   Left = 400
   Top = 288
   BorderStyle = bsDialog
-  Caption = 'frmAguarde'
   ClientHeight = 182
   ClientWidth = 564
   Color = clBtnHighlight

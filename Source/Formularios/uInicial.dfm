@@ -14320,6 +14320,10 @@ object frmInicial: TfrmInicial
         Caption = 'XMLs ao contador'
         OnClick = XMLsaocontador1Click
       end
+      object Atualizaodosistema1: TMenuItem
+        Caption = 'Atualiza'#231#227'o do sistema'
+        OnClick = Atualizaodosistema1Click
+      end
     end
   end
   object Timer1: TTimer

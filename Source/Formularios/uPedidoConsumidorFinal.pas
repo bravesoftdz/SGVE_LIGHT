@@ -298,11 +298,11 @@ end;
 procedure TfrmPedidoConsumidorFinal.BuscaPedido1btnNovoClick(Sender: TObject);
 begin
   inherited;
-  BuscaPedido1.btnNovoClick(Sender);
   if not (cdsItens.IsEmpty) and not FFinalizando then
-    if not confirma('Deseja cancelar a '+IfThen(assigned(BuscaPedido1.Pedido),'alteração', 'criação')+'do pedido?') then
+    if not confirma('Deseja cancelar a '+IfThen(assigned(BuscaPedido1.Pedido),'alteração', 'criação')+' do pedido?') then
       exit;
 
+  BuscaPedido1.btnNovoClick(Sender);
   limpaCamposPedido;
   BuscaCliente1.codigo := 1;
 
@@ -488,6 +488,9 @@ begin
      begin
        pedido := criaPedido;
        repositorio.Salvar(Pedido);
+
+       if not dm.Empresa.ConfiguracoesNF.ParametrosNFCe.imp_comp_pedido then
+         avisar(1,'Pedido criado com sucesso!',2);
      end;
 
      //BuscaPedido1.edtCodigo.AsInteger := Pedido.Codigo;

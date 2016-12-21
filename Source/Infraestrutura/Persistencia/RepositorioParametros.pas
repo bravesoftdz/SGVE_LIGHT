@@ -51,6 +51,9 @@ begin
      Parametros.data_senha            := self.FQuery.FieldByName('data_senha').AsString;
    end;
 
+   if self.FQuery.FieldByName('versao_banco_de_dados').AsInteger > 17 then
+     Parametros.versao_excutavel  := self.FQuery.FieldByName('versao_executavel').AsInteger;
+
    result := Parametros;
 end;
 
@@ -91,6 +94,7 @@ begin
   self.FQuery.ParamByName('mensagem').AsString                := Parametros.mensagem;
   self.FQuery.ParamByName('ultima_conexao').AsDateTime        := Parametros.ultima_conexao;
   self.FQuery.ParamByName('data_senha').AsString              := Parametros.data_senha;
+  self.FQuery.ParamByName('versao_excutavel').AsInteger       := Parametros.versao_excutavel;
 end;
 
 function TRepositorioParametros.SQLGet: String;
@@ -115,8 +119,8 @@ end;
 
 function TRepositorioParametros.SQLSalvar: String;
 begin
-  result := 'update or insert into PARAMETROS (CODIGO ,VERSAO_BANCO_DE_DADOS ,STATUS_USO ,DATA_FINAL ,MENSAGEM ,ULTIMA_CONEXAO, DATA_SENHA) '+
-           '                      values ( :CODIGO , :VERSAO_BANCO_DE_DADOS , :STATUS_USO , :DATA_FINAL , :MENSAGEM , :ULTIMA_CONEXAO, :DATA_SENHA) ';
+  result := 'update or insert into PARAMETROS (CODIGO ,VERSAO_BANCO_DE_DADOS ,STATUS_USO ,DATA_FINAL ,MENSAGEM ,ULTIMA_CONEXAO, DATA_SENHA, VERSAO_EXECUTAVEL) '+
+            '                      values ( :CODIGO , :VERSAO_BANCO_DE_DADOS , :STATUS_USO , :DATA_FINAL , :MENSAGEM , :ULTIMA_CONEXAO, :DATA_SENHA, :VERSAO_EXECUTAVEL) ';
 end;
 
 end.

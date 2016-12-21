@@ -15,6 +15,7 @@ type
     FData_final: TDate;
     FMensagem: String;
     FData_senha: String;
+    FVersao_executavel: integer;
 
   private
     procedure SetCodigo             (const Value: Integer);
@@ -31,6 +32,7 @@ type
     property mensagem               :String         read FMensagem            write FMensagem;
     property ultima_conexao         :TDate          read FUltima_conexao      write FUltima_conexao;
     property data_senha             :String         read FData_senha          write FData_senha;
+    property versao_excutavel       :integer        read FVersao_executavel   write FVersao_executavel;
 end;
 
 implementation

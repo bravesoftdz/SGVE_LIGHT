@@ -85,8 +85,11 @@ procedure TfrmAvisar.timEsperaTimer(Sender: TObject);
 begin
   Dec(espera);
   btnOk.Caption := '<ENTER> OK ['+intToStr(espera)+']';
-  if espera = 0 then
-    btnOk.Click;
+  if espera <= 0 then
+  begin
+    timEspera.Enabled := false;
+    self.Close;
+  end;
 end;
 
 procedure TfrmAvisar.btnOkClick(Sender: TObject);

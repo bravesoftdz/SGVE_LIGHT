@@ -4,7 +4,6 @@ inherited frmCadastroContador: TfrmCadastroContador
   Caption = 'Cadastro de Contadores'
   ClientHeight = 642
   ClientWidth = 529
-  Position = poMainFormCenter
   ExplicitWidth = 545
   ExplicitHeight = 680
   PixelsPerInch = 96
@@ -12,17 +11,17 @@ inherited frmCadastroContador: TfrmCadastroContador
   inherited pnlBotoes: TPanel
     Top = 590
     Width = 529
-    ExplicitTop = 435
-    ExplicitWidth = 531
+    ExplicitTop = 590
+    ExplicitWidth = 529
   end
   inherited pgGeral: TPageControl
     Width = 529
     Height = 590
-    ExplicitWidth = 531
-    ExplicitHeight = 435
+    ExplicitWidth = 529
+    ExplicitHeight = 590
     inherited tsConsulta: TTabSheet
-      ExplicitWidth = 556
-      ExplicitHeight = 430
+      ExplicitWidth = 521
+      ExplicitHeight = 554
       inherited gridConsulta: TDBGridCBN
         Width = 503
         Height = 547
@@ -30,16 +29,18 @@ inherited frmCadastroContador: TfrmCadastroContador
       inherited lblAjudaSelecionar: TStaticText
         Top = 529
         Width = 521
-        ExplicitTop = 405
+        ExplicitTop = 529
+        ExplicitWidth = 521
       end
     end
     inherited tsDados: TTabSheet
-      ExplicitWidth = 523
-      ExplicitHeight = 399
+      ExplicitLeft = 4
+      ExplicitTop = 32
+      ExplicitWidth = 521
+      ExplicitHeight = 554
       inherited pnlDados: TPanel
         Width = 521
         Height = 554
-        ExplicitTop = -2
         ExplicitWidth = 521
         ExplicitHeight = 554
         inherited lblCamposObrigatorios: TLabel
@@ -417,12 +418,12 @@ inherited frmCadastroContador: TfrmCadastroContador
           inline Fone1: TFone
             Left = 14
             Top = 21
-            Width = 122
+            Width = 137
             Height = 47
             TabOrder = 0
             ExplicitLeft = 14
             ExplicitTop = 21
-            ExplicitWidth = 122
+            ExplicitWidth = 137
             inherited Label12: TLabel
               Top = -3
               Width = 34
@@ -434,12 +435,14 @@ inherited frmCadastroContador: TfrmCadastroContador
               ExplicitHeight = 21
             end
             inherited edtFone: TMaskEdit
+              Width = 122
               Height = 29
               Font.Color = 12418084
               Font.Height = -16
               Font.Name = 'Segoe UI'
               Font.Style = [fsBold]
               ParentFont = False
+              ExplicitWidth = 122
               ExplicitHeight = 29
             end
           end

@@ -62,7 +62,7 @@ object frmTelaDesbloqueio: TfrmTelaDesbloqueio
     OnEnter = edtSenhaEnter
   end
   object btnConfirma: TBitBtn
-    Left = 265
+    Left = 268
     Top = 205
     Width = 193
     Height = 30
@@ -167,7 +167,7 @@ object frmTelaDesbloqueio: TfrmTelaDesbloqueio
     TabOrder = 2
   end
   object btnCancela: TBitBtn
-    Left = 66
+    Left = 69
     Top = 205
     Width = 193
     Height = 30

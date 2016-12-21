@@ -60,8 +60,8 @@ end;
 
 procedure TBuscaPedido.btnNovoClick(Sender: TObject);
 begin
+  self.Limpa;
   self.edtCodigo.AsInteger := dm.GetValorGenerator('GEN_PEDIDOS_ID') + 1;
-  //self.habilitado(false);
 end;
 
 procedure TBuscaPedido.Buscar(const codigoPedido: Integer);

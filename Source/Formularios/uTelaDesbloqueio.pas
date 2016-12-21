@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, uPadrao;
 
 type
-  TfrmTelaDesbloqueio = class(TFrmPadrao)
+  TfrmTelaDesbloqueio = class(TfrmPadrao)
     edtSenha: TEdit;
     Shape2: TShape;
     Shape1: TShape;
