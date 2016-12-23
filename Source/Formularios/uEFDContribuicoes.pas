@@ -5,8 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, StdCtrls, Buttons, ComCtrls, ExtCtrls, DateUtils, fileCtrl,
-  frameBuscaEmpresa, frameBuscaContador, DB,
-  frameBuscaNaturezaOperacao, Grids, DBGrids, DBClient;
+  frameBuscaEmpresa, frameBuscaContador, DB, Grids, DBGrids, DBClient, frameBuscaPessoa, frameBuscaCFOP;
 
 type
   TfrmEFDContribuicoes = class(TfrmPadrao)
@@ -25,27 +24,29 @@ type
     edtAno: TEdit;
     UpDown1: TUpDown;
     cbMes: TComboBox;
-    btnCancelar: TBitBtn;
-    btnGerar: TBitBtn;
     gpbCaminho: TGroupBox;
     edtCaminho: TEdit;
     btnSeleciona: TBitBtn;
-    BuscaEmpresa1: TBuscaEmpresa;
     StaticText1: TStaticText;
     gpbContador: TGroupBox;
-    Label2: TLabel;
     BuscaContador1: TBuscaContador;
-    cds: TClientDataSet;
+    Edit1: TEdit;
+    GroupBox1: TGroupBox;
+    BuscaEmpresa1: TBuscaEmpresa;
+    pnlBotoes: TPanel;
+    btnCancelar: TBitBtn;
+    btnGerar: TBitBtn;
+    GroupBox2: TGroupBox;
     DBGrid1: TDBGrid;
-    BuscaNaturezaOperacao1: TBuscaNaturezaOperacao;
     rgCfops: TRadioGroup;
-    StaticText2: TStaticText;
-    ds: TDataSource;
+    btnAddNatOp: TBitBtn;
+    BuscaCFOP1: TBuscaCFOP;
+    cds: TClientDataSet;
     cdsCODIGO_NATUREZA: TIntegerField;
     cdsCFOP: TStringField;
-    btnAddNatOp: TBitBtn;
-    Edit1: TEdit;
-    BitBtn2: TBitBtn;
+    ds: TDataSource;
+    StaticText3: TStaticText;
+    StaticText4: TStaticText;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure btnGerarClick(Sender: TObject);
@@ -53,7 +54,6 @@ type
     procedure FormShow(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure btnAddNatOpClick(Sender: TObject);
-    procedure BitBtn2Click(Sender: TObject);
     procedure DBGrid1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
   private
@@ -67,7 +67,7 @@ var
 
 implementation
 
-uses GeradorEFDContribuicoes, uModulo, StrUtils;
+uses GeradorEFDContribuicoes, uModulo, StrUtils, Empresa;
 
 {$R *.dfm}
 
@@ -90,7 +90,7 @@ begin
       
       gerador := nil;
 
-      if not confirma('Deseja gerar o arquivo do EFD Contribuições?') then exit;
+    //  if not confirma('Deseja gerar o arquivo do EFD Contribuições?') then exit;
 
       try
          self.Aguarda('Gerando arquivo, favor aguarde');
@@ -112,14 +112,18 @@ begin
                                                     self.chk1.Checked,
                                                     Trim(self.edtCaminho.Text),
                                                     regime_da_empresa,
-                                                    //BuscaEmpresa1.Empresa,
-                                                    BuscaContador1.contador,
+                                                    TEmpresa(BuscaEmpresa1.Pessoa),
+                                                    BuscaContador1.Contador,
                                                     cds,
                                                     (rgCfops.ItemIndex = 0));
 
-         gerador.Gera_EFD_Contribuicoes;
-
-        resposta := 'Arquivo gerado com sucesso!';
+         if assigned(gerador.ListaNotas) and (gerador.ListaNotas.count > 0) then
+         begin
+           gerador.Gera_EFD_Contribuicoes;
+           resposta := 'Arquivo gerado com sucesso!';
+         end
+         else
+           resposta := 'Nenhuma nota fiscal foi encontrada utilizando os filtros informados';
 
       except
        on e: Exception do
@@ -166,16 +170,16 @@ function TfrmEFDContribuicoes.verifica_obrigatorios: Boolean;
 begin
   Result := false;
 
-  if BuscaEmpresa1.edtRazao.Text = '' then begin
-    avisar('Favor informar a empresa');
+  if not assigned(BuscaEmpresa1.Pessoa) then begin
+    avisar(1,'Favor informar a empresa');
     BuscaEmpresa1.edtCodigo.SetFocus;
   end
-  else if BuscaContador1.codigo = 0 then begin
-    avisar('Favor informar o contador');
+  else if not assigned(BuscaContador1.Contador) then begin
+    avisar(1,'Favor informar o contador');
     BuscaContador1.edtCodigo.SetFocus;
   end
   else if cbMes.ItemIndex = 0 then begin
-    avisar('Favor informar o mês');
+    avisar(1,'Favor informar o mês');
     cbMes.SetFocus;
   end
   else
@@ -187,20 +191,15 @@ begin
   if not cds.Active then
     cds.CreateDataSet;
 
-  if cds.Locate('cfop',BuscaNaturezaOperacao1.NaturezaOperacao.CFOP, []) then exit;
+  if cds.Locate('cfop',BuscaCFOP1.CFOP.cfop, []) then exit;
 
   cds.Append;
-  cdsCODIGO_NATUREZA.AsInteger := BuscaNaturezaOperacao1.NaturezaOperacao.Codigo;
-  cdsCFOP.AsString             := BuscaNaturezaOperacao1.NaturezaOperacao.CFOP;
+  cdsCODIGO_NATUREZA.AsInteger := BuscaCFOP1.CFOP.Codigo;
+  cdsCFOP.AsString             := BuscaCFOP1.CFOP.CFOP;
   cds.Post;
 
-  BuscaNaturezaOperacao1.Clear;
-  BuscaNaturezaOperacao1.edtCFOP.SetFocus;
-end;
-
-procedure TfrmEFDContribuicoes.BitBtn2Click(Sender: TObject);
-begin
-  //TCriaBalaoInformacao.ShowBalloonTip(edit1.Handle,'[ DELETE ] Remove o CFOP selecionado', 'Informação', 1);
+  BuscaCFOP1.Limpa;
+  BuscaCFOP1.edtCFOP.SetFocus;
 end;
 
 procedure TfrmEFDContribuicoes.DBGrid1KeyDown(Sender: TObject;

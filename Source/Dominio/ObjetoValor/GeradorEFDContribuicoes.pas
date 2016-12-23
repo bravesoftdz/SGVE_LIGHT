@@ -8,8 +8,8 @@ uses ACBrSpedPisCofins,
      ACBrEPCBloco_C,                                                      
      ACBrEPCBloco_D,
      EFDPisCofinsFuncoes,
-    { Empresa,} Contador, NotaFiscal, ItemNotaFiscal,
-     contnrs, DBClient, DB;
+     Empresa, Contador, NotaFiscal, ItemNotaFiscal,
+     contnrs, DBClient, DB, Generics.Collections;
    //  EFDPisCofinsTipos;
 
 type TGeradorEFDContribuicoes = class
@@ -33,7 +33,7 @@ type TGeradorEFDContribuicoes = class
     DataInicial       : TDateTime;
     DataFinal         : TDateTime;
     FRegime           : String;
-  //  FEmpresa          : TEmpresa;
+    FEmpresa          : TEmpresa;
     FContador         : TContador;
     FCDSParticipantes : TClientDataSet;
     FCDSProdutos      : TClientDataSet;
@@ -73,7 +73,7 @@ type TGeradorEFDContribuicoes = class
       procedure addRegC010(registroC001 :TRegistroC001); { Identificação do estabelecimento }
         procedure addRegC100(registroC100 :TRegistroC100; Nota_Fiscal :TNotaFiscal); { Documento de nota fiscal }
           procedure addRegC120(registroC100 :TRegistroC100; nCodNota :Real); { Complemento do Documento - Dados de Importação}
-          procedure addRegC170(registroC100 :TRegistroC100; ItensNota :TObjectList); { Complemento do Documento - Itens }
+          procedure addRegC170(registroC100 :TRegistroC100; ItensNota :TObjectList<TItemNotaFiscal>); { Complemento do Documento - Itens }
         procedure addRegC500; { nota discal /contade energia eletrica  /agua /gas}
 
     { Bloco D }
@@ -97,22 +97,24 @@ type TGeradorEFDContribuicoes = class
                        lGeraBlocoM              :Boolean;
                        lGeraBloco1              :Boolean;
                        cCaminhoArquivo, regime  :String;
-            //           Empresa                  :TEmpresa;
+                       Empresa                  :TEmpresa;
                        Contador                 :TContador;
                        cfops                    :TClientDataSet;
                        considera_desconsidera   :Boolean);
 
-    constructor Destroy;                   
+    constructor Destroy;
 
   private
-
+    FListaNotas :TObjectList<TNotaFiscal>;
+  public
+    property ListaNotas :TObjectList<TNotaFiscal> read FListaNotas;
 end;
 
 implementation
 
 uses ACBrEPCBlocos, forms, SysUtils, Variants, Math, StrUtils, Repositorio, FabricaRepositorio,
      Especificacao, EspecificacaoNotaFiscalPorPeriodoEStatus, TipoStatusNotaFiscal, TipoFrete, StringUtilitario,
-  {TotaisNotaFiscal,} Produto, {Pessoa,} NaturezaOperacao,
+  TotaisNotaFiscal, Produto, Pessoa, NaturezaOperacao,
   ACBrEPCBloco_D_Class, ACBrEPCBloco_F_Class, ACBrEPCBloco_M_Class, TipoRegimeTributario;
 
 const Buffer = 1000;
@@ -169,10 +171,10 @@ begin
    registro0000.TIPO_ESCRIT      := tpEscrOriginal;
    registro0000.IND_SIT_ESP      := indSitAbertura;
    registro0000.NUM_REC_ANTERIOR := '';
-{   registro0000.NOME             := trim(self.FEmpresa.Razao);
+   registro0000.NOME             := trim(self.FEmpresa.Razao);
    registro0000.CNPJ             := trim(self.FEmpresa.CPF_CNPJ);
    registro0000.UF               := trim(self.FEmpresa.Endereco.Cidade.estado.sigla);
-   registro0000.COD_MUN          := self.FEmpresa.Endereco.Cidade.codibge; }
+   registro0000.COD_MUN          := self.FEmpresa.Endereco.Cidade.codibge;
    registro0000.SUFRAMA          := '';
    registro0000.IND_NAT_PJ       := indNatPJSocEmpresariaGeral;
    registro0000.IND_ATIV         := indAtivIndustrial;
@@ -200,19 +202,19 @@ begin
 
    if not assigned(self.FContador) then exit;
 
-   registro0100.NOME       := trim(self.FContador.nome);
-   registro0100.CPF        := trim(self.FContador.cpf);
+   registro0100.NOME       := trim(self.FContador.razao);
+   registro0100.CPF        := trim(self.FContador.cnpj);
    registro0100.CRC        := trim(self.FContador.crc);
    registro0100.CNPJ       := trim(self.FContador.cnpj);
-   registro0100.CEP        := trim(self.FContador.cep);
-   registro0100.ENDERECO   := trim(self.FContador.rua);
-   registro0100.NUM        := trim(self.FContador.numero);
-   registro0100.COMPL      := '';
-   registro0100.BAIRRO     := trim(self.FContador.bairro);
-   registro0100.FONE       := trim(self.FContador.fone);
+   registro0100.CEP        := trim(self.FContador.Endereco.cep);
+   registro0100.ENDERECO   := trim(self.FContador.Endereco.logradouro);
+   registro0100.NUM        := trim(self.FContador.Endereco.numero);
+   registro0100.COMPL      := trim(self.FContador.Endereco.complemento);
+   registro0100.BAIRRO     := trim(self.FContador.Endereco.bairro);
+   registro0100.FONE       := TStringUtilitario.ApenasNumeros( trim(self.FContador.fone1) );
    registro0100.FAX        := '';
    registro0100.EMAIL      := trim(self.FContador.email);
-   registro0100.COD_MUN    := self.FContador.codigo_cidade;
+   registro0100.COD_MUN    := self.FContador.Endereco.codcidade;
 end;
 
 procedure TGeradorEFDContribuicoes.addReg0110(registro0110: TRegistro0110);
@@ -236,27 +238,24 @@ begin
    if not Assigned(registro0140) then exit;
 
    registro0140.COD_EST := '1';
-  { registro0140.NOME    := Trim(self.FEmpresa.Razao);
+   registro0140.NOME    := Trim(self.FEmpresa.Razao);
    registro0140.CNPJ    := Trim(self.FEmpresa.CPF_CNPJ);
    registro0140.UF      := Trim(self.FEmpresa.Endereco.Cidade.estado.sigla);
    registro0140.IE      := Trim(self.FEmpresa.RG_IE);
-   registro0140.COD_MUN := self.FEmpresa.Endereco.Cidade.codibge;    }
+   registro0140.COD_MUN := self.FEmpresa.Endereco.Cidade.codibge;
 
    { Adicionando registros filhos }
-//   self.addReg0150(registro0001);
    self.addReg0190(registro0140);
-//   self.addReg0200(registro0140);
-//   self.addReg0400(registro0140);
 end;
 
 procedure TGeradorEFDContribuicoes.addReg0150(registro0140: TRegistro0140; codigo_participante :integer);
-var //participante :TPessoa;
+var participante :TPessoa;
     repositorio  :TRepositorio;
 begin
 
    if NOT self.addParticipante( codigo_participante ) then  exit;
 
-  {   try
+     try
 
        participante := nil;
        repositorio  := nil;
@@ -281,10 +280,10 @@ begin
                BAIRRO   := participante.Endereco.Bairro;
             end; { Fim do with }
 
-    { finally
+     finally
         FreeAndNil( participante );
         FreeAndNil( repositorio );
-     end;   }
+     end;
 
 end;
 
@@ -322,7 +321,7 @@ begin
               COD_ANT_ITEM := '';
               UNID_INV     := 'UN';
               TIPO_ITEM    := tiMercadoriaRevenda; // 00 - mercadoria para revenda
-              COD_NCM      := IntToStr(produto.Cod_Ncm);
+              COD_NCM      := produto.NCMIbpt.ncm_ibpt;
               EX_IPI       := '';
               COD_GEN      := '';
               COD_LST      := '';
@@ -377,52 +376,37 @@ begin
 end;
 
 procedure TGeradorEFDContribuicoes.addRegC010(registroC001: TRegistroC001);
-var ListaNotas :TObjectList;
-    repositorio :TRepositorio;
-    especificacao :TEspecificacaoNotaFiscalPorPeriodoEStatus;
-    i :integer;
+var i :integer;
     c_d :Boolean;
 begin
    try
       if not Assigned(registroC001) then exit;
 
       c_d           := true;
-      ListaNotas    := nil;
-      repositorio   := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
-     { especificacao := TEspecificacaoNotaFiscalPorPeriodoEStatus.Create(self.DataInicial,
-                                                                        self.DataFinal,
-                                                                        false,
-                                                                        true,
-                                                                        false,
-                                                                        true,
-                                                                        //self.FEmpresa.CPF_CNPJ,
-                                                                        IfThen(self.FEmpresa.RegimeTributario= trtLucroPresumido, 'S', 'A'));}
-      ListaNotas    := repositorio.GetListaPorEspecificacao( especificacao );
-
       with registroC001.RegistroC010.New do
        begin
-         // CNPJ      := self.FEmpresa.CPF_CNPJ;
+          CNPJ      := self.FEmpresa.CPF_CNPJ;
           IND_ESCRI := IndEscriIndividualizado;
 
-          for i := 0 to ListaNotas.Count - 1 do
+          for i := 0 to FListaNotas.Count - 1 do
            begin
               Application.ProcessMessages;
 
               if (self.FCfops.Active) and not(self.FCfops.IsEmpty) then begin
-            //    c_d :=  self.FCfops.Locate('cfop',(ListaNotas[i] as TNotaFiscal).Natureza.CFOP,[]) ;
+                c_d :=  self.FCfops.Locate('cfop',(FListaNotas[i] as TNotaFiscal).CFOP.CFOP,[]) ;
 
                 if not self.FConsidera_desconsidera then
                   c_d := (c_d = self.FConsidera_desconsidera);
               end;
 
               if c_d then  
-                self.addRegC100(RegistroC100.New, (ListaNotas[i] as TNotaFiscal) );
+                self.addRegC100(RegistroC100.New, (FListaNotas[i] as TNotaFiscal) );
            end;
 
        end;
        
    finally
-      FreeAndNil( ListaNotas );
+      FreeAndNil( FListaNotas );
    end;
 end;
 
@@ -435,7 +419,7 @@ begin
       Application.ProcessMessages;
 
       { Dados de identificação da NF }
- {     if Nota_Fiscal.Entrada_saida = 'E' then begin
+      if Nota_Fiscal.Entrada_saida = 'E' then begin
 
         IND_OPER  := tpEntradaAquisicao;
 
@@ -464,46 +448,46 @@ begin
       IND_PGTO        := tpVista;
 
       { Valores da NF }
-    {  VL_DOC          := Nota_Fiscal.Totais.TotalNF;
+      VL_DOC          := Nota_Fiscal.Totais.TotalNF;
       VL_DESC         := Nota_Fiscal.Totais.Descontos;
       VL_ABAT_NT      := 0;
       VL_MERC         := Nota_Fiscal.Totais.TotalProdutos;
       VL_SEG          := Nota_Fiscal.Totais.Seguro;
-      VL_OUT_DA       := Nota_Fiscal.Totais.OutrasDespesas;     }
+      VL_OUT_DA       := Nota_Fiscal.Totais.OutrasDespesas;
 
       { Frete }
-   {   if Nota_Fiscal.TipoFrete = tfCIF then   IND_FRT := tfPorContaEmitente
+      if Nota_Fiscal.TipoFrete = tfCIF then   IND_FRT := tfPorContaEmitente
                                        else   IND_FRT := tfPorContaDestinatario;
 
       VL_FRT          := Nota_Fiscal.Totais.Frete;
 
       { Impostos }
       { ICMS }
-  {    VL_BC_ICMS      := Nota_Fiscal.Totais.BaseCalculoICMS;
+      VL_BC_ICMS      := Nota_Fiscal.Totais.BaseCalculoICMS;
       VL_ICMS         := Nota_Fiscal.Totais.ICMS;
 
       { ICMS de ST }
-  {    VL_BC_ICMS_ST   := Nota_Fiscal.Totais.BaseCalculoST;
+      VL_BC_ICMS_ST   := Nota_Fiscal.Totais.BaseCalculoST;
       VL_ICMS_ST      := Nota_Fiscal.Totais.ICMSST;
 
       { IPI }
-  {    VL_IPI          := Nota_Fiscal.Totais.IPI;
+      VL_IPI          := Nota_Fiscal.Totais.IPI;
 
       { PIS/COFINS }
-  {    VL_PIS          := Nota_Fiscal.Totais.PIS;
+      VL_PIS          := Nota_Fiscal.Totais.PIS;
       VL_COFINS       := Nota_Fiscal.Totais.COFINS;
 
       { PIS/COFINS de ST }
- {     VL_PIS_ST       := 0;
+      VL_PIS_ST       := 0;
       VL_COFINS_ST    := 0;
 
       //adiciona participante se ja nao estiver adicionado
       self.addReg0150( self.registro0140, strToInt(COD_PART));
-      self.addReg0400( self.registro0140, Nota_Fiscal.Natureza.Codigo);
+      self.addReg0400( self.registro0140, Nota_Fiscal.CFOP.Codigo);
 
       //self.addRegC120(registroC100, self.CDSC100.FieldByName(TRegistrosC100.COD_NOTA).AsFloat);
       if Nota_Fiscal.Status = snfAutorizada then
-         self.addRegC170(registroC100, Nota_Fiscal.Itens );    }
+         self.addRegC170(registroC100, Nota_Fiscal.Itens );
 
    end;
 end;
@@ -515,7 +499,7 @@ begin
 end;
 
 procedure TGeradorEFDContribuicoes.addRegC170(registroC100: TRegistroC100;
-  ItensNota :TObjectList);
+  ItensNota :TObjectList<TItemNotaFiscal>);
 var i :integer;
     ItemFiscal : TItemNotaFiscal;
 begin
@@ -549,24 +533,24 @@ begin
 
          { Dados de impostos }
          { ICMS }
-     {    CST_ICMS           := TRegistroC170.GetCSTIcms( TStringUtilitario.CaracterAEsquerda('0', ItemFiscal.Icms00.CST, 3) );
-         VL_BC_ICMS         := ItemFiscal.Icms00.BaseCalculo;
-         ALIQ_ICMS          := ItemFiscal.Icms00.Aliquota;    }
+         CST_ICMS           := TRegistroC170.GetCSTIcms( TStringUtilitario.CaracterAEsquerda('0', ItemFiscal.Icms00.CST, 3) );
+         VL_BC_ICMS         := ItemFiscal.Icms00.BaseDeCalculo;
+         ALIQ_ICMS          := ItemFiscal.Icms00.Aliquota;
          VL_BC_ICMS_ST      := 0;
          ALIQ_ST            := 0;
          VL_ICMS_ST         := 0;
 
          { IPI }
          IND_APUR           := TRegistroC170.GetIndApur('0'); //0 - mensal    1 - decendial
-      {   CST_IPI            := TRegistroC170.GetCSTIpi( ItemFiscal.IpiTrib.CST );
+         CST_IPI            := TRegistroC170.GetCSTIpi( ItemFiscal.IpiTrib.CST );
          COD_ENQ            := '';
          VL_BC_IPI          := ItemFiscal.IpiTrib.BaseCalculo;
          ALIQ_IPI           := ItemFiscal.IpiTrib.Aliquota;
-         VL_IPI             := ItemFiscal.IpiTrib.Valor;}
+         VL_IPI             := ItemFiscal.IpiTrib.Valor;
 
          { PIS }
        //  CST_PIS            := TRegistroC170.GetCSTPis( IfThen(ItemFiscal.NaturezaOperacao.suspensao_icms = 'S', '09', ItemFiscal.PisAliq.CST) );
-       {  VL_BC_PIS          := ItemFiscal.PisAliq.BaseCalculo;
+         VL_BC_PIS          := ItemFiscal.PisAliq.BaseCalculo;
          ALIQ_PIS_PERC      := ItemFiscal.PisAliq.Aliquota;
 //         QUANT_BC_PIS       := 0;
 //         ALIQ_PIS_R         := 0;
@@ -574,7 +558,7 @@ begin
 
          { COFINS }
     //     CST_COFINS         := TRegistroC170.GetCSTCofins( IfThen(ItemFiscal.NaturezaOperacao.suspensao_icms = 'S', '09', ItemFiscal.CofinsAliq.CST) );
-       {  VL_BC_COFINS       := ItemFiscal.CofinsAliq.BaseCalculo;
+         VL_BC_COFINS       := ItemFiscal.CofinsAliq.BaseCalculo;
          ALIQ_COFINS_PERC   := ItemFiscal.CofinsAliq.Aliquota;
 //          QUANT_BC_COFINS    := 0;
 //          ALIQ_COFINS_R      := 0;
@@ -624,12 +608,17 @@ end;
 constructor TGeradorEFDContribuicoes.Create(dDataInicial,
   dDataFinal: TDateTime; lGeraBloco0, lGeraBlocoA, lGeraBlocoC,
   lGeraBlocoD, lGeraBlocoF, lGeraBlocoM, lGeraBloco1: Boolean; cCaminhoArquivo, regime: String;
-  {Empresa :TEmpresa;} Contador :TContador; cfops :TClientDataSet; considera_desconsidera :Boolean);
+  Empresa :TEmpresa; Contador :TContador; cfops :TClientDataSet; considera_desconsidera :Boolean);
+var
+    repositorio :TRepositorio;
+    especificacao :TEspecificacaoNotaFiscalPorPeriodoEStatus;
 begin
   inherited Create;
 
+  FListaNotas    := nil;
+
   self.FRegime   := regime;
-//  self.FEmpresa  := Empresa;
+  self.FEmpresa  := Empresa;
   self.FContador := Contador;
   self.FCfops    := cfops;
   self.FConsidera_desconsidera := considera_desconsidera;
@@ -637,6 +626,17 @@ begin
   { Atributos de período }
   self.DataInicial                  := dDataInicial;
   self.DataFinal                    := dDataFinal;
+
+  repositorio   := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
+  especificacao := TEspecificacaoNotaFiscalPorPeriodoEStatus.Create(self.DataInicial,
+                                                                    self.DataFinal,
+                                                                    false,
+                                                                    true,
+                                                                    false,
+                                                                    true,
+                                                                    self.FEmpresa.CPF_CNPJ,
+                                                                    IfThen(self.FEmpresa.ConfiguracoesNF.RegimeTributario = trtLucroPresumido, 'S', 'A'));
+  FListaNotas   := repositorio.GetListaPorEspecificacao<TNotaFiscal>( especificacao );
 
   { Atributos booleanos para verificação se vai gerar cada bloco }
   self.GerarBloco0                  := lGeraBloco0;
@@ -756,18 +756,18 @@ end;
 procedure TGeradorEFDContribuicoes.Gera_EFD_Contribuicoes;
 begin
   try
-  Self.SpedPISCOFINS.IniciaGeracao;
+    Self.SpedPISCOFINS.IniciaGeracao;
 
-  if self.GerarBloco0 then  self.GeraBloco0;
-  if self.GerarBlocoA then  self.GeraBlocoA;
-  if self.GerarBlocoC then  self.GeraBlocoC;
-  if self.GerarBlocoD then  self.GeraBlocoD;
-  if self.GerarBlocoF then  self.GeraBlocoF;
-  if self.GerarBlocoM then  self.GeraBlocoM;
-  if self.GerarBloco1 then  self.GeraBloco1;
+    if self.GerarBloco0 then  self.GeraBloco0;
+    if self.GerarBlocoA then  self.GeraBlocoA;
+    if self.GerarBlocoC then  self.GeraBlocoC;
+    if self.GerarBlocoD then  self.GeraBlocoD;
+    if self.GerarBlocoF then  self.GeraBlocoF;
+    if self.GerarBlocoM then  self.GeraBlocoM;
+    if self.GerarBloco1 then  self.GeraBloco1;
 
-  { Gravando arquivo no disco rígido }
-  self.SpedPISCOFINS.SaveFileTXT;
+    { Gravando arquivo no disco rígido }
+    self.SpedPISCOFINS.SaveFileTXT;
 
   finally
    // registro0000.Destroy;
@@ -800,7 +800,7 @@ begin
 
       with registroD001.RegistroD010.New do
        begin
-     //     CNPJ      := trim( self.FEmpresa.CPF_CNPJ );
+          CNPJ      := trim( self.FEmpresa.CPF_CNPJ );
 
      {     while not self.CDSD100.Eof do
            begin
@@ -838,8 +838,8 @@ end;
 
 constructor TGeradorEFDContribuicoes.Destroy;
 begin
- // FreeAndNil( FEmpresa );
-  FreeAndNil( FContador );
+  if assigned(FListaNotas) then
+    FreeAndNil(FListaNotas);
   Self.SpedPISCOFINS.Free;
   Self.SpedPISCOFINS := nil;
 end;

@@ -14316,13 +14316,29 @@ object frmInicial: TfrmInicial
     end
     object Utilitrios1: TMenuItem
       Caption = 'Utilit'#225'rios'
+      object Atualizaodosistema1: TMenuItem
+        Caption = 'Atualiza'#231#227'o do sistema'
+        Visible = False
+        OnClick = Atualizaodosistema1Click
+      end
       object XMLsaocontador1: TMenuItem
         Caption = 'XMLs ao contador'
         OnClick = XMLsaocontador1Click
       end
-      object Atualizaodosistema1: TMenuItem
-        Caption = 'Atualiza'#231#227'o do sistema'
-        OnClick = Atualizaodosistema1Click
+      object Arquivosfiscais1: TMenuItem
+        Caption = 'Arquivos fiscais'
+        object EFDContribuies1: TMenuItem
+          Caption = 'EFD Contribui'#231#245'es'
+          OnClick = EFDContribuies1Click
+        end
+        object EFDFiscal1: TMenuItem
+          Caption = 'EFD Fiscal'
+          OnClick = EFDFiscal1Click
+        end
+        object Sintegra1: TMenuItem
+          Caption = 'Sintegra'
+          OnClick = Sintegra1Click
+        end
       end
     end
   end

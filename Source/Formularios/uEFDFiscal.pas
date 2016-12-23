@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, StdCtrls, Buttons, ComCtrls, frameBuscaContador,
-  frameBuscaEmpresa, DateUtils, FileCtrl;
+  frameBuscaEmpresa, DateUtils, FileCtrl, frameBuscaPessoa, Vcl.ExtCtrls;
 
 type
   TfrmEFDFiscal = class(TfrmPadrao)
@@ -17,7 +17,6 @@ type
     chkH: TCheckBox;
     chk1: TCheckBox;
     chk9: TCheckBox;
-    BuscaEmpresa1: TBuscaEmpresa;
     gpbContador: TGroupBox;
     BuscaContador1: TBuscaContador;
     gpbPeriodo: TGroupBox;
@@ -29,6 +28,9 @@ type
     gpbCaminho: TGroupBox;
     edtCaminho: TEdit;
     btnSeleciona: TBitBtn;
+    GroupBox2: TGroupBox;
+    BuscaEmpresa1: TBuscaEmpresa;
+    pnlBotoes: TPanel;
     btnCancelar: TBitBtn;
     btnGerar: TBitBtn;
     procedure btnCancelarClick(Sender: TObject);
@@ -48,7 +50,7 @@ var
 
 implementation
 
-uses GeradorEFDFiscal, uModulo, StrUtils;
+uses GeradorEFDFiscal, uModulo, StrUtils, Empresa;
 
 {$R *.dfm}
 
@@ -77,7 +79,7 @@ begin
       
       gerador := nil;
 
-      if not confirma('Deseja gerar o arquivo do EFD Contribuições?') then exit;
+   //   if not confirma('Deseja gerar o arquivo do EFD Contribuições?') then exit;
 
       try
          self.Aguarda('Gerando arquivo, favor aguarde');
@@ -96,12 +98,16 @@ begin
                                              self.chk1.Checked,
                                              self.chk9.Checked,
                                              Trim(self.edtCaminho.Text),
-                                            // BuscaEmpresa1.Empresa,
+                                             TEmpresa(BuscaEmpresa1.Pessoa),
                                              BuscaContador1.contador);
 
-         gerador.Gera_EFD_Fiscal;
-         
-        resposta := 'Arquivo gerado com sucesso!';
+         if assigned(gerador.ListaNotas) and (gerador.ListaNotas.Count > 0) then
+         begin
+           gerador.Gera_EFD_Fiscal;
+           resposta := 'Arquivo gerado com sucesso!';
+         end
+         else
+           resposta := 'Nenhuma nota fiscal foi encontrada utilizando os filtros informados';
 
       except
        on e: Exception do
@@ -143,16 +149,16 @@ function TfrmEFDFiscal.verifica_obrigatorios: Boolean;
 begin
   Result := false;
 
-  if BuscaEmpresa1.edtRazao.Text = '' then begin
-    avisar('Favor informar a empresa');
+  if not assigned(BuscaEmpresa1.Pessoa) then begin
+    avisar(1,'Favor informar a empresa');
     BuscaEmpresa1.edtCodigo.SetFocus;
   end
-  else if BuscaContador1.codigo = 0 then begin
-    avisar('Favor informar o contador');
+  else if not assigned(BuscaContador1.Contador) then begin
+    avisar(1,'Favor informar o contador');
     BuscaContador1.edtCodigo.SetFocus;
   end
   else if cbMes.ItemIndex = 0 then begin
-    avisar('Favor informar o mês');
+    avisar(1,'Favor informar o mês');
     cbMes.SetFocus;
   end
   else

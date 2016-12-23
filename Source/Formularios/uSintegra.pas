@@ -5,25 +5,26 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, uPadrao, StdCtrls, ComCtrls, filectrl, Buttons, ExtCtrls, GeradorSintegra,
-  frameBuscaEmpresa, DateUtils;
+  frameBuscaEmpresa, DateUtils, frameBuscaPessoa;
 
 type
   TfrmSintegra = class(TfrmPadrao)
     GroupBox1: TGroupBox;
     rgFinArq: TRadioGroup;
-    btnGerar: TBitBtn;
     GroupBox2: TGroupBox;
     edtCaminho: TEdit;
     StaticText1: TStaticText;
     btnSeleciona: TBitBtn;
-    BitBtn2: TBitBtn;
-    Label4: TLabel;
-    BuscaEmpresa1: TBuscaEmpresa;
     edtAno: TEdit;
     UpDown1: TUpDown;
     cbMes: TComboBox;
     Label6: TLabel;
     Label1: TLabel;
+    GroupBox3: TGroupBox;
+    BuscaEmpresa1: TBuscaEmpresa;
+    pnlBotoes: TPanel;
+    btnGerar: TBitBtn;
+    BitBtn2: TBitBtn;
     procedure btnSelecionaClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -41,6 +42,8 @@ var
 implementation
 
 {$R *.dfm}
+
+uses Empresa;
 
 procedure TfrmSintegra.btnSelecionaClick(Sender: TObject);
 var caminho :String;
@@ -69,7 +72,7 @@ begin
   try
    if not verifica_obrigatorios then Exit;
 
-   if not confirma('Deseja gerar o arquivo Sintegra?') then exit;
+   //if not confirma('Deseja gerar o arquivo Sintegra?') then exit;
 
    data_i := strToDate( '01/'+intToStr(cbMes.ItemIndex)+'/'+edtAno.Text );
    data_f := strToDateTime( intToStr(DaysInMonth(data_i) )+ '/' + formatDateTime('mm/yyyy 23:59:59', data_i) );
@@ -83,12 +86,16 @@ begin
    gerador := TGeradorSintegra.create( data_i,
                                        data_f,
                                        (edtCaminho.Text + '\' + nome_arq),
-                                       intToStr(rgFinArq.itemIndex + 1){,
-                                       BuscaEmpresa1.Empresa});
+                                       intToStr(rgFinArq.itemIndex + 1),
+                                       TEmpresa(BuscaEmpresa1.Pessoa));
 
-   gerador.gerarSintegra;
-   
-   resposta := 'Arquivo gerado com sucesso!';
+   if assigned(gerador.NotasFiscais) and (gerador.NotasFiscais.Count > 0) then
+   begin
+     gerador.gerarSintegra;
+     resposta := 'Arquivo gerado com sucesso!';
+   end
+   else
+     resposta := 'Nenhuma nota fiscal foi encontrada utilizando os filtros informados';
 
   except
     on e : Exception do
@@ -106,10 +113,10 @@ function TfrmSintegra.verifica_obrigatorios: Boolean;
 begin
   Result := false;
 
-  if not assigned(BuscaEmpresa1.Empresa) then
-    Avisar('Selecione a empresa para o filtro dos arquivos')
+  if not assigned(BuscaEmpresa1.Pessoa) then
+    Avisar(1,'Selecione a empresa para o filtro dos arquivos')
   else if cbMes.ItemIndex < 1 then
-    avisar('Selecione o mês desejado')  
+    avisar(1,'Selecione o mês desejado')
   else
     Result := True;
 end;

@@ -46,7 +46,6 @@ object BuscaContador: TBuscaContador
     Font.Style = []
     ParentFont = False
     TabOrder = 2
-    Visible = False
     OnChange = edtCodigoChange
     OnEnter = edtCodigoEnter
     OnExit = edtCodigoExit

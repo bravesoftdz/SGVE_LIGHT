@@ -94,7 +94,7 @@ begin
   self.FQuery.ParamByName('mensagem').AsString                := Parametros.mensagem;
   self.FQuery.ParamByName('ultima_conexao').AsDateTime        := Parametros.ultima_conexao;
   self.FQuery.ParamByName('data_senha').AsString              := Parametros.data_senha;
-  self.FQuery.ParamByName('versao_excutavel').AsInteger       := Parametros.versao_excutavel;
+  self.FQuery.ParamByName('versao_executavel').AsInteger       := Parametros.versao_excutavel;
 end;
 
 function TRepositorioParametros.SQLGet: String;

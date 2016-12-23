@@ -454,6 +454,23 @@
             <Form>frmAtualizacaoSistema</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Source\Formularios\uEFDContribuicoes.pas">
+            <Form>frmEFDContribuicoes</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\Formularios\uEFDFiscal.pas">
+            <Form>frmEFDFiscal</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\Dominio\ObjetoValor\GeradorEFDContribuicoes.pas"/>
+        <DCCReference Include="Source\Dominio\ObjetoValor\GeradorEFDFiscal.pas"/>
+        <DCCReference Include="Source\Dominio\ObjetoValor\EFDPisCofinsFuncoes.pas"/>
+        <DCCReference Include="Source\Formularios\uSintegra.pas">
+            <Form>frmSintegra</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Source\Dominio\ObjetoValor\GeradorSintegra.pas"/>
+        <DCCReference Include="Source\Dominio\ObjetoValor\Especificacoes\EspecificacaoItemNfCfopAliq.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

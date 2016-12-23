@@ -49,6 +49,10 @@ type
     Image6: TImage;
     RelatriodeNFes1: TMenuItem;
     Atualizaodosistema1: TMenuItem;
+    Arquivosfiscais1: TMenuItem;
+    EFDContribuies1: TMenuItem;
+    EFDFiscal1: TMenuItem;
+    Sintegra1: TMenuItem;
     procedure Produtos1Click(Sender: TObject);
     procedure NCM1Click(Sender: TObject);
     procedure CFOP1Click(Sender: TObject);
@@ -82,6 +86,9 @@ type
     procedure Image6Click(Sender: TObject);
     procedure RelatriodeNFes1Click(Sender: TObject);
     procedure Atualizaodosistema1Click(Sender: TObject);
+    procedure EFDContribuies1Click(Sender: TObject);
+    procedure EFDFiscal1Click(Sender: TObject);
+    procedure Sintegra1Click(Sender: TObject);
   private
     function existeNotasEmContingencia :Boolean;
     function servicoOperante :Boolean;
@@ -105,7 +112,7 @@ implementation
 uses uCadastroProduto, uCadastroCFOP, uCadastroNcmIBPT, uCadastroPadrao, uCadastroDadosEmpresa, uCadastroFornecedor, uCadastroCliente,
      uPedidoConsumidorFinal, uNFCes, uModulo, ServicoEmissorNFCe, ParametrosNFCe, Repositorio, FabricaRepositorio, uRelatorioNFCes,
      uCadastroContador, uEnviaXMLsContador, Parametros, TipoStatusUso, uTelaDesbloqueio, Criptografia, uMonitorControleNFe,
-     uCadastroTransportadora, uRelatorioNFes, uAtualizacaoSistema, Funcoes;
+     uCadastroTransportadora, uRelatorioNFes, uAtualizacaoSistema, Funcoes, uEFDFiscal, uEFDContribuicoes, uSintegra;
 
 {$R *.dfm}
 
@@ -191,6 +198,16 @@ end;
 procedure TfrmInicial.DadosdaEmpresa1Click(Sender: TObject);
 begin
   self.AbreForm(TfrmCadastroDadosEmpresa);
+end;
+
+procedure TfrmInicial.EFDContribuies1Click(Sender: TObject);
+begin
+  self.AbreForm(TfrmEFDContribuicoes);
+end;
+
+procedure TfrmInicial.EFDFiscal1Click(Sender: TObject);
+begin
+  self.AbreForm(TfrmEFDFiscal);
 end;
 
 procedure TfrmInicial.enviaNotasPendentes;
@@ -426,6 +443,11 @@ begin
   finally
     FreeAndNil(Servico);
   end;
+end;
+
+procedure TfrmInicial.Sintegra1Click(Sender: TObject);
+begin
+  self.AbreForm(TfrmSintegra);
 end;
 
 procedure TfrmInicial.Timer1Timer(Sender: TObject);

@@ -450,7 +450,7 @@ begin
         end;
 
         { ICMS para lucro presumido (atualmente soh a VLJ)}
-      {  if Assigned(Item.Icms00) then begin
+        if Assigned(Item.Icms00) then begin
           case Item.Icms00.OrigemMercadoria of
             tomNacional:                           ItemNFe.Imposto.ICMS.orig := oeNacional;
             tomEstrangeiraImportacaoDireta:        ItemNFe.Imposto.ICMS.orig := oeEstrangeiraImportacaoDireta;
@@ -486,7 +486,7 @@ begin
 
           if Item.NaturezaOperacao.suspensao_icms = 'S' then
             ItemNFe.Imposto.ICMS.vBC    := 0;
-        end;     }
+        end;
 
         { ICMS para simples nacional }
         if Assigned(Item.IcmsSn101) then begin
@@ -506,10 +506,10 @@ begin
         end;
 
         { IPI }
-   {     ItemNFe.Imposto.IPI.clEnq := '999';
+        ItemNFe.Imposto.IPI.clEnq := '999';
 
         { IPI para lucro presumido }
-   {     if Assigned(Item.IpiTrib) then begin
+        if Assigned(Item.IpiTrib) then begin
           ItemNFe.Imposto.IPI.CST  := ipi50;
           ItemNFe.Imposto.IPI.vBC  := Item.IpiTrib.BaseCalculo;
           ItemNFe.Imposto.IPI.pIPI := Item.IpiTrib.Aliquota;
@@ -523,7 +523,7 @@ begin
         { PIS }
 
         { PIS para lucro presumido }
-   {     if Assigned(Item.PisAliq) then begin
+        if Assigned(Item.PisAliq) then begin
 
           //padrao L.P.
           ItemNFe.Imposto.PIS.CST    := pis02;
@@ -547,7 +547,7 @@ begin
         { COFINS }
 
         { COFINS para lucro presumido }
-      {  if Assigned(Item.CofinsAliq) then begin
+        if Assigned(Item.CofinsAliq) then begin
           //padrao L.P.
           ItemNFe.Imposto.COFINS.CST     := cof02;
 
@@ -711,11 +711,11 @@ function TGeradorNFe.GerarNFe(NF :TNotaFiscal) :ACBrNFeNotasFiscais.NotaFiscal;
 begin
    result := self.FACBrNFe.NotasFiscais.Add;
 
-{   if NF.Empresa.ConfiguracoesNF.Tipo_emissao > 1 then
+   if NF.Empresa.ConfiguracoesNF.Tipo_emissao > 1 then
      case NF.Empresa.ConfiguracoesNF.Tipo_emissao of
        7: self.FACBrNFe.Configuracoes.Geral.FormaEmissao  := teSVCRS;
      end;
-                                  }
+
    self.GerarIdentificacao  (NF, result);
    self.GerarEmitente       (NF, result);
    self.GerarDestinatario   (NF, result);
