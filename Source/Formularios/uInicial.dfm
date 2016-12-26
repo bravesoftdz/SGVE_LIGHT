@@ -14318,7 +14318,6 @@ object frmInicial: TfrmInicial
       Caption = 'Utilit'#225'rios'
       object Atualizaodosistema1: TMenuItem
         Caption = 'Atualiza'#231#227'o do sistema'
-        Visible = False
         OnClick = Atualizaodosistema1Click
       end
       object XMLsaocontador1: TMenuItem

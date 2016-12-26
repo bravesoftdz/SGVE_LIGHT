@@ -396,12 +396,7 @@ begin
         ItemNFe.Prod.cProd    := IntToStr(Item.Produto.codigo);
         ItemNFe.Prod.xProd    := Item.Produto.Descricao;
         ItemNFe.Prod.NCM      := Item.Produto.NCMIbpt.ncm_ibpt;
-
-        if True then
-          ItemNFe.Prod.CFOP     := Item.Produto.NCMIbpt.cfop.cfop
-        else
-          ItemNFe.Prod.CFOP     := NF.CFOP.CFOP;
-
+        ItemNFe.Prod.CFOP     := Item.NaturezaOperacao.cfop;
         ItemNFe.Prod.uCom     := Item.Produto.unidade_medida;
         ItemNFe.Prod.vUnCom   := Item.ValorUnitario;
         ItemNFe.Prod.qCom     := Item.Quantidade;
@@ -614,7 +609,7 @@ begin
   nfe.NFe.Emit.EnderEmit.CEP     := StrToInt(ApenasNumeros(NF.Emitente.Endereco.CEP));
   nfe.NFe.Emit.EnderEmit.fone    := ApenasNumeros(NF.Emitente.Fone1);
   nfe.NFe.Emit.IE                := NF.Emitente.RG_IE;
-  nfe.NFe.Emit.CRT               := crtRegimeNormal;
+  //nfe.NFe.Emit.CRT               := crtRegimeNormal;
 
   { Para o caso do emitente ser empresa }
   case NF.Empresa.ConfiguracoesNF.RegimeTributario of

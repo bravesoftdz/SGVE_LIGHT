@@ -635,7 +635,7 @@ begin
                                                                     false,
                                                                     true,
                                                                     self.FEmpresa.CPF_CNPJ,
-                                                                    IfThen(self.FEmpresa.ConfiguracoesNF.RegimeTributario = trtLucroPresumido, 'S', 'A'));
+                                                                    IfThen(self.FEmpresa.ConfiguracoesNF.RegimeTributario <> trtSimplesNacional, 'S', 'A'));
   FListaNotas   := repositorio.GetListaPorEspecificacao<TNotaFiscal>( especificacao );
 
   { Atributos booleanos para verificação se vai gerar cada bloco }

@@ -296,15 +296,15 @@ inherited frmAtualizacaoSistema: TfrmAtualizacaoSistema
     OnClick = btnConfirmaClick
   end
   object pnlProgresso: TPanel
-    Left = 47
+    Left = 87
     Top = 112
-    Width = 402
+    Width = 354
     Height = 50
     BevelOuter = bvNone
     TabOrder = 2
     Visible = False
     object Shape3: TShape
-      Left = 46
+      Left = 6
       Top = 0
       Width = 340
       Height = 24
@@ -312,7 +312,7 @@ inherited frmAtualizacaoSistema: TfrmAtualizacaoSistema
       Pen.Color = 10526880
     end
     object Label1: TLabel
-      Left = 134
+      Left = 94
       Top = 1
       Width = 238
       Height = 17
@@ -325,7 +325,7 @@ inherited frmAtualizacaoSistema: TfrmAtualizacaoSistema
       ParentFont = False
     end
     object ProgressBar1: TProgressBar
-      Left = 46
+      Left = 6
       Top = 20
       Width = 340
       Height = 27

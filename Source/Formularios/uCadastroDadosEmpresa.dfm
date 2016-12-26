@@ -712,7 +712,7 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
               Top = 128
               Width = 569
               Height = 401
-              ActivePage = TabSheet4
+              ActivePage = TabSheet3
               Align = alBottom
               TabOrder = 0
               object TabSheet3: TTabSheet
@@ -837,7 +837,7 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
                     Font.Name = 'Segoe UI'
                     Font.Style = [fsBold]
                     ParentFont = False
-                    TabOrder = 2
+                    TabOrder = 3
                   end
                   object edtPis: TDBCurrencyEdit
                     Left = 269
@@ -851,7 +851,7 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
                     Font.Name = 'Segoe UI'
                     Font.Style = [fsBold]
                     ParentFont = False
-                    TabOrder = 3
+                    TabOrder = 2
                   end
                 end
                 object rgpRegime: TRadioGroup

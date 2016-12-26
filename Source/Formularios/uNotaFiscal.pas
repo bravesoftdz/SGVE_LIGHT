@@ -84,7 +84,6 @@ type
     lblAlterarItem: TLabel;
     lblDeletarItem: TLabel;
     cdsItensFiscaisCOD_PRODUTO: TIntegerField;
-    cdsItensDeletadosCODIGO_ITEM: TIntegerField;
     gbTipoFrete: TGroupBox;
     Shape2: TShape;
     cbTipoFrete: TComboBox;
@@ -142,6 +141,8 @@ type
     gridItens: TDBGrid;
     btnInfoDestinatario: TBitBtn;
     BuscaFornecedor: TBuscaFornecedor;
+    cdsItensDeletadosCOD_ITEM_NF: TIntegerField;
+    cdsItensDeletadosCOD_ITEM_AVULSO: TIntegerField;
 
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -236,7 +237,7 @@ type
     procedure AtualizarTela;
     procedure CriarNotaFiscal;
     procedure DeletaItemNota;
-    procedure armazenaItemDeletado(codigo :Integer);
+    procedure armazenaItemDeletado(codItemNF, codItemAvulso: Integer);
     procedure DesabilitaOnChangeComponentes;
     procedure DestacarAoPassarOMouse(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FaturarNotaFiscal          (Sender :TObject);
@@ -251,6 +252,7 @@ type
     procedure selecionaEmpresa;
     procedure atualizaCFOPs(cfopDoProduto :boolean);
     procedure atualizaCFOPnoItemNota;
+    procedure persisteRemocoesItem;
 
   public
     constructor Create(AOwner :TComponent); overload; override;
@@ -311,6 +313,7 @@ procedure TfrmNotaFiscal.btnAddItemClick(Sender: TObject);
 begin
    if not Assigned(self.BuscaProduto.Produto) then begin
      inherited Avisar(1,'Selecione o produto!');
+     BuscaProduto.edtCodigo.SetFocus;
      exit;
    end;
 
@@ -359,6 +362,32 @@ begin
 
       InflateRect(R,-2,-2); {Diminue o tamanho do CheckBox}
       DrawFrameControl(Grid.Canvas.Handle,R,DFC_BUTTON, DFCS_BUTTONCHECK or Check);
+  end;
+end;
+
+procedure TfrmNotaFiscal.persisteRemocoesItem;
+var repItemNf, repItemAvulso :TRepositorio;
+    ItemNf :TItemNotaFiscal;
+    ItemAvulso :TItemAvulso;
+begin
+  repItemNf     := TFabricaRepositorio.GetRepositorio(TItemNotaFiscal.ClassName);
+  repItemAvulso := TFabricaRepositorio.GetRepositorio(TItemAvulso.ClassName);
+
+  cdsItensDeletados.First;
+  while not cdsItensDeletados.Eof do
+  begin
+    ItemNf   := TItemNotaFiscal(repItemNf.Get(cdsItensDeletadosCOD_ITEM_NF.AsInteger));
+    repItemNf.Remover(ItemNf);
+    FreeAndNil(ItemNf);
+
+    if cdsItensDeletadosCOD_ITEM_AVULSO.AsInteger > 0 then
+    begin
+      ItemAvulso   := TItemAvulso(repItemNf.Get(cdsItensDeletadosCOD_ITEM_NF.AsInteger));
+      repItemAvulso.Remover(ItemAvulso);
+      FreeAndNil(ItemAvulso);
+    end;
+
+    cdsItensDeletados.Next;
   end;
 end;
 
@@ -935,10 +964,13 @@ begin
        self.dtpEmissao.DateTime                    := NF.DataEmissao;
      end;
 
-     self.edtPesoBruto.Value                    := NF.Volumes.PesoBruto;
-     self.edtPesoLiquido.Value                  := NF.Volumes.PesoLiquido;
-     self.edtQuantidadeVolumes.Value            := NF.Volumes.QuantidadeVolumes;
-     self.edtEspecie.Text                       := NF.Volumes.Especie;
+     if assigned(NF.Volumes) then
+     begin
+       self.edtPesoBruto.Value                    := NF.Volumes.PesoBruto;
+       self.edtPesoLiquido.Value                  := NF.Volumes.PesoLiquido;
+       self.edtQuantidadeVolumes.Value            := NF.Volumes.QuantidadeVolumes;
+       self.edtEspecie.Text                       := NF.Volumes.Especie;
+     end;
 
      self.cbTipoFrete.ItemIndex                 := TTipoFreteUtilitario.DeEnumeradoParaInteiro(NF.TipoFrete);
      self.edtBaseCalculoICMS.Value              := NF.Totais.BaseCalculoICMS;
@@ -1181,7 +1213,7 @@ begin
      result := self.FNotaFiscal.Empresa.ConfiguracoesNF.aliq_icms;
 
      if (self.FNotaFiscal.Destinatario.Endereco.Cidade.estado.sigla = 'PR') and
-        (self.FNotaFiscal.Empresa.ConfiguracoesNF.RegimeTributario = trtLucroPresumido ) then
+        (self.FNotaFiscal.Empresa.ConfiguracoesNF.RegimeTributario <> trtSimplesNacional ) then
        result := 18;
 
    except
@@ -1320,6 +1352,9 @@ begin
      RepNotaFiscal      := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
      RepNotaFiscal.Salvar(self.FNotaFiscal);
 
+     if cdsItensDeletados.Active and (cdsItensDeletados.RecordCount > 0) then
+       persisteRemocoesItem;
+
      inherited Avisar(1,'Nota fiscal alterada com sucesso!');
      self.Close();
    finally
@@ -1446,15 +1481,26 @@ begin
 end;
 
 procedure TfrmNotaFiscal.DeletaItemNota;
-var i :integer;
+var i, cod_item_avulso :integer;
 begin
   for i := 0 to self.FNotaFiscal.Itens.Count - 1 do
   begin
-    if TItemAvulso(self.FNotaFiscal.ItensAvulsos[i]).Produto.codigo = cdsItensFiscaisCOD_PRODUTO.AsInteger then
+    if self.FNotaFiscal.Itens[i].Produto.codigo = cdsItensFiscaisCOD_PRODUTO.AsInteger then
     begin
-      if TItemAvulso(self.FNotaFiscal.Itens[i]).Codigo > 0 then
-        armazenaItemDeletado(TItemAvulso(self.FNotaFiscal.ItensAvulsos[i]).Codigo);
-      self.FNotaFiscal.ItensAvulsos.Remove(TItemAvulso(self.FNotaFiscal.ItensAvulsos[i]));
+      cod_item_avulso := 0;
+
+      if assigned(self.FNotaFiscal.ItensAvulsos) then
+      begin
+        cod_item_avulso := TItemAvulso(self.FNotaFiscal.ItensAvulsos[i]).Codigo;
+        self.FNotaFiscal.ItensAvulsos.Remove(TItemAvulso(self.FNotaFiscal.ItensAvulsos[i]));
+      end;
+
+      if self.FNotaFiscal.Itens[i].Codigo > 0 then
+        armazenaItemDeletado(self.FNotaFiscal.Itens[i].Codigo,
+                             cod_item_avulso);
+
+      self.FNotaFiscal.Itens.Remove(self.FNotaFiscal.Itens[i]);
+
       cdsItensFiscais.Delete;
     end;
   end;
@@ -1492,13 +1538,14 @@ begin
    self.FNotaFiscal.Transportadora := Transp;
 end;
 
-procedure TfrmNotaFiscal.armazenaItemDeletado(codigo: Integer);
+procedure TfrmNotaFiscal.armazenaItemDeletado(codItemNF, codItemAvulso: Integer);
 begin
   if not cdsItensDeletados.Active then
     cdsItensDeletados.CreateDataSet;
 
   cdsItensDeletados.Append;
-  cdsItensDeletadosCODIGO_ITEM.AsInteger := codigo;
+  cdsItensDeletadosCOD_ITEM_NF.AsInteger     := codItemNF;
+  cdsItensDeletadosCOD_ITEM_AVULSO.AsInteger := codItemAvulso;
   cdsItensDeletados.Post;
 end;
 
@@ -1634,17 +1681,17 @@ begin
 
    { Para empresa VLJ que é lucro presumido. O final é 2 e não 1 }
 
-   if (Emp.ConfiguracoesNF.RegimeTributario = trtLucroPresumido) then begin
-     if      (self.BuscaCFOP1.edtCFOP.Text = '5101') then
-       self.BuscaCFOP1.edtCFOP.Text := '5102'
-     else if (self.BuscaCFOP1.edtCFOP.Text = '6101') then
-       self.BuscaCFOP1.edtCFOP.Text := '6102';
-   end
-   else begin
+   if (Emp.ConfiguracoesNF.RegimeTributario = trtSimplesNacional) then begin
      if      (self.BuscaCFOP1.edtCFOP.Text = '5102') then
        self.BuscaCFOP1.edtCFOP.Text := '5101'
      else if (self.BuscaCFOP1.edtCFOP.Text = '6102') then
        self.BuscaCFOP1.edtCFOP.Text := '6101';
+   end
+   else begin
+     if      (self.BuscaCFOP1.edtCFOP.Text = '5101') then
+       self.BuscaCFOP1.edtCFOP.Text := '5102'
+     else if (self.BuscaCFOP1.edtCFOP.Text = '6101') then
+       self.BuscaCFOP1.edtCFOP.Text := '6102';
    end;
 
    self.BuscaCFOP1.edtDescricaoEnter(nil);

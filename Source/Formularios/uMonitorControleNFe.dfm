@@ -1869,7 +1869,7 @@ inherited frmMonitorControleNFe: TfrmMonitorControleNFe
     Top = 78
     Width = 1152
     Height = 392
-    Hint = 'Clique com o lado direito para exibir as op'#231#245'es da nota fiscal'
+    Hint = '< CTRL + C > Copia a chave da nota fiscal selecionada'
     Align = alClient
     Color = 14803425
     DataSource = ds
@@ -2339,7 +2339,7 @@ inherited frmMonitorControleNFe: TfrmMonitorControleNFe
     Left = 279
     Top = 257
     Bitmap = {
-      494C010104000900840010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040009008C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

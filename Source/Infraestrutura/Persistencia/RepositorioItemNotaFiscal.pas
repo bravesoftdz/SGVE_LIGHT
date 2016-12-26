@@ -98,6 +98,7 @@ begin
      end;
 
      if Assigned(It.CofinsAliq) then begin
+       RepCofinsAliq := TFabricaRepositorio.GetRepositorio(TCofinsAliq.ClassName);
        It.CofinsAliq.codigoItem := It.Codigo;
        RepCofinsAliq.Salvar(It.CofinsAliq);
      end;
@@ -172,7 +173,7 @@ end;
 
 function TRepositorioItemNotaFiscal.IsColecao: Boolean;
 begin
-   result := true;
+   result := false;
 end;
 
 function TRepositorioItemNotaFiscal.IsInsercao(Objeto: TObject): Boolean;
@@ -244,7 +245,7 @@ end;
 
 function TRepositorioItemNotaFiscal.SQLRemover: String;
 begin
-   result := 'delete from '+self.GetNomeDaTabela+' where codigo_nota_fiscal = :codigo';
+   result := 'delete from '+self.GetNomeDaTabela+' where codigo = :codigo';
 end;
 
 function TRepositorioItemNotaFiscal.SQLSalvar: String;

@@ -1660,7 +1660,8 @@ begin
                                          'self.FBuscadorAliquotaCreditoSN não foi instânciado!'  );
        end;
      end
-     else if (TEmpresa(self.FEmitente).ConfiguracoesNF.RegimeTributario = trtLucroPresumido) then begin
+     else {if (TEmpresa(self.FEmitente).ConfiguracoesNF.RegimeTributario = trtLucroPresumido) then }
+     begin
        try
          ItemNotaFiscal := TItemNotaFiscal.CriaLucroPresumido(ItemAvulso.Produto,
                                                               CFOPItem,
@@ -1736,8 +1737,9 @@ begin
    if not Assigned(self.FTransportadora) then
       raise TExcecaoCampoNaoInformado.Create('Transportadora');    }
 
-   if ((self.Volumes.QuantidadeVolumes > 0) or (self.Volumes.PesoLiquido > 0) or (self.Volumes.PesoBruto > 0)) and (self.Volumes.Especie = '') then
-      raise TExcecaoCampoNaoInformado.Create('Espécie');
+   if assigned(self.Volumes) then
+     if ((self.Volumes.QuantidadeVolumes > 0) or (self.Volumes.PesoLiquido > 0) or (self.Volumes.PesoBruto > 0)) and (self.Volumes.Especie = '') then
+        raise TExcecaoCampoNaoInformado.Create('Espécie');
 
    if not(self.Finalidade = '1') and (self.NFe_referenciada = '') then
       raise TExcecaoCampoNaoInformado.Create('NF-e referenciada');
@@ -1781,10 +1783,10 @@ end;
 
 function TNotaFiscal.GetNotaDeReducao: Boolean;
 begin
- { result := (Emitente.Endereco.Cidade.codest = Destinatario.Endereco.Cidade.codest)
+  result := (Emitente.Endereco.Cidade.codest = Destinatario.Endereco.Cidade.codest)
         and (Emitente.Endereco.Cidade.estado.sigla = 'PR')
         and (length(Destinatario.CPF_CNPJ) > 11)
-        and (Destinatario.RG_IE <> 'ISENTO');   }
+        and (Destinatario.RG_IE <> 'ISENTO');
 end;
 
 function TNotaFiscal.GetNotaDeServico: Boolean;
@@ -1800,7 +1802,7 @@ begin
    result := self.Empresa.ConfiguracoesNF.aliq_icms;
 
    if (self.Destinatario.Endereco.Cidade.estado.sigla = 'PR') and
-      (self.Empresa.ConfiguracoesNF.RegimeTributario = trtLucroPresumido ) then
+      (self.Empresa.ConfiguracoesNF.RegimeTributario <> trtSimplesNacional ) then
      result := 18;
 end;
 

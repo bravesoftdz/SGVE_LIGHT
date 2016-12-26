@@ -790,7 +790,7 @@ inherited frmNotaFiscal: TfrmNotaFiscal
     Top = 177
     Width = 803
     Height = 427
-    ActivePage = tbsCabecalho
+    ActivePage = tbsItensFiscais
     Align = alClient
     TabOrder = 1
     OnEnter = pgcNotaFiscalEnter
@@ -1037,8 +1037,8 @@ inherited frmNotaFiscal: TfrmNotaFiscal
         end
       end
       object gridItens: TDBGrid
-        Left = 3
-        Top = 62
+        Left = 4
+        Top = 61
         Width = 789
         Height = 302
         DataSource = dsItensFiscais
@@ -2214,10 +2214,13 @@ inherited frmNotaFiscal: TfrmNotaFiscal
   object cdsItensDeletados: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 335
+    Left = 239
     Top = 475
-    object cdsItensDeletadosCODIGO_ITEM: TIntegerField
-      FieldName = 'CODIGO_ITEM'
+    object cdsItensDeletadosCOD_ITEM_NF: TIntegerField
+      FieldName = 'COD_ITEM_NF'
+    end
+    object cdsItensDeletadosCOD_ITEM_AVULSO: TIntegerField
+      FieldName = 'COD_ITEM_AVULSO'
     end
   end
   object cdsItensFiscais: TClientDataSet

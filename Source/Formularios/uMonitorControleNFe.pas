@@ -3,7 +3,7 @@ unit uMonitorControleNFe;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, ClipBrd,
   Dialogs, uPadrao, StdCtrls, ComCtrls, Grids, DBGrids, DBGridCBN, Buttons, System.StrUtils,
   DB, DBClient, Contnrs, Menus, ExtCtrls, EspecificacaoNotaFiscalPorPeriodoEStatus,
   NotaFiscal, fileCtrl, ImgList, pngimage, ComObj, System.ImageList, Generics.Collections, Vcl.Mask, RxToolEdit, RxCurrEdit;
@@ -167,7 +167,6 @@ uses
   NotaInutilizada,
   Pedido,
   Item, ItemAvulso,
-  ClipBrd,
   ShellApi,
   Pessoa,
   uNotaFiscal,
@@ -488,7 +487,10 @@ begin
         self.SelecionarNotaFiscal(self.cdsCODIGO.AsInteger)
       else
         self.DeselecionarNotaFiscal(self.cdsCODIGO.AsInteger);
-   end;
+   end
+   else if (Shift = [ssCtrl]) and (key = ord('C')) then
+     Clipboard.asText := cdsCHAVE_NFE.AsString;
+
 end;
 
 function TfrmMonitorControleNFe.EstaAdicionada(const CodigoNotaFiscal :Integer): Boolean;
@@ -529,6 +531,8 @@ begin
     btnImprimirDANFE.Click
   else if (key = VK_F5) and (btnCancelar.Enabled) then
     btnCancelar.Click;
+
+  inherited;
 end;
 
 procedure TfrmMonitorControleNFe.DeselecionarNotaFiscal(
@@ -694,7 +698,7 @@ begin
           { Consultar no SEFAZ }
           try
             self.AtualizarEstadoDaOperacao('Consultando nota fiscal Nº '+IntToStr(NotaFiscal.NumeroNotaFiscal));
-            //sleep(1000);
+            sleep(1000);
             GeradorNFe.ConsultarNFe(NotaFiscal);
           except
             on E: Exception do
