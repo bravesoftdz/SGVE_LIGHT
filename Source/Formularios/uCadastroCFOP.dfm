@@ -1,20 +1,20 @@
 inherited frmCadastroCFOP: TfrmCadastroCFOP
   Caption = 'Cadastro de CFOP'
-  ClientHeight = 392
-  ExplicitHeight = 430
+  ClientHeight = 421
+  ExplicitHeight = 459
   PixelsPerInch = 96
   TextHeight = 17
   inherited pnlBotoes: TPanel
-    Top = 340
-    ExplicitTop = 340
+    Top = 369
+    ExplicitTop = 369
   end
   inherited pgGeral: TPageControl
-    Height = 340
-    ExplicitHeight = 340
+    Height = 369
+    ExplicitHeight = 369
     inherited tsConsulta: TTabSheet
-      ExplicitHeight = 304
+      ExplicitHeight = 333
       inherited gridConsulta: TDBGridCBN
-        Height = 279
+        Height = 300
         ConfCores.Normal.Tipo.Height = -13
         ConfCores.Normal.Tipo.Name = 'Segoe UI'
         ConfCores.Zebrada.Tipo.Height = -13
@@ -28,49 +28,59 @@ inherited frmCadastroCFOP: TfrmCadastroCFOP
         Columns = <
           item
             Expanded = False
-            FieldName = 'CODIGO'
-            Visible = False
-          end
-          item
-            Expanded = False
             FieldName = 'CFOP'
-            Width = 62
+            Width = 56
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'DESCRICAO'
-            Width = 576
+            Width = 509
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'CODIGO'
+            Visible = False
+          end
+          item
+            Expanded = False
+            FieldName = 'SUSPENSAO'
+            Title.Caption = 'SUSP. ICMS'
             Visible = True
           end>
       end
       inherited lblAjudaSelecionar: TStaticText
-        Top = 279
-        ExplicitTop = 279
+        Top = 308
+        ExplicitTop = 308
         ExplicitWidth = 696
       end
     end
     inherited tsDados: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 32
-      ExplicitWidth = 696
-      ExplicitHeight = 304
+      ExplicitHeight = 333
       inherited pnlDados: TPanel
-        Height = 304
-        ExplicitHeight = 304
+        Height = 333
+        ExplicitHeight = 333
         object Label1: TLabel
-          Left = 195
-          Top = 72
+          Left = 75
+          Top = 130
           Width = 67
           Height = 21
           Caption = 'Descri'#231#227'o'
         end
         object Label2: TLabel
-          Left = 43
-          Top = 72
+          Left = 75
+          Top = 64
           Width = 39
           Height = 21
           Caption = 'CFOP'
+        end
+        object Label3: TLabel
+          Left = 344
+          Top = 64
+          Width = 137
+          Height = 21
+          Caption = 'Suspens'#227'o de ICMS'
         end
         object edtCodigo: TCurrencyEdit
           Left = 39
@@ -83,8 +93,8 @@ inherited frmCadastroCFOP: TfrmCadastroCFOP
           Visible = False
         end
         object edtDescricao: TEdit
-          Left = 196
-          Top = 95
+          Left = 76
+          Top = 153
           Width = 458
           Height = 29
           CharCase = ecUpperCase
@@ -97,9 +107,9 @@ inherited frmCadastroCFOP: TfrmCadastroCFOP
           TabOrder = 1
         end
         object edtCFOP: TEdit
-          Left = 44
-          Top = 95
-          Width = 122
+          Left = 76
+          Top = 87
+          Width = 165
           Height = 29
           CharCase = ecUpperCase
           Font.Charset = DEFAULT_CHARSET
@@ -109,6 +119,17 @@ inherited frmCadastroCFOP: TfrmCadastroCFOP
           Font.Style = []
           ParentFont = False
           TabOrder = 2
+        end
+        object cmbSuspensao: TComboBox
+          Left = 344
+          Top = 87
+          Width = 190
+          Height = 29
+          Style = csDropDownList
+          TabOrder = 3
+          Items.Strings = (
+            'SIM'
+            'N'#195'O')
         end
       end
     end
@@ -127,6 +148,10 @@ inherited frmCadastroCFOP: TfrmCadastroCFOP
     object cdsDESCRICAO: TStringField
       FieldName = 'DESCRICAO'
       Size = 70
+    end
+    object cdsSUSPENSAO: TStringField
+      FieldName = 'SUSPENSAO'
+      Size = 3
     end
   end
   inherited ds: TDataSource

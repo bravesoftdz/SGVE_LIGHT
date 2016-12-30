@@ -17,6 +17,10 @@ type
     cdsCODIGO: TIntegerField;
     cdsCFOP: TStringField;
     cdsDESCRICAO: TStringField;
+    cdsSUSPENSAO: TStringField;
+    cmbSuspensao: TComboBox;
+    Label3: TLabel;
+    procedure FormShow(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -49,7 +53,7 @@ var
 
 implementation
 
-uses CFOP, repositorio, FabricaRepositorio;
+uses CFOP, repositorio, FabricaRepositorio, Math;
 
 {$R *.dfm}
 
@@ -67,6 +71,7 @@ begin
   self.cdsCODIGO.AsInteger      := CFOP.codigo;
   self.cdsCFOP.AsString         := CFOP.cfop;
   self.cdsDESCRICAO.AsString    := CFOP.descricao;
+  self.cdsSUSPENSAO.AsString    := CFOP.suspensao_icms;
   self.cds.Post;
 end;
 
@@ -109,6 +114,12 @@ begin
   edtCFOP.SetFocus;
 end;
 
+procedure TfrmCadastroCFOP.FormShow(Sender: TObject);
+begin
+  inherited;
+  gridConsulta.SelectedIndex := 0;
+end;
+
 function TfrmCadastroCFOP.GravarDados: TObject;
 var
   CFOP             :TCFOP;
@@ -125,8 +136,9 @@ begin
      if not Assigned(CFOP) then
       CFOP := TCFOP.Create;
 
-     CFOP.descricao              := self.edtDescricao.Text;
-     CFOP.cfop                   := self.edtCFOP.Text;
+     CFOP.descricao         := self.edtDescricao.Text;
+     CFOP.cfop              := self.edtCFOP.Text;
+     CFOP.suspensao_icms    := copy(self.cmbSuspensao.Items[self.cmbSuspensao.ItemIndex],1,1);
 
      RepositorioCFOP.Salvar(CFOP);
 
@@ -146,9 +158,10 @@ begin
   CFOP := (Registro as TCFOP);
 
   self.cds.Append;
-  self.cdsCODIGO.AsInteger          := CFOP.codigo;
-  self.cdsCFOP.AsString             := CFOP.cfop;
-  self.cdsDESCRICAO.AsString        := CFOP.descricao;
+  self.cdsCODIGO.AsInteger      := CFOP.codigo;
+  self.cdsCFOP.AsString         := CFOP.cfop;
+  self.cdsDESCRICAO.AsString    := CFOP.descricao;
+  self.cdsSUSPENSAO.AsString    := CFOP.suspensao_icms;
   self.cds.Post;
 end;
 
@@ -179,6 +192,7 @@ begin
     self.edtCodigo.AsInteger        := CFOP.codigo;
     self.edtCFOP.Text               := CFOP.cfop;
     self.edtDescricao.Text          := CFOP.descricao;
+    self.cmbSuspensao.ItemIndex     := IfThen(CFOP.suspensao_icms = 'S',0,1);
 
   finally
     FreeAndNil(RepositorioCFOP);

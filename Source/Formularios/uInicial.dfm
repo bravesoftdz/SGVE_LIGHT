@@ -14252,6 +14252,10 @@ object frmInicial: TfrmInicial
     Top = 96
     object Cadastros1: TMenuItem
       Caption = 'Cadastros'
+      object AlqeReduoBC1: TMenuItem
+        Caption = 'Al'#237'q. e % Redu. B.C. por UF'
+        OnClick = AlqeReduoBC1Click
+      end
       object CFOP1: TMenuItem
         Caption = 'CFOP'
         OnClick = CFOP1Click

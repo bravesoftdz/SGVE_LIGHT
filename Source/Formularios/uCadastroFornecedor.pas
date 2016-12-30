@@ -61,6 +61,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure edtEmailChange(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -240,6 +241,12 @@ procedure TfrmCadastroFornecedor.FormKeyDown(Sender: TObject; var Key: Word; Shi
 begin
   inherited;
   avisar(1,'');
+end;
+
+procedure TfrmCadastroFornecedor.FormShow(Sender: TObject);
+begin
+  inherited;
+  gridConsulta.SelectedIndex := 1;
 end;
 
 function TfrmCadastroFornecedor.GravarDados: TObject;

@@ -21,7 +21,7 @@ uses
   Item, MetodoDelegadoSomarCampoEspecificoReal,
   MetodoDelegadoAposAtualizarNotaFiscal,
   ItemAvulso, FormaPagamento,
-  Math, StrUtils, Generics.Collections;
+  Math, StrUtils, Generics.Collections, Produto;
 
 type
   TNotaFiscal = class
@@ -168,11 +168,12 @@ type
     procedure PreencheCabecalho          (Pedido       :TPedido);
     procedure SomarItemAvulsoAosTotais   (ItemAvulso   :TItemAvulso);
     procedure SubtrairItemAvulsoDosTotais(ItemAvulso   :TItemAvulso);
-    function GetAliquotaICMS: Real;
+    function GetAliquotaICMS(Produto :TProduto): Real;
     function GetAliquotaPIS: Real;
-    function GetPercentualReducaoICMS: Real;
+    function GetPercentualReducaoICMS(Produto :TProduto): Real;
     function GetAliquotaCOFINS: Real;
     function GetFormaPagamento: TFormaPagamento;
+    function GetAliquotaICMSEmpresa: Real;
 
   public
     constructor Create(
@@ -235,7 +236,7 @@ type
     property AliquotaInterna  :Real                    read GetAliquotaInterna;
     property AliquotaPartilhaDestinatario :Real        read GetAliqPartilhaDestinatario;
     property AliquotaFCP      :Real                    read GetAliqFCP;
-    property AliquotaICMS     :Real                    read GetAliquotaICMS;
+    property AliquotaICMS     :Real                    read GetAliquotaICMSEmpresa;
     property AliquotaPIS      :Real                    read GetAliquotaPIS;
 
     property CFOPdoProduto    :Boolean                 read FCFOPdoProduto      write FCFOPdoProduto;
@@ -1092,19 +1093,18 @@ begin
    result := self.Empresa.ConfiguracoesNF.aliq_pis;
 end;
 
-function TNotaFiscal.GetPercentualReducaoICMS: Real;
+function TNotaFiscal.GetPercentualReducaoICMS(Produto :TProduto): Real;
 var icms_por_estado :TIcmsEstado;
 begin
   result := 0;
-
-  if self.NotaDeReducao then
+                                                                  //campo cst armazena cst ou csosn
+  if {self.NotaDeReducao} (self.Entrada_saida = 'S') and ((Produto.NCMIbpt.cst = '020') or (Produto.NCMIbpt.cst = '070')) then
   begin
      icms_por_estado := TIcmsEstado.CreatePorEstado(self.Destinatario.Endereco.Cidade.codest);
 
      result := icms_por_estado.perc_reducao_bc;
   end;
 end;
-
 
 function TNotaFiscal.GetAliquotaCOFINS: Real;
 begin
@@ -1663,16 +1663,17 @@ begin
      else {if (TEmpresa(self.FEmitente).ConfiguracoesNF.RegimeTributario = trtLucroPresumido) then }
      begin
        try
+
          ItemNotaFiscal := TItemNotaFiscal.CriaLucroPresumido(ItemAvulso.Produto,
                                                               CFOPItem,
                                                               ItemAvulso.Quantidade,
                                                               ItemAvulso.Preco,
                                                               tomNacional,
-                                                              self.GetAliquotaICMS,
+                                                              self.GetAliquotaICMS(ItemAvulso.Produto),
                                                               0,
                                                               self.GetAliquotaPIS,
                                                               self.GetAliquotaCOFINS,
-                                                              self.GetPercentualReducaoICMS);
+                                                              self.GetPercentualReducaoICMS(ItemAvulso.Produto));
        except
          on E: EAccessViolation do
            raise EAccessViolation.Create('Erro em: TNotaFiscal.AdicionarItens(ItemAvulso: TItemAvulso). '+
@@ -1783,10 +1784,10 @@ end;
 
 function TNotaFiscal.GetNotaDeReducao: Boolean;
 begin
-  result := (Emitente.Endereco.Cidade.codest = Destinatario.Endereco.Cidade.codest)
-        and (Emitente.Endereco.Cidade.estado.sigla = 'PR')
-        and (length(Destinatario.CPF_CNPJ) > 11)
-        and (Destinatario.RG_IE <> 'ISENTO');
+  result := (Emitente.Endereco.Cidade.codest = Destinatario.Endereco.Cidade.codest) //interestadual
+        and (Emitente.Endereco.Cidade.estado.sigla = 'PR') //no PR
+        and (length(Destinatario.CPF_CNPJ) > 11) //Pessoa juridica
+        and (Destinatario.RG_IE <> 'ISENTO'); //nao for isento
 end;
 
 function TNotaFiscal.GetNotaDeServico: Boolean;
@@ -1797,13 +1798,34 @@ begin
     result := (TItemNotaFiscal(Itens[0]).NaturezaOperacao.CFOP = '2124') or (TItemNotaFiscal(Itens[0]).NaturezaOperacao.CFOP = '2125');
 end;
 
-function TNotaFiscal.GetAliquotaICMS: Real;
+function TNotaFiscal.GetAliquotaICMS(Produto :TProduto): Real;
+var icms_por_estado :TIcmsEstado;
+begin
+  result := 0;
+                                                                  //campo cst armazena cst ou csosn
+  if {self.NotaDeReducao} (self.Entrada_saida = 'S') and ((Produto.NCMIbpt.cst = '020') or (Produto.NCMIbpt.cst = '070')) then
+  begin
+     icms_por_estado := TIcmsEstado.CreatePorEstado(self.Destinatario.Endereco.Cidade.codest);
+
+     exit(icms_por_estado.aliquota_icms);
+  end
+  else
+  begin
+   result := self.Empresa.ConfiguracoesNF.aliq_icms;
+
+   if (self.Destinatario.Endereco.Cidade.estado.sigla = 'PR') and
+      (self.Empresa.ConfiguracoesNF.RegimeTributario <> trtSimplesNacional ) then
+     exit(18);
+  end;
+end;
+
+function TNotaFiscal.GetAliquotaICMSEmpresa: Real;
 begin
    result := self.Empresa.ConfiguracoesNF.aliq_icms;
 
    if (self.Destinatario.Endereco.Cidade.estado.sigla = 'PR') and
       (self.Empresa.ConfiguracoesNF.RegimeTributario <> trtSimplesNacional ) then
-     result := 18;
+     exit(18);
 end;
 
 function TNotaFiscal.GetAliquotaInterEstadual: Real;

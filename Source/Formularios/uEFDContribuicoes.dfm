@@ -11,162 +11,11 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
   ExplicitHeight = 549
   PixelsPerInch = 96
   TextHeight = 17
-  object gpbBlocos: TGroupBox
-    Left = 214
-    Top = 163
-    Width = 179
-    Height = 217
-    Caption = ' Blocos '
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = [fsBold]
-    ParentFont = False
-    TabOrder = 7
-    object chk0: TCheckBox
-      Left = 16
-      Top = 26
-      Width = 156
-      Height = 17
-      TabStop = False
-      Caption = 'Gerar Dados do Bloco 0'
-      Checked = True
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      State = cbChecked
-      TabOrder = 0
-    end
-    object chkA: TCheckBox
-      Left = 16
-      Top = 53
-      Width = 156
-      Height = 17
-      TabStop = False
-      Caption = 'Gerar Dados do Bloco A'
-      Enabled = False
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 1
-    end
-    object chkC: TCheckBox
-      Left = 16
-      Top = 80
-      Width = 156
-      Height = 17
-      TabStop = False
-      Caption = 'Gerar Dados do Bloco C'
-      Checked = True
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-      State = cbChecked
-      TabOrder = 2
-    end
-    object chkD: TCheckBox
-      Left = 16
-      Top = 107
-      Width = 156
-      Height = 17
-      TabStop = False
-      Caption = 'Gerar Dados do Bloco D'
-      Checked = True
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      State = cbChecked
-      TabOrder = 3
-    end
-    object chkF: TCheckBox
-      Left = 16
-      Top = 133
-      Width = 156
-      Height = 17
-      TabStop = False
-      Caption = 'Gerar Dados do Bloco F'
-      Checked = True
-      Enabled = False
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-      State = cbChecked
-      TabOrder = 4
-    end
-    object chkM: TCheckBox
-      Left = 16
-      Top = 160
-      Width = 156
-      Height = 17
-      TabStop = False
-      Caption = 'Gerar Dados do Bloco M'
-      Checked = True
-      Enabled = False
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-      State = cbChecked
-      TabOrder = 5
-    end
-    object chk1: TCheckBox
-      Left = 16
-      Top = 187
-      Width = 156
-      Height = 17
-      TabStop = False
-      Caption = 'Gerar Dados do Bloco 1'
-      Enabled = False
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 6
-    end
-  end
-  object rgRegime: TRadioGroup
-    Left = 16
-    Top = 269
-    Width = 193
-    Height = 110
-    Caption = ' '
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ItemIndex = 0
-    Items.Strings = (
-      'Lucro Real'
-      'Lucro Presumido')
-    ParentFont = False
-    TabOrder = 6
-  end
   object gpbPeriodo: TGroupBox
     Left = 16
     Top = 163
-    Width = 193
-    Height = 98
+    Width = 377
+    Height = 86
     Caption = ' Per'#237'odo '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -176,8 +25,8 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
     ParentFont = False
     TabOrder = 2
     object Label6: TLabel
-      Left = 18
-      Top = 25
+      Left = 34
+      Top = 22
       Width = 23
       Height = 17
       Caption = 'Ano'
@@ -189,8 +38,8 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       ParentFont = False
     end
     object Label1: TLabel
-      Left = 16
-      Top = 61
+      Left = 208
+      Top = 21
       Width = 25
       Height = 17
       Caption = 'M'#234's'
@@ -202,8 +51,8 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       ParentFont = False
     end
     object edtAno: TEdit
-      Left = 49
-      Top = 24
+      Left = 34
+      Top = 43
       Width = 119
       Height = 25
       Ctl3D = True
@@ -219,10 +68,10 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       Text = '2014'
     end
     object UpDown1: TUpDown
-      Left = 168
-      Top = 24
+      Left = 151
+      Top = 42
       Width = 16
-      Height = 25
+      Height = 26
       Associate = edtAno
       Min = 2000
       Max = 3000
@@ -231,8 +80,8 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       Thousands = False
     end
     object cbMes: TComboBox
-      Left = 49
-      Top = 60
+      Left = 209
+      Top = 42
       Width = 135
       Height = 25
       Style = csDropDownList
@@ -365,20 +214,6 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       OnClick = btnSelecionaClick
     end
   end
-  object StaticText1: TStaticText
-    Left = 28
-    Top = 266
-    Width = 106
-    Height = 21
-    Caption = 'Regime Empresa'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = [fsBold]
-    ParentFont = False
-    TabOrder = 8
-  end
   object gpbContador: TGroupBox
     Left = 16
     Top = 86
@@ -461,7 +296,7 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
     Top = 386
     Width = 17
     Height = 25
-    TabOrder = 9
+    TabOrder = 7
     Text = 'Edit1'
     Visible = False
   end
@@ -691,7 +526,7 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
     Left = 399
     Top = 163
     Width = 186
-    Height = 215
+    Height = 216
     Caption = 'Restri'#231#227'o CFOP'#39's arquivo'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -701,10 +536,10 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
     ParentFont = False
     TabOrder = 5
     object rgCfops: TRadioGroup
-      Left = 14
-      Top = 149
-      Width = 159
-      Height = 60
+      Left = 0
+      Top = 164
+      Width = 186
+      Height = 54
       Caption = ' '
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -847,6 +682,139 @@ inherited frmEFDContribuicoes: TfrmEFDContribuicoes
       Font.Style = []
       ParentFont = False
       TabOrder = 5
+    end
+  end
+  object gpbBlocos: TGroupBox
+    Left = 16
+    Top = 251
+    Width = 376
+    Height = 128
+    Caption = ' Blocos '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 6
+    object chk0: TCheckBox
+      Left = 16
+      Top = 22
+      Width = 156
+      Height = 17
+      TabStop = False
+      Caption = 'Gerar Dados do Bloco 0'
+      Checked = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      State = cbChecked
+      TabOrder = 0
+    end
+    object chkA: TCheckBox
+      Left = 16
+      Top = 49
+      Width = 156
+      Height = 17
+      TabStop = False
+      Caption = 'Gerar Dados do Bloco A'
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+    end
+    object chkC: TCheckBox
+      Left = 16
+      Top = 76
+      Width = 156
+      Height = 17
+      TabStop = False
+      Caption = 'Gerar Dados do Bloco C'
+      Checked = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      State = cbChecked
+      TabOrder = 2
+    end
+    object chkD: TCheckBox
+      Left = 16
+      Top = 103
+      Width = 156
+      Height = 17
+      TabStop = False
+      Caption = 'Gerar Dados do Bloco D'
+      Checked = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      State = cbChecked
+      TabOrder = 3
+    end
+    object chkF: TCheckBox
+      Left = 192
+      Top = 22
+      Width = 156
+      Height = 17
+      TabStop = False
+      Caption = 'Gerar Dados do Bloco F'
+      Checked = True
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      State = cbChecked
+      TabOrder = 4
+    end
+    object chkM: TCheckBox
+      Left = 192
+      Top = 49
+      Width = 156
+      Height = 17
+      TabStop = False
+      Caption = 'Gerar Dados do Bloco M'
+      Checked = True
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      State = cbChecked
+      TabOrder = 5
+    end
+    object chk1: TCheckBox
+      Left = 192
+      Top = 76
+      Width = 156
+      Height = 17
+      TabStop = False
+      Caption = 'Gerar Dados do Bloco 1'
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 6
     end
   end
   object cds: TClientDataSet

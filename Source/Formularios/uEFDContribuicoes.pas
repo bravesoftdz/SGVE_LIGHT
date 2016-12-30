@@ -17,7 +17,6 @@ type
     chkF: TCheckBox;
     chkM: TCheckBox;
     chk1: TCheckBox;
-    rgRegime: TRadioGroup;
     gpbPeriodo: TGroupBox;
     Label6: TLabel;
     Label1: TLabel;
@@ -27,7 +26,6 @@ type
     gpbCaminho: TGroupBox;
     edtCaminho: TEdit;
     btnSeleciona: TBitBtn;
-    StaticText1: TStaticText;
     gpbContador: TGroupBox;
     BuscaContador1: TBuscaContador;
     Edit1: TEdit;
@@ -83,7 +81,6 @@ procedure TfrmEFDContribuicoes.btnGerarClick(Sender: TObject);
 var gerador            :TGeradorEFDContribuicoes;
     nome_arq, resposta :String;
     data_i, data_f     :TDateTime;
-    regime_da_empresa  :String;
 begin
   try
       if not verifica_obrigatorios then Exit;
@@ -98,8 +95,6 @@ begin
          data_i := strToDate( '01/'+intToStr(cbMes.ItemIndex)+'/'+edtAno.Text );
          data_f := strToDateTime( intToStr(DaysInMonth(data_i) )+ '/' + formatDateTime('mm/yyyy 23:59:59', data_i) );
 
-         regime_da_empresa := IfThen(rgRegime.itemIndex = 0 , 'LR' , 'LP' );
-
          Application.ProcessMessages;
          gerador := TGeradorEFDContribuicoes.Create(data_i,
                                                     data_f,
@@ -111,7 +106,6 @@ begin
                                                     self.chkM.Checked,
                                                     self.chk1.Checked,
                                                     Trim(self.edtCaminho.Text),
-                                                    regime_da_empresa,
                                                     TEmpresa(BuscaEmpresa1.Pessoa),
                                                     BuscaContador1.Contador,
                                                     cds,

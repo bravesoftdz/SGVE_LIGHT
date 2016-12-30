@@ -205,20 +205,16 @@ const
 var
   Venda :TVenda;
   numeroLote :integer;
-  criandoNFCe, erroConexao :Boolean;
+  erroConexao :Boolean;
 begin
   try
   try
-    criandoNFCe       := false;
     erroConexao       := false;
     NumeroLote        := dm.GetValorGenerator('gen_lote_nfce',1);
     Venda             := getVenda(codigoPedido);
 
     if Venda.NumeroNFe = 0 then
-    begin
       Venda.NumeroNFe := dm.GetValorGenerator('gen_nrnota_nfce',1);
-      criandoNFCe     := true;
-    end;
 
     if cpfCliente <> '' then
       Venda.Cpf_cliente := cpfCliente;
@@ -239,8 +235,7 @@ begin
     Except
       On E: Exception do begin
         dm.GetValorGenerator('gen_lote_nfce',-1);
-        if criandoNFCe then
-          dm.GetValorGenerator('gen_nrnota_nfce',-1);
+
         dm.LogErros.AdicionaErro('ServicoEmissorNFCe','Envio',e.Message);
 
         erroConexao := erroConexaoServidor(e.Message);
@@ -309,7 +304,7 @@ begin
       { Dados do Produto }
       Prod.nItem    := (nX+1);
       Prod.cProd    := IntToStr(Venda.Itens.Items[nX].Produto.codigo);
-      Prod.cEAN     := '';//Venda.Itens.Items[nX].Produto.Codbar;
+      Prod.cEAN     := '';//Venda.Itens.Items[nX].Produto.codigo_barras;
       Prod.xProd    := Venda.Itens.Items[nX].Produto.descricao;
       Prod.NCM      := Venda.Itens.Items[nX].Produto.NCMIbpt.ncm_ibpt;
       Prod.EXTIPI   := '';

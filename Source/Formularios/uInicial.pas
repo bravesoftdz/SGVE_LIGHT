@@ -53,6 +53,7 @@ type
     EFDContribuies1: TMenuItem;
     EFDFiscal1: TMenuItem;
     Sintegra1: TMenuItem;
+    AlqeReduoBC1: TMenuItem;
     procedure Produtos1Click(Sender: TObject);
     procedure NCM1Click(Sender: TObject);
     procedure CFOP1Click(Sender: TObject);
@@ -89,6 +90,7 @@ type
     procedure EFDContribuies1Click(Sender: TObject);
     procedure EFDFiscal1Click(Sender: TObject);
     procedure Sintegra1Click(Sender: TObject);
+    procedure AlqeReduoBC1Click(Sender: TObject);
   private
     function existeNotasEmContingencia :Boolean;
     function servicoOperante :Boolean;
@@ -112,9 +114,16 @@ implementation
 uses uCadastroProduto, uCadastroCFOP, uCadastroNcmIBPT, uCadastroPadrao, uCadastroDadosEmpresa, uCadastroFornecedor, uCadastroCliente,
      uPedidoConsumidorFinal, uNFCes, uModulo, ServicoEmissorNFCe, ParametrosNFCe, Repositorio, FabricaRepositorio, uRelatorioNFCes,
      uCadastroContador, uEnviaXMLsContador, Parametros, TipoStatusUso, uTelaDesbloqueio, Criptografia, uMonitorControleNFe,
-     uCadastroTransportadora, uRelatorioNFes, uAtualizacaoSistema, Funcoes, uEFDFiscal, uEFDContribuicoes, uSintegra;
+     uCadastroTransportadora, uRelatorioNFes, uAtualizacaoSistema, Funcoes, uEFDFiscal, uEFDContribuicoes, uSintegra,
+     uCadastroAliqPercReducPorEstado;
 
 {$R *.dfm}
+
+procedure TfrmInicial.AlqeReduoBC1Click(Sender: TObject);
+begin
+  inherited;
+  self.AbreForm(TfrmCadastroAliqPercReducPorEstado);
+end;
 
 procedure TfrmInicial.Atualizaodosistema1Click(Sender: TObject);
 begin

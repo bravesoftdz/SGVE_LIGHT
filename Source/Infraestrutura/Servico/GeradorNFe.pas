@@ -444,7 +444,7 @@ begin
 
         end;
 
-        { ICMS para lucro presumido (atualmente soh a VLJ)}
+        { ICMS para L.P/L.R. }
         if Assigned(Item.Icms00) then begin
           case Item.Icms00.OrigemMercadoria of
             tomNacional:                           ItemNFe.Imposto.ICMS.orig := oeNacional;
@@ -452,14 +452,14 @@ begin
             tomEstrangeiraAdquiridaMercadoInterno: ItemNFe.Imposto.ICMS.orig := oeEstrangeiraAdquiridaBrasil;
           end;
 
-          //padrao L.P.
+          //padrao
           ItemNFe.Imposto.ICMS.CST    := cst00;
 
           ItemNFe.Imposto.ICMS.modBC  := dbiValorOperacao;
           ItemNFe.Imposto.ICMS.vBC    := RoundTo(Item.BaseCalculoICMS,-2);
           ItemNFe.Imposto.ICMS.pICMS  := Item.Icms00.Aliquota;
 
-                    //excecao L.P.
+               //excecao .
           if Item.NaturezaOperacao.suspensao_icms = 'S' then
             ItemNFe.Imposto.ICMS.CST    := cst50; //cst suspensao ICMS
 
@@ -470,7 +470,6 @@ begin
             ItemNFe.Imposto.ICMS.vICMSOp  := RoundTo((ItemNFe.Imposto.ICMS.vBC * Item.Icms00.Aliquota)/100,-2);
             ItemNFe.Imposto.ICMS.vICMSDif := RoundTo((ItemNFe.Imposto.ICMS.vICMSOp * Item.Icms00.PercReducaoBC) / 100,-2);
             ItemNFe.Imposto.ICMS.vICMS    := RoundTo(ItemNFe.Imposto.ICMS.vICMSOp - ItemNFe.Imposto.ICMS.vICMSDif,-2);
-
           end
           else
             ItemNFe.Imposto.ICMS.vICMS  := RoundTo(Item.ValorICMS,-2);
@@ -517,13 +516,13 @@ begin
 
         { PIS }
 
-        { PIS para lucro presumido }
+        { PIS para L.P/L.R. }
         if Assigned(Item.PisAliq) then begin
 
-          //padrao L.P.
+          //padrao
           ItemNFe.Imposto.PIS.CST    := pis02;
 
-          //excecao L.P.
+          //excecao
           if Item.NaturezaOperacao.suspensao_icms = 'S' then
             ItemNFe.Imposto.PIS.CST    := pis09; //cst suspensao PIS
 
@@ -541,12 +540,12 @@ begin
 
         { COFINS }
 
-        { COFINS para lucro presumido }
+        { COFINS para L.P/L.R. }
         if Assigned(Item.CofinsAliq) then begin
-          //padrao L.P.
+          //padrao
           ItemNFe.Imposto.COFINS.CST     := cof02;
 
-          //excecao L.P.
+          //excecao
           if Item.NaturezaOperacao.suspensao_icms = 'S' then
             ItemNFe.Imposto.COFINS.CST     := cof09; //cst suspensao COFINS
 

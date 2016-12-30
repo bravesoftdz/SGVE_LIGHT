@@ -272,6 +272,7 @@ begin
     cds.Filter   := 'CODIGO > 1';
     cds.Filtered := true;
   end;
+  gridConsulta.SelectedIndex := 1;
 end;
 
 function TfrmCadastroCliente.GravarDados: TObject;

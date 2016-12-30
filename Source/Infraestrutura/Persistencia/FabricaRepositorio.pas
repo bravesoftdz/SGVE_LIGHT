@@ -115,7 +115,6 @@ begin
    else if (NomeDaEntidade  = 'TNFe')                      then result := TRepositorioNFe.Create
    else if (NomeDaEntidade  = 'TAliqInternaIcms')          then result := TRepositorioAliqInternaIcms.Create
 
-
    else begin
      dm.LogErros.AdicionaErro('FabricaRepositorio', 'TExcecaoRepositorioNaoEncontrado', 'Repositório para a '+ NomeDaEntidade + ' não foi encontrado!');
      raise TExcecaoRepositorioNaoEncontrado.Create(NomeDaEntidade);

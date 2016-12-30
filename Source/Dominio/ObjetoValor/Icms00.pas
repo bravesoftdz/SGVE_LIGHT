@@ -22,6 +22,7 @@ type
   private
     function GetCST   :String;
     function GetValor :Real;
+    function GetBaseCalculo: Real;
 
   public
     constructor Create(OrigemMercadoria :TTipoOrigemMercadoria; Aliquota, PercReducaoBC : Real);overload;
@@ -34,7 +35,7 @@ type
     property Aliquota           :Real                  read FAliquota          write SetAliquota;
     property PercReducaoBC      :Real                  read FPercReducaoBC     write FPercReducaoBC;
     property Valor              :Real                  read GetValor           write SetValor;
-    property BaseDeCalculo      :Real                  read FBaseCalculo       write FBaseCalculo;
+    property BaseDeCalculo      :Real                  read GetBaseCalculo     write FBaseCalculo;
 end;
 
 implementation
@@ -62,6 +63,12 @@ begin
    self.FPercReducaoBC     := PercReducaoBC;
 end;
 
+function TIcms00.GetBaseCalculo: Real;
+begin
+  if FPercReducaoBC > 0 then
+    Result := FBaseCalculo - ((FPercReducaoBC * FBaseCalculo)/100);
+end;
+
 function TIcms00.GetCST: String;
 begin
    result := '00';
@@ -70,9 +77,6 @@ end;
 function TIcms00.GetValor: Real;
 begin
    result := ((self.BaseDeCalculo * self.FAliquota) / 100);
-
-   if FPercReducaoBC > 0 then
-     result := result - ((FPercReducaoBC * result)/100);
 end;
 
 procedure TIcms00.SetAliquota(const Value: Real);

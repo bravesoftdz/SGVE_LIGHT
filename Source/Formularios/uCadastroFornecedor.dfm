@@ -55,6 +55,10 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
       end
     end
     inherited tsDados: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 32
+      ExplicitWidth = 1067
+      ExplicitHeight = 510
       inherited pnlDados: TPanel
         Width = 1067
         Height = 510

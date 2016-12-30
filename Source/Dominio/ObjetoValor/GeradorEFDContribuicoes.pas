@@ -32,7 +32,6 @@ type TGeradorEFDContribuicoes = class
     FisConcomitante   : Boolean;
     DataInicial       : TDateTime;
     DataFinal         : TDateTime;
-    FRegime           : String;
     FEmpresa          : TEmpresa;
     FContador         : TContador;
     FCDSParticipantes : TClientDataSet;
@@ -96,7 +95,7 @@ type TGeradorEFDContribuicoes = class
                        lGeraBlocoF              :Boolean;
                        lGeraBlocoM              :Boolean;
                        lGeraBloco1              :Boolean;
-                       cCaminhoArquivo, regime  :String;
+                       cCaminhoArquivo          :String;
                        Empresa                  :TEmpresa;
                        Contador                 :TContador;
                        cfops                    :TClientDataSet;
@@ -114,8 +113,8 @@ implementation
 
 uses ACBrEPCBlocos, forms, SysUtils, Variants, Math, StrUtils, Repositorio, FabricaRepositorio,
      Especificacao, EspecificacaoNotaFiscalPorPeriodoEStatus, TipoStatusNotaFiscal, TipoFrete, StringUtilitario,
-  TotaisNotaFiscal, Produto, Pessoa, NaturezaOperacao,
-  ACBrEPCBloco_D_Class, ACBrEPCBloco_F_Class, ACBrEPCBloco_M_Class, TipoRegimeTributario;
+     TotaisNotaFiscal, Produto, Pessoa, NaturezaOperacao, TipoRegimeTributario,
+     ACBrEPCBloco_D_Class, ACBrEPCBloco_F_Class, ACBrEPCBloco_M_Class;
 
 const Buffer = 1000;
 
@@ -221,11 +220,11 @@ procedure TGeradorEFDContribuicoes.addReg0110(registro0110: TRegistro0110);
 begin
    if not Assigned(registro0110) then exit;
 
-   if FRegime = 'LR' then begin //lucro real
+   if FEmpresa.ConfiguracoesNF.RegimeTributario = trtLucroPresumido then begin //lucro real
       registro0110.COD_INC_TRIB   := codEscrOpIncNaoCumulativo;
       registro0110.IND_APRO_CRED  := indMetodoApropriacaoDireta;
     end
-   else if FRegime = 'LP' then begin //lucro presumido
+   else if FEmpresa.ConfiguracoesNF.RegimeTributario = trtLucroReal then begin //lucro presumido
       registro0110.COD_INC_TRIB   := codEscrOpIncCumulativo;
       registro0110.IND_REG_CUM    := codRegimeCompetEscritDetalhada;
     end;
@@ -607,7 +606,7 @@ end;
 
 constructor TGeradorEFDContribuicoes.Create(dDataInicial,
   dDataFinal: TDateTime; lGeraBloco0, lGeraBlocoA, lGeraBlocoC,
-  lGeraBlocoD, lGeraBlocoF, lGeraBlocoM, lGeraBloco1: Boolean; cCaminhoArquivo, regime: String;
+  lGeraBlocoD, lGeraBlocoF, lGeraBlocoM, lGeraBloco1: Boolean; cCaminhoArquivo : String;
   Empresa :TEmpresa; Contador :TContador; cfops :TClientDataSet; considera_desconsidera :Boolean);
 var
     repositorio :TRepositorio;
@@ -617,7 +616,6 @@ begin
 
   FListaNotas    := nil;
 
-  self.FRegime   := regime;
   self.FEmpresa  := Empresa;
   self.FContador := Contador;
   self.FCfops    := cfops;
