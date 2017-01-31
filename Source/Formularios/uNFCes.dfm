@@ -75,6 +75,7 @@ inherited frmNFCes: TfrmNFCes
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = []
     OnDrawColumnCell = gridNFceDrawColumnCell
+    OnDblClick = gridNFceDblClick
     OnKeyDown = gridNFceKeyDown
     BuscaHabilitada = True
     ConfCores.Normal.CorFonte = clWindowText
@@ -157,7 +158,6 @@ inherited frmNFCes: TfrmNFCes
       item
         Expanded = False
         FieldName = 'SERIE'
-        Width = -1
         Visible = False
       end
       item
@@ -169,7 +169,6 @@ inherited frmNFCes: TfrmNFCes
       item
         Expanded = False
         FieldName = 'PROTOCOLO'
-        Width = -1
         Visible = False
       end
       item

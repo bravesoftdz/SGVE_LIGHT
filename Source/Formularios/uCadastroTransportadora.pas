@@ -62,6 +62,7 @@ type
     cdsEmails: TClientDataSet;
     cdsEmailsEMAIL: TStringField;
     procedure FormCreate(Sender: TObject);
+    procedure pgGeralChange(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -295,7 +296,7 @@ begin
 
   try
     RepositorioPessoa  := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
-    Transportadora     := TPessoa(RepositorioPessoa.Get(self.cdsCODIGO.AsInteger));
+    Transportadora     := TPessoa(RepositorioPessoa.Get(self.ds.DataSet.FieldByName('CODIGO').AsInteger));//*f Transportadora     := TPessoa(RepositorioPessoa.Get(self.cdsCODIGO.AsInteger));
 
     if not Assigned(Transportadora) then exit;
 
@@ -326,6 +327,13 @@ begin
     FreeAndNil(RepositorioPessoa);
     FreeAndNil(Transportadora);
   end;
+end;
+
+procedure TfrmCadastroTransportadora.pgGeralChange(Sender: TObject);
+begin
+  inherited;
+  if pgGeral.TabIndex = 1 then //*f
+    MostrarDados;
 end;
 
 function TfrmCadastroTransportadora.VerificaDados: Boolean;

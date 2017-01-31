@@ -62,6 +62,7 @@ type
     procedure edtEmailChange(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
+    procedure pgGeralChange(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -341,7 +342,7 @@ begin
 
   try
     RepositorioPessoa  := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
-    Fornecedor             := TPessoa(RepositorioPessoa.Get(self.cdsCODIGO.AsInteger));
+    Fornecedor             := TPessoa(RepositorioPessoa.Get(self.ds.DataSet.FieldByName('CODIGO').AsInteger));//*f Fornecedor             := TPessoa(RepositorioPessoa.Get(self.cdsCODIGO.AsInteger));
 
     if not Assigned(Fornecedor) then exit;
 
@@ -371,6 +372,14 @@ begin
     FreeAndNil(RepositorioPessoa);
     FreeAndNil(Fornecedor);
   end;
+end;
+
+procedure TfrmCadastroFornecedor.pgGeralChange(Sender: TObject);
+begin
+  inherited;
+  if pgGeral.TabIndex = 1 then //*f
+    MostrarDados;
+
 end;
 
 function TfrmCadastroFornecedor.VerificaDados: Boolean;

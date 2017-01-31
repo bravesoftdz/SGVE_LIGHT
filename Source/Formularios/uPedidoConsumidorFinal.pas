@@ -490,7 +490,7 @@ begin
        repositorio.Salvar(Pedido);
 
        if not dm.Empresa.ConfiguracoesNF.ParametrosNFCe.imp_comp_pedido then
-         avisar(1,'Pedido criado com sucesso!',2);
+         //*f avisar(1,'Pedido criado com sucesso!',2);
      end;
 
      //BuscaPedido1.edtCodigo.AsInteger := Pedido.Codigo;

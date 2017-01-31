@@ -67,6 +67,7 @@ type
     procedure gridNFceKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnEnviarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure gridNFceDblClick(Sender: TObject);
   private
     selecionados :integer;
     tipoSelecionadas :TTipoSelecionado;
@@ -236,6 +237,8 @@ var
   XML         : TStringStream;
   Servico     : TServicoEmissorNFCe;
   Justificativa :String;
+  NFCe : TNFCe;
+  repositorio : TRepositorio;
 begin
  try
    if not confirma('Deseja realmente cancelar a(s) NFC-e(s) selecionadas?') then
@@ -254,13 +257,18 @@ begin
      qry.Filtered := true;
      qry.First;
 
+
      while not qry.Eof do
      begin
+       repositorio := TFabricaRepositorio.GetRepositorio(TNFCe.ClassName);
+       NFCe        := TNFCe(repositorio.Get(qryCODIGO.AsInteger));
        XML := TStringStream.Create(qryXML.AsString);
-       Servico.CancelarNFCe( XML , Justificativa);
+       Servico.CancelarNFCe( XML , Justificativa, NFCe);
        qry.Next;
 
        FreeAndNil(XML);
+       FreeAndNil(NFCe);
+       FreeAndNil(repositorio);
      end;
 
      qry.Filtered := false;
@@ -396,6 +404,12 @@ begin
  end;
 end;
 
+procedure TfrmNFCes.gridNFceDblClick(Sender: TObject);
+begin
+  if not(qry.IsEmpty) then
+    adicionaOuRemove;
+end;
+
 procedure TfrmNFCes.gridNFceDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
 begin
   if (Column.Field = qrySTATUS)or(Column.Field = qryNR_NOTA) then begin
@@ -442,13 +456,13 @@ begin
   btnEnviar.Enabled      := tipoSelecionadas = tsRejeitadasContingencia;
   btnCancelar.Enabled    := tipoSelecionadas = tsEnviadas;
   btnImprimir.Enabled    := tipoSelecionadas = tsEnviadas;
-  btnConsultar.Enabled   := tipoSelecionadas = tsRejeitadasContingencia;
+  btnConsultar.Enabled   := tipoSelecionadas = tsEnviadas; //tsRejeitadasContingencia;
   btnGerarXML.Enabled    := tipoSelecionadas = tsEnviadas;
 end;
 
 procedure TfrmNFCes.enviarNFCe;
 var
-  Servico  :TServicoEmissorNFCe;
+  Servico     :TServicoEmissorNFCe;
   NFCe        :TNFCe;
   repositorio :TRepositorio;
 begin
@@ -461,7 +475,7 @@ begin
    repositorio := TFabricaRepositorio.GetRepositorio(TNFCe.ClassName);
    NFCe        := TNFCe(repositorio.Get(qryCODIGO.AsInteger));
 
-   atualizaGrid(NFCe);
+   //atualizaGrid(NFCe);
  Except
    On E: Exception do
      raise Exception.Create('Ocorreu um erro ao enviar NFC-e nº '+qryNR_NOTA.AsString+#13#10+e.Message);

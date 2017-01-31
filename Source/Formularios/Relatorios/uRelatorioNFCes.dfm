@@ -1,10 +1,10 @@
 inherited frmRelatorioNFCes: TfrmRelatorioNFCes
   Caption = 'Relat'#243'rio de NFC-es'
-  ClientHeight = 227
-  ClientWidth = 544
+  ClientHeight = 215
+  ClientWidth = 543
   OnShow = FormShow
-  ExplicitWidth = 560
-  ExplicitHeight = 265
+  ExplicitWidth = 559
+  ExplicitHeight = 253
   PixelsPerInch = 96
   TextHeight = 17
   object RLReport1: TRLReport
@@ -648,16 +648,18 @@ inherited frmRelatorioNFCes: TfrmRelatorioNFCes
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 176
-    Width = 544
+    Top = 164
+    Width = 543
     Height = 51
     Align = alBottom
     TabOrder = 4
+    ExplicitTop = 176
+    ExplicitWidth = 544
     DesignSize = (
-      544
+      543
       51)
     object btnImprimir: TBitBtn
-      Left = 370
+      Left = 369
       Top = 8
       Width = 155
       Height = 30
@@ -733,9 +735,10 @@ inherited frmRelatorioNFCes: TfrmRelatorioNFCes
       NumGlyphs = 2
       TabOrder = 0
       OnClick = btnImprimirClick
+      ExplicitLeft = 370
     end
     object btnVoltar: TBitBtn
-      Left = 194
+      Left = 193
       Top = 8
       Width = 155
       Height = 30
@@ -811,6 +814,7 @@ inherited frmRelatorioNFCes: TfrmRelatorioNFCes
       NumGlyphs = 2
       TabOrder = 1
       OnClick = btnVoltarClick
+      ExplicitLeft = 194
     end
   end
   object rgpLeiaute: TRadioGroup

@@ -116,7 +116,7 @@ var
 
 implementation
 
-uses funcoes, repositorio, fabricaRepositorio, umodulo;
+uses funcoes, repositorio, fabricaRepositorio, umodulo, StringUtilitario;
 
 {$R *.dfm}
 
@@ -350,7 +350,7 @@ end;
 
 procedure TfrmRelatorioNFCes.RLDBText8BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
 begin
-  totalDia := totalDia + StrToFloat(Text);
+  totalDia := totalDia + StrToFloat( TStringUtilitario.RemoveCaracter(Text,'.'));
 end;
 
 procedure TfrmRelatorioNFCes.lbNCMAfterPrint(Sender: TObject);

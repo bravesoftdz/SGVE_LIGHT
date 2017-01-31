@@ -14253,7 +14253,7 @@ object frmInicial: TfrmInicial
     object Cadastros1: TMenuItem
       Caption = 'Cadastros'
       object AlqeReduoBC1: TMenuItem
-        Caption = 'Al'#237'q. e % Redu. B.C. por UF'
+        Caption = '% ICMS/UF'
         OnClick = AlqeReduoBC1Click
       end
       object CFOP1: TMenuItem
@@ -14346,7 +14346,7 @@ object frmInicial: TfrmInicial
     end
   end
   object Timer1: TTimer
-    Interval = 600000
+    Interval = 520000
     OnTimer = Timer1Timer
     Left = 64
     Top = 448

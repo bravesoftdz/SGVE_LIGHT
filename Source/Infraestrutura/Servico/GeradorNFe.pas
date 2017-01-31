@@ -493,7 +493,7 @@ begin
           if NF.Destinatario.Pessoa = 'F' then
             ItemNFe.Imposto.ICMS.CSOSN        := csosn102
           else
-            ItemNFe.Imposto.ICMS.CSOSN        := csosn101;
+            ItemNFe.Imposto.ICMS.CSOSN        := csosn102; //csosn101;
 
           ItemNFe.Imposto.ICMS.pCredSN      := Item.IcmsSn101.AliquotaCreditoSN;
           ItemNFe.Imposto.ICMS.vCredICMSSN  := Item.IcmsSn101.ValorCreditoSN;
@@ -570,7 +570,16 @@ begin
     if (length(NF.Destinatario.CPF_CNPJ) < 14) then
       nfe.NFe.Dest.indIEDest   := inNaoContribuinte
     else
-      nfe.NFe.Dest.indIEDest   := inIsento;
+    begin
+      if NF.Destinatario.Endereco.Cidade.Estado.sigla <> 'SP' then
+        nfe.NFe.Dest.indIEDest   := inIsento
+      else
+      begin
+        nfe.NFe.Dest.indIEDest   := inNaoContribuinte;
+        nfe.NFe.Ide.indFinal     := cfConsumidorFinal;
+      end;
+    end;
+
   end
   else if UpperCase(TRIM(NF.Destinatario.RG_IE)) = '' then
      nfe.NFe.Dest.indIEDest   := inNaoContribuinte

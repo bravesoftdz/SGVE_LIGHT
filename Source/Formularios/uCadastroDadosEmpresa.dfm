@@ -56,7 +56,6 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
         Top = 551
         Width = 1169
         ExplicitTop = 551
-        ExplicitWidth = 1169
       end
     end
     inherited tsDados: TTabSheet
@@ -901,6 +900,22 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
                   TabOrder = 4
                   OnClick = BitBtn1Click
                 end
+                object edtSequenciaNF: TEdit
+                  Left = 307
+                  Top = 199
+                  Width = 70
+                  Height = 29
+                  CharCase = ecUpperCase
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = 12418084
+                  Font.Height = -16
+                  Font.Name = 'Segoe UI'
+                  Font.Style = [fsBold]
+                  MaxLength = 10
+                  ParentFont = False
+                  TabOrder = 5
+                  Visible = False
+                end
               end
               object TabSheet4: TTabSheet
                 Caption = 'NFC-e'
@@ -1249,11 +1264,10 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
               Width = 56
               Height = 21
               Caption = 'Assunto'
-              Visible = False
             end
             object Label23: TLabel
               Left = 49
-              Top = 146
+              Top = 198
               Width = 77
               Height = 21
               Caption = 'Mensagem'
@@ -1329,11 +1343,10 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
               MaxLength = 50
               ParentFont = False
               TabOrder = 4
-              Visible = False
             end
             object memoMensagem: TMemo
               Left = 50
-              Top = 171
+              Top = 223
               Width = 439
               Height = 270
               Font.Charset = DEFAULT_CHARSET

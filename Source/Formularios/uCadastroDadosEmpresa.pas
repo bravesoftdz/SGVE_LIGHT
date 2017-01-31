@@ -104,12 +104,14 @@ type
     Label11: TLabel;
     cmbModeloImpressao: TComboBox;
     rgpImpComprovante: TRadioGroup;
+    edtSequenciaNF: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure edtIeKeyPress(Sender: TObject; var Key: Char);
     procedure PageControl1Change(Sender: TObject);
     procedure btnCertificadoNFeClick(Sender: TObject);
     procedure edtCreditoSNChange(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
+    procedure pgGeralChange(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -282,7 +284,7 @@ begin
                                          self.edtSenhaNFe.Text,
                                          StrToInt(copy(cmbTipoEmissao.Items[cmbTipoEmissao.ItemIndex],1,1)),
                                          rgpRegime.ItemIndex,
-                                         memoObsGeradaSistema.Text);
+                                         memoObsGeradaSistema.Text, StrToInt(edtSequenciaNF.Text));
 
        Empresa.ConfiguracoesNF.AdicionarConfiguracoesNFCe(StrToInt(copy(cmbFormaEmissao.Items[cmbFormaEmissao.ItemIndex],1,1))-1,
                                                           spnIntervaloTentativas.Value,
@@ -399,6 +401,7 @@ begin
   memoObsGeradaSistema.Clear;
   cmbModeloImpressao.ItemIndex := 0;
   rgpImprimeItens.ItemIndex := 1;
+  edtSequenciaNF.Clear;
 end;
 
 procedure TfrmCadastroDadosEmpresa.MostrarDados;
@@ -413,7 +416,7 @@ begin
 
   try
     RepositorioPessoa  := TFabricaRepositorio.GetRepositorio(TEmpresa.ClassName);
-    Empresa             := TEmpresa(RepositorioPessoa.Get(self.cdsCODIGO.AsInteger));
+    Empresa             := TEmpresa(RepositorioPessoa.Get(self.ds.DataSet.FieldByName('CODIGO').AsInteger));//*f Empresa             := TEmpresa(RepositorioPessoa.Get(self.cdsCODIGO.AsInteger));
 
     if not Assigned(Empresa) then exit;
 
@@ -445,6 +448,7 @@ begin
       self.edtPis.Value         := Empresa.ConfiguracoesNF.aliq_pis;
       self.edtCofins.Value      := Empresa.ConfiguracoesNF.aliq_cofins;
       memoObsGeradaSistema.Text := Empresa.ConfiguracoesNF.ObsGeradaPeloSistema;
+      self.edtSequenciaNF.Text  := IntToStr(Empresa.ConfiguracoesNF.SequenciaNotaFiscal);
 
       { Configurações NFCe }
       if Assigned(Empresa.ConfiguracoesNF.ParametrosNFCe) then begin
@@ -494,6 +498,14 @@ procedure TfrmCadastroDadosEmpresa.PageControl1Change(Sender: TObject);
 begin
   if PageControl1.ActivePageIndex = 1 then
      edtHost.SetFocus;
+end;
+
+procedure TfrmCadastroDadosEmpresa.pgGeralChange(Sender: TObject);
+begin
+  inherited;
+  if pgGeral.TabIndex = 1 then //*f
+    MostrarDados;
+
 end;
 
 function TfrmCadastroDadosEmpresa.VerificaDados: Boolean;

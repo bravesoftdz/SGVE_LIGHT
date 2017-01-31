@@ -29,6 +29,8 @@ type
     memoInfAdicionais: TMemo;
     Label8: TLabel;
     procedure edtCodigoBarrasKeyPress(Sender: TObject; var Key: Char);
+    procedure pgGeralChange(Sender: TObject);
+    procedure gridConsultaDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -61,7 +63,7 @@ var
 
 implementation
 
-uses Repositorio, FabricaRepositorio;
+uses Repositorio, FabricaRepositorio, uModulo;
 
 {$R *.dfm}
 
@@ -99,6 +101,7 @@ begin
     Repositorio := TFabricaRepositorio.GetRepositorio(TProduto.ClassName);
     Produtos    := Repositorio.GetAll;
 
+
     if Assigned(Produtos) and (Produtos.Count > 0) then begin
 
        for nX := 0 to (Produtos.Count-1) do
@@ -109,6 +112,7 @@ begin
     FreeAndNil(Repositorio);
     FreeAndNil(Produtos);
   end;
+
 end;
 
 procedure TfrmCadastroProduto.edtCodigoBarrasKeyPress(Sender: TObject; var Key: Char);
@@ -160,6 +164,14 @@ begin
    end;
 end;
 
+procedure TfrmCadastroProduto.gridConsultaDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+  inherited;
+  if Column.FieldName = 'VALOR' then //*f
+    TFloatField(ds.DataSet.FieldByName('VALOR')).DisplayFormat:= '0.00';
+end;
+
 procedure TfrmCadastroProduto.IncluirRegistroNoCDS(Registro: TObject);
 var
   Produto :TProduto;
@@ -172,8 +184,6 @@ begin
   self.cdsCODIGO.AsInteger    := Produto.codigo;
   self.cdsDESCRICAO.AsString  := Produto.descricao;
   self.cdsVALOR.AsFloat       := Produto.valor;
-  self.cdsNCM.AsString        := Produto.NCMIbpt.ncm_ibpt;
-  self.cdsCFOP.AsString       := Produto.NCMIbpt.cfop.cfop;
   self.cds.Post;
 end;
 
@@ -201,7 +211,7 @@ begin
 
   try
     RepositorioProduto  := TFabricaRepositorio.GetRepositorio(TProduto.ClassName);
-    Produto             := TProduto(RepositorioProduto.Get(self.cdsCODIGO.AsInteger));
+    Produto             := TProduto(RepositorioProduto.Get(ds.DataSet.FieldByName('CODIGO').AsInteger)); //*f Produto             := TProduto(RepositorioProduto.Get(self.cdsCODIGO.AsInteger));
 
     if not Assigned(Produto) then exit;
 
@@ -217,6 +227,14 @@ begin
     FreeAndNil(RepositorioProduto);
     FreeAndNil(Produto);
   end;
+end;
+
+procedure TfrmCadastroProduto.pgGeralChange(Sender: TObject);
+begin
+  inherited;
+  if pgGeral.TabIndex = 1 then //*f inherited;
+    MostrarDados;
+
 end;
 
 function TfrmCadastroProduto.VerificaDados: Boolean;

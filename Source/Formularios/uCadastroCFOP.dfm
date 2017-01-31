@@ -53,7 +53,6 @@ inherited frmCadastroCFOP: TfrmCadastroCFOP
       inherited lblAjudaSelecionar: TStaticText
         Top = 308
         ExplicitTop = 308
-        ExplicitWidth = 696
       end
     end
     inherited tsDados: TTabSheet

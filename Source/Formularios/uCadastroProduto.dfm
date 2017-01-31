@@ -18,9 +18,9 @@ inherited frmCadastroProduto: TfrmCadastroProduto
       ExplicitWidth = 125
     end
     inherited btnAlterar: TSpeedButton
-      Left = 147
+      Left = 141
       Width = 125
-      ExplicitLeft = 147
+      ExplicitLeft = 141
       ExplicitWidth = 125
     end
     inherited btnCancelar: TBitBtn
@@ -39,7 +39,6 @@ inherited frmCadastroProduto: TfrmCadastroProduto
   inherited pgGeral: TPageControl
     Width = 673
     Height = 438
-    ActivePage = tsConsulta
     ExplicitWidth = 673
     ExplicitHeight = 438
     inherited tsConsulta: TTabSheet
@@ -50,6 +49,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Top = 4
         Width = 647
         Height = 373
+        OnDrawColumnCell = gridConsultaDrawColumnCell
         ConfCores.Normal.Tipo.Height = -13
         ConfCores.Normal.Tipo.Name = 'Segoe UI'
         ConfCores.Zebrada.Tipo.Height = -13
@@ -82,7 +82,6 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Top = 377
         Width = 665
         ExplicitTop = 377
-        ExplicitWidth = 665
       end
     end
     inherited tsDados: TTabSheet
@@ -425,7 +424,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
     end
     object cdsVALOR: TFloatField
       FieldName = 'VALOR'
-      DisplayFormat = ',0.00;-,0.00'
+      DisplayFormat = ',#.##; -,#.##;'
     end
     object cdsNCM: TStringField
       FieldName = 'NCM'

@@ -128,6 +128,8 @@ begin
    else if (Key = VK_F3) and (self.btnIncluir.Enabled and self.btnIncluir.Visible) and (Shift = []) then self.EstadoTela := tetIncluir
    // Alterar
    else if (Key = VK_F4) and (self.btnAlterar.Enabled and self.btnAlterar.Visible) and (Shift = []) then self.EstadoTela := tetAlterar
+   // Salvar
+   else if (Key = VK_F6) and (self.btnCancelar.Enabled) and (Shift = []) then self.EstadoTela := tetSalvar
 
    else
      inherited FormKeyDown(Sender, Key, Shift);
@@ -137,10 +139,10 @@ end;
 procedure TfrmCadastroPadrao.AtalhosPesquisar(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
-   if ((not self.cds.IsEmpty) and (self.gridConsulta.Focused) and (Key = VK_RETURN)) then
-      self.ModalResult := mrOK
+  if ((not self.ds.DataSet.IsEmpty) and (self.gridConsulta.Focused) and (Key = VK_RETURN)) then //*f if ((not self.cds.IsEmpty) and (self.gridConsulta.Focused) and (Key = VK_RETURN)) then
+    self.ModalResult := mrOK
   else
-      inherited FormKeyDown(Sender, Key, Shift);
+    inherited FormKeyDown(Sender, Key, Shift);
 end;
 
 procedure TfrmCadastroPadrao.CarregarDados(Especificacao :TEspecificacao);
@@ -195,7 +197,7 @@ end;
 procedure TfrmCadastroPadrao.ExecutarAntesConsultar;
 begin
    self.pnlBotoes.Visible          := true;
-   habilitaDesabilitaSheetsSecundarios(pgGeral, false, true);
+   //*f habilitaDesabilitaSheetsSecundarios(pgGeral, false, true);
    self.pgGeral.ActivePage         := tsConsulta;
    self.btnIncluir.Enabled         := true;
    self.btnAlterar.Enabled         := true;
@@ -240,8 +242,13 @@ begin
      end;
    end;
 
-   if (self.FEstadoTela = tetIncluir) then self.IncluirRegistroNoCDS(Registro)
-   else                                    self.AlterarRegistroNoCDS(Registro);
+   if Self.Name = 'frmCadastroProduto' then //*f
+    self.CarregarDados
+   else
+   begin
+     if (self.FEstadoTela = tetIncluir) then self.IncluirRegistroNoCDS(Registro)
+       else                                    self.AlterarRegistroNoCDS(Registro);
+   end;
 
    FreeAndNil(Registro);
 end;
@@ -254,7 +261,7 @@ begin
    self.btnCancelar.Enabled        := false;
    self.btnSalvar.Enabled          := false;
    self.lblAjudaSelecionar.Visible := false;
- //  self.pgGeral.ActivePage         := tsDados;
+   self.pgGeral.ActivePage         := tsDados;
 end;
 
 procedure TfrmCadastroPadrao.ExecutarDepoisAlterar;
@@ -299,7 +306,7 @@ begin
    self.btnSalvar.Enabled          := false;
    self.pgGeral.ActivePage         := tsConsulta;
 
-   inherited Avisar(1,'Operação realizada com sucesso!',2);
+   inherited //*f Avisar(1,'Operação realizada com sucesso!',2);
 end;
 
 procedure TfrmCadastroPadrao.ExecutarDepoisVisualizar;
@@ -403,7 +410,7 @@ end;
 procedure TfrmCadastroPadrao.btnAlterarClick(Sender: TObject);
 begin
   inherited;
-  if (cds.active)and not(cds.isEmpty) then
+  if (cds.Active) and not (ds.DataSet.IsEmpty) then //*f if (cds.active)and not(cds.isEmpty) then
     self.EstadoTela := tetAlterar;
 end;
 

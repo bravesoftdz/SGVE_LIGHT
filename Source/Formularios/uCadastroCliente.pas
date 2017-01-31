@@ -69,6 +69,7 @@ type
     procedure DBGrid1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure CpfCnpjedtCpfChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure pgGeralChange(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -375,7 +376,7 @@ begin
 
   try
     RepositorioPessoa  := TFabricaRepositorio.GetRepositorio(TPessoa.ClassName);
-    Cliente             := TPessoa(RepositorioPessoa.Get(self.cdsCODIGO.AsInteger));
+    Cliente             := TPessoa(RepositorioPessoa.Get(self.ds.DataSet.FieldByName('CODIGO').AsInteger));//*f Cliente             := TPessoa(RepositorioPessoa.Get(self.cdsCODIGO.AsInteger));
 
     if not Assigned(Cliente) then exit;
 
@@ -406,6 +407,14 @@ begin
     FreeAndNil(RepositorioPessoa);
     FreeAndNil(Cliente);
   end;
+end;
+
+procedure TfrmCadastroCliente.pgGeralChange(Sender: TObject);
+begin
+  inherited;
+  if pgGeral.TabIndex = 1 then //*f
+    MostrarDados;
+
 end;
 
 function TfrmCadastroCliente.VerificaDados: Boolean;

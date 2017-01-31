@@ -21,6 +21,7 @@ type
     cmbSuspensao: TComboBox;
     Label3: TLabel;
     procedure FormShow(Sender: TObject);
+    procedure pgGeralChange(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -185,7 +186,7 @@ begin
 
   try
     RepositorioCFOP  := TFabricaRepositorio.GetRepositorio(TCFOP.ClassName);
-    CFOP             := TCFOP(RepositorioCFOP.Get(self.cdsCODIGO.AsInteger));
+    CFOP             := TCFOP(RepositorioCFOP.Get(self.ds.DataSet.FieldByName('CODIGO').AsInteger));//*f CFOP             := TCFOP(RepositorioCFOP.Get(self.cdsCODIGO.AsInteger));
 
     if not Assigned(CFOP) then exit;
 
@@ -198,6 +199,13 @@ begin
     FreeAndNil(RepositorioCFOP);
     FreeAndNil(CFOP);
   end;
+end;
+
+procedure TfrmCadastroCFOP.pgGeralChange(Sender: TObject);
+begin
+  inherited;
+  if pgGeral.TabIndex = 1 then //*f
+    MostrarDados;
 end;
 
 function TfrmCadastroCFOP.VerificaDados: Boolean;

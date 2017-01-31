@@ -98,7 +98,7 @@ begin
          frmCadastroProduto.ShowModal;
 
          if (frmCadastroProduto.ModalResult = mrOK) then begin
-            Produto          := TProduto(Repositorio.Get(frmCadastroProduto.cdsCODIGO.AsInteger));
+            Produto:= TProduto(Repositorio.Get(frmCadastroProduto.ds.DataSet.FieldByName('CODIGO').AsInteger)); //*f Produto          := TProduto(Repositorio.Get(frmCadastroProduto.cdsCODIGO.AsInteger));
 
             if Assigned(Produto) then begin
               self.Produto := Produto;

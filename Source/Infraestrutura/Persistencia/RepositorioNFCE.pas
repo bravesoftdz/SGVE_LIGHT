@@ -139,7 +139,7 @@ end;
 function TRepositorioNFCe.SQLSalvar: String;
 begin
   result := 'update or insert into NFCE ( CODIGO ,NR_NOTA ,CODIGO_PEDIDO ,SERIE ,CHAVE ,PROTOCOLO ,DH_RECEBIMENTO ,XML ,STATUS ,MOTIVO, justificativa) '+
-           '                     values ( :CODIGO , :NR_NOTA , :CODIGO_PEDIDO , :SERIE , :CHAVE , :PROTOCOLO , :DH_RECEBIMENTO , :XML , :STATUS , :MOTIVO, :justificativa) ';
+            '                     values ( :CODIGO , :NR_NOTA , :CODIGO_PEDIDO , :SERIE , :CHAVE , :PROTOCOLO , :DH_RECEBIMENTO , :XML , :STATUS , :MOTIVO, :justificativa)';
 end;
 
 end.

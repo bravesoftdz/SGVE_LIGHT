@@ -43,7 +43,8 @@ type
                                      SenhaCertificado  :String;
                                      TipoEmissao       :integer;
                                      CRT               :integer;
-                                     obsGeradaSistema  :string
+                                     obsGeradaSistema  :string;
+                                     SequenciaNF       :integer
                                     );
 
                                     
@@ -69,7 +70,7 @@ uses
 
 procedure TEmpresa.AdicionarConfiguracoesNFe(AliquotaCreditoSN, AliquotaICMS,
   AliquotaPIS, AliquotaCOFINS: Real; NumeroCertificado, AmbienteNFe,
-  SenhaCertificado: String; TipoEmissao, CRT :integer; obsGeradaSistema :string);
+  SenhaCertificado: String; TipoEmissao, CRT :integer; obsGeradaSistema :string; SequenciaNF :integer);
 begin
    if stringVazia(AmbienteNFe) then
     raise TExcecaoParametroInvalido.Create(self.ClassName, 'AdicionarConfiguracoes(AliquotaCreditoSN, AliquotaICMS, AliquotaPIS, '+
@@ -87,6 +88,7 @@ begin
    self.FConfiguracoesNF.ambiente_nfe         := AmbienteNFe;
    self.FConfiguracoesNF.CRT                  := CRT;
    self.FConfiguracoesNF.ObsGeradaPeloSistema := obsGeradaSistema;
+   self.FConfiguracoesNF.SequenciaNotaFiscal  := SequenciaNF;
 
    {7 = SVCRS}
    if (tipoEmissao = 7) then

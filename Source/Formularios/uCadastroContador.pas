@@ -40,6 +40,7 @@ type
     GroupBox1: TGroupBox;
     Label6: TLabel;
     edtEmail: TEdit;
+    procedure pgGeralChange(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -223,7 +224,7 @@ begin
 
   try
     RepositorioContador  := TFabricaRepositorio.GetRepositorio(TContador.ClassName);
-    Contador             := TContador(RepositorioContador.Get(self.cdsCODIGO.AsInteger));
+    Contador             := TContador(RepositorioContador.Get(self.ds.DataSet.FieldByName('CODIGO').AsInteger));  //*f Contador             := TContador(RepositorioContador.Get(self.cdsCODIGO.AsInteger));
 
     if not Assigned(Contador) then exit;
 
@@ -246,6 +247,14 @@ begin
     FreeAndNil(RepositorioContador);
     FreeAndNil(Contador);
   end;
+end;
+
+procedure TfrmCadastroContador.pgGeralChange(Sender: TObject);
+begin
+  inherited;
+  if pgGeral.TabIndex = 1 then //*f
+    MostrarDados;
+
 end;
 
 function TfrmCadastroContador.VerificaDados: Boolean;

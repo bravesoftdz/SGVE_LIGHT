@@ -10,7 +10,7 @@ uses
   ACBrDANFCeFortesFr, ACBrDANFCeFortesFrA4,
   ContNrs, Funcoes, Classes, AcbrNfe,  pcnConversao, pcnNFe, Generics.Collections,
   pcnRetInutNFe, pcnRetConsSitNFe, pcnCCeNFe, ACBrNFeWebServices, Movimento,
-  pcnEventoNFe, pcnConversaoNFe, pcnProcNFe, Empresa, NFCe;
+  pcnEventoNFe, pcnConversaoNFe, pcnProcNFe, Empresa, NFCe, DATA.DB;
 
 type
   TServicoEmissorNFCe = class
@@ -36,7 +36,7 @@ type
     procedure GerarPagamentos (Venda :TVenda; NFCe :NotaFiscal);
 
     procedure Salva_retorno_envio(codigo_pedido, numero_lote :integer);
-    procedure Salva_retorno_cancelamento(Justificativa :String);
+    procedure Salva_retorno_cancelamento(Justificativa :String; NFCe: TNFCe);
 
   private
     function getVenda(codigoPedido :integer) :TVenda;
@@ -51,7 +51,7 @@ type
     function servicoOperante :Boolean;
 
     procedure Emitir(codigoPedido :integer; cpfCliente :String);
-    procedure CancelarNFCe(XML: TStringStream; Justificativa :String);
+    procedure CancelarNFCe(XML: TStringStream; Justificativa :String; NFCe: TNFCe);
     procedure reimprimir(XML :String);
     function inutilizarNumeracao(nIni, nFim :integer; justificativa :String) :Boolean;
     procedure ConsultaNFCe(NFCe :TNFCe);
@@ -73,11 +73,12 @@ uses
 
 { TServicoEmissorNFCe }
 
-procedure TServicoEmissorNFCe.CancelarNFCe(XML: TStringStream; Justificativa :String);
+procedure TServicoEmissorNFCe.CancelarNFCe(XML: TStringStream; Justificativa :String; NFCe: TNFCe);
 var
   DhEvento  :TDateTime;
+  Stream: TStringStream;
 begin
-   if (Justificativa = '') then
+   {if (Justificativa = '') then
      Justificativa := 'CANCELAMENTO DE NF-E';
 
    self.FACBrNFe.NotasFiscais.Clear;
@@ -96,7 +97,23 @@ begin
     end;
 
    if self.FACBrNFe.EnviarEvento(1) then
-      self.Salva_retorno_cancelamento( Justificativa );
+      self.Salva_retorno_cancelamento( Justificativa );}
+
+  self.FACBrNFe.EventoNFe.Evento.Clear;
+
+   with self.FACBrNFe.EventoNFe.Evento.Add do
+    begin
+      infEvento.chNFe           := NFCe.chave;
+      infEvento.CNPJ            := dm.Empresa.cpf_cnpj;
+      infEvento.dhEvento        := now;
+      infEvento.tpEvento        := teCancelamento;
+      infEvento.detEvento.xJust := Justificativa;
+      infEvento.detEvento.nProt := NFCe.protocolo;
+    end;
+    self.FACBrNFe.EventoNFe.idLote:= NFCe.nr_nota;
+    self.FACBrNFe.EnviarEvento(NFCe.nr_nota);
+      self.Salva_retorno_cancelamento( Justificativa, NFCe );
+
 
 end;
 
@@ -109,7 +126,7 @@ begin
    try
      if      (NFCe.Status <> '101') then begin
        XMLStream := TStringStream.Create('');
-       self.FACBrNFe.NotasFiscais.Items[0].GravarStream(XMLStream);
+       XMLStream:= TStringStream.Create(UTF8Encode(self.FACBrNFe.NotasFiscais.Items[0].GerarXML));//*f self.FACBrNFe.NotasFiscais.Items[0].GravarStream(XMLStream);
        NFCe.XML.LoadFromStream( XMLStream );
      end
      else if (NFCe.Status = '101') then begin
@@ -122,17 +139,29 @@ begin
 end;
 
 procedure TServicoEmissorNFCe.ConsultaNFCe(NFCe :TNFCe);
+var Venda :TVenda;
 begin
-   FACBrNFe.Configuracoes.Geral.ValidarDigest := true;
+   FACBrNFe.Configuracoes.Geral.ValidarDigest := False;
    FACBrNFe.NotasFiscais.Clear;
    FACBrNFe.NotasFiscais.LoadFromString(NFCe.XMLText);
    FACBrNFe.Consultar;
-
    NFCe.status := intToStr(self.FACBrNFe.WebServices.Consulta.cStat);
    NFCe.motivo := self.FACBrNFe.WebServices.Consulta.XMotivo;
-
    self.GerarXML(NFCe);
 
+  {Venda:= getVenda(NFCe.codigo_pedido);
+  GerarNFCe(Venda);
+  FACBrNFe.NotasFiscais.Assinar;
+  FACBrNFe.Configuracoes.Geral.ValidarDigest := False;
+  FACBrNFe.Consultar;
+  FACBrNFe.NotasFiscais.GerarNFe;
+  FACBrNFe.WebServices.Consulta.NFeChave:= NFCe.chave;
+  FACBrNFe.WebServices.Consulta.Executar;
+  FACBrNFe.Configuracoes.Geral.ValidarDigest := False;
+  NFCe.status := intToStr(FACBrNFe.WebServices.Consulta.cStat);
+  NFCe.motivo := FACBrNFe.WebServices.Consulta.XMotivo;
+  NFCe.protocolo := FACBrNFe.WebServices.Consulta.Protocolo;
+  self.GerarXML(NFCe);}
 end;
 
 constructor TServicoEmissorNFCe.Create(Empresa: TEmpresa; const modoSilencioso :Boolean);
@@ -209,17 +238,30 @@ var
 begin
   try
   try
+  try
     erroConexao       := false;
-    NumeroLote        := dm.GetValorGenerator('gen_lote_nfce',1);
     Venda             := getVenda(codigoPedido);
 
     if Venda.NumeroNFe = 0 then
+    begin
+      NumeroLote        := dm.GetValorGenerator('gen_lote_nfce',1);
       Venda.NumeroNFe := dm.GetValorGenerator('gen_nrnota_nfce',1);
+    end
+    else
+      NumeroLote        := dm.GetValorGenerator('gen_lote_nfce',0);
 
     if cpfCliente <> '' then
       Venda.Cpf_cliente := cpfCliente;
 
     GerarNFCe(Venda);
+
+  Except
+    On E: Exception do begin
+      dm.GetValorGenerator('gen_lote_nfce',-1);
+      dm.GetValorGenerator('gen_nrnota_nfce',-1); //*f
+    end;
+
+  end;
 
     try
     try
@@ -234,14 +276,16 @@ begin
 
     Except
       On E: Exception do begin
-        dm.GetValorGenerator('gen_lote_nfce',-1);
-
         dm.LogErros.AdicionaErro('ServicoEmissorNFCe','Envio',e.Message);
 
         erroConexao := erroConexaoServidor(e.Message);
 
         if erroConexao then
-          enviaContingencia(codigoPedido)
+        begin
+          dm.GetValorGenerator('gen_lote_nfce',-1);
+          dm.GetValorGenerator('gen_nrnota_nfce',-1);
+          enviaContingencia(codigoPedido);
+        end
         else if not FModoSilencioso then
           raise Exception.Create(e.Message);
       end;
@@ -272,7 +316,7 @@ begin
     frmPadrao.Aguarda('Falha ao enviar no modo normal. '+#13#10'Enviando em contingência Off-line...');
     FEmpresa.ConfiguracoesNF.ParametrosNFCe.forma_emissao := 8;
     self.Emitir(codigo_pedido,'');
-    FEmpresa.ConfiguracoesNF.ParametrosNFCe.forma_emissao := 1;
+    FEmpresa.ConfiguracoesNF.ParametrosNFCe.forma_emissao := 0; //*f 1;
   finally
     frmPadrao.FimAguarda;
     FreeAndNil(frmPadrao);
@@ -594,22 +638,22 @@ begin
   self.FACBrNFe.NotasFiscais.Items[0].Imprimir;
 end;
 
-procedure TServicoEmissorNFCe.Salva_retorno_cancelamento(Justificativa :String);
+procedure TServicoEmissorNFCe.Salva_retorno_cancelamento(Justificativa :String; NFCe          :TNFCe);
 var  StringStream :TStringStream;
      repositorio  :TRepositorio;
      Especificacao :TEspecificacaoFiltraNFCe;
-     NFCe          :TNFCe;
+     //*f NFCe          :TNFCe;
      status, motivo :String;
 begin
-    NFCe := nil;
+    //*f NFCe := nil;
     Especificacao := nil;
     repositorio   := nil;
   try
   try
 
     repositorio   := TFabricaRepositorio.GetRepositorio(TNFCe.ClassName);
-    Especificacao := TEspecificacaoFiltraNFCe.Create(Date, Date, FACBrNFe.NotasFiscais.Items[0].NFe.Ide.nNF);
-    NFCe          := TNFCe( repositorio.GetPorEspecificacao( Especificacao ) );
+    //*f Especificacao := TEspecificacaoFiltraNFCe.Create(Date, Date, FACBrNFe.NotasFiscais.Items[0].NFe.Ide.nNF);
+    //*f NFCe          := TNFCe( repositorio.GetPorEspecificacao( Especificacao ) );
 
     StringStream := TStringStream.Create( UTF8Encode(self.FACBrNFe.WebServices.EnvEvento.RetWS) );
 
@@ -637,7 +681,7 @@ begin
   Finally
     freeAndNil(repositorio);
     freeAndNil(Especificacao);
-    freeAndNil(NFCe);
+    //*f freeAndNil(NFCe);
   end;
 end;
 
@@ -666,7 +710,7 @@ begin
     NFCe.status         := IfThen(FEmpresa.ConfiguracoesNF.ParametrosNFCe.forma_emissao = 8, '0', intToStr( FACBrNFe.WebServices.Retorno.cStat ) );
     NFCe.motivo         := FACBrNFe.WebServices.Retorno.xMotivo;
 
-    StringStream := TStringStream.Create( FACBrNFe.NotasFiscais.Items[0].XML );
+    StringStream := TStringStream.Create( FACBrNFe.NotasFiscais.Items[0].XMLOriginal );
 
     NFCe.XML.LoadFromStream(StringStream);
 

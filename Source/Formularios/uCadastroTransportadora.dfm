@@ -18,21 +18,24 @@ inherited frmCadastroTransportadora: TfrmCadastroTransportadora
     ExplicitWidth = 1067
     ExplicitHeight = 547
     inherited tsConsulta: TTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitWidth = 1059
+      ExplicitHeight = 511
       inherited gridConsulta: TDBGridCBN
         Width = 1041
         Height = 478
       end
       inherited lblAjudaSelecionar: TStaticText
         Top = 486
-        Width = 301
+        Width = 1059
         ExplicitTop = 486
+        ExplicitWidth = 1059
       end
     end
     inherited tsDados: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 32
+      ExplicitWidth = 1059
+      ExplicitHeight = 511
       inherited pnlDados: TPanel
         Width = 1059
         Height = 511

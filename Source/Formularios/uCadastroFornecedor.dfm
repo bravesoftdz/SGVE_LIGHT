@@ -18,8 +18,6 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
     ExplicitWidth = 1075
     ExplicitHeight = 546
     inherited tsConsulta: TTabSheet
-      ExplicitLeft = 0
-      ExplicitTop = 0
       ExplicitWidth = 1067
       ExplicitHeight = 510
       inherited gridConsulta: TDBGridCBN
@@ -50,8 +48,9 @@ inherited frmCadastroFornecedor: TfrmCadastroFornecedor
       end
       inherited lblAjudaSelecionar: TStaticText
         Top = 485
-        Width = 301
+        Width = 1067
         ExplicitTop = 485
+        ExplicitWidth = 1067
       end
     end
     inherited tsDados: TTabSheet

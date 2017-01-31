@@ -271,7 +271,7 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
       Top = 6
       Width = 120
       Height = 35
-      Caption = '&Salvar'
+      Caption = 'F6 - Salvar'
       Enabled = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -357,7 +357,7 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
     Top = 0
     Width = 704
     Height = 396
-    ActivePage = tsDados
+    ActivePage = tsConsulta
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -450,7 +450,6 @@ inherited frmCadastroPadrao: TfrmCadastroPadrao
         Alignment = taCenter
         Caption = 'Pressione ENTER para selecionar o registro'
         TabOrder = 1
-        ExplicitWidth = 301
       end
     end
     object tsDados: TTabSheet

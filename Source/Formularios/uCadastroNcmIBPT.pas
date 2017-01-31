@@ -30,6 +30,7 @@ type
     procedure edtNCMKeyPress(Sender: TObject; var Key: Char);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure pgGeralChange(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -227,7 +228,7 @@ begin
 
   try
     RepositorioNcmIBPT  := TFabricaRepositorio.GetRepositorio(TNcmIBPT.ClassName);
-    NcmIBPT             := TNcmIBPT(RepositorioNcmIBPT.Get(self.cdsCODIGO.AsInteger));
+    NcmIBPT             := TNcmIBPT(RepositorioNcmIBPT.Get(self.ds.DataSet.FieldByName('CODIGO').AsInteger));//*f NcmIBPT             := TNcmIBPT(RepositorioNcmIBPT.Get(self.cdsCODIGO.AsInteger));
 
     if not Assigned(NcmIBPT) then exit;
 
@@ -248,6 +249,14 @@ begin
     FreeAndNil(RepositorioNcmIBPT);
     FreeAndNil(NcmIBPT);
   end;
+end;
+
+procedure TfrmCadastroNcmIBPT.pgGeralChange(Sender: TObject);
+begin
+  inherited;
+  if pgGeral.TabIndex = 1 then //*f
+    MostrarDados;
+
 end;
 
 function TfrmCadastroNcmIBPT.VerificaDados: Boolean;

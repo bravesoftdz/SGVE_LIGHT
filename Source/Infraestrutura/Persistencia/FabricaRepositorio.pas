@@ -60,7 +60,8 @@ uses
   RepositorioItemNotaFiscal,
   RepositorioLoteNFe,
   RepositorioNFe,
-  RepositorioAliqInternaIcms;
+  RepositorioAliqInternaIcms,
+  RepositorioIcmsEstado;
 
 { TFabricaRepositorio }
 
@@ -114,6 +115,7 @@ begin
    else if (NomeDaEntidade  = 'TLoteNFe')                  then result := TRepositorioLoteNFe.Create
    else if (NomeDaEntidade  = 'TNFe')                      then result := TRepositorioNFe.Create
    else if (NomeDaEntidade  = 'TAliqInternaIcms')          then result := TRepositorioAliqInternaIcms.Create
+   else if (NomeDaEntidade  = 'TIcmsEstado')               then result := TRepositorioIcmsEstado.Create
 
    else begin
      dm.LogErros.AdicionaErro('FabricaRepositorio', 'TExcecaoRepositorioNaoEncontrado', 'Repositório para a '+ NomeDaEntidade + ' não foi encontrado!');

@@ -115,7 +115,7 @@ implementation
 
 {$R *.dfm}
 
-uses uModulo;
+uses uModulo, StringUtilitario;
 
 { TfrmRelatorioNFEs }
 
@@ -360,7 +360,7 @@ end;
 
 procedure TfrmRelatorioNFEs.RLDBText8BeforePrint(Sender: TObject; var Text: string; var PrintIt: Boolean);
 begin
-  totalDia := totalDia + StrToFloat(Text);
+  totalDia := totalDia + StrToFloat( TStringUtilitario.RemoveCaracter(Text,'.'));
 end;
 
 procedure TfrmRelatorioNFEs.RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
