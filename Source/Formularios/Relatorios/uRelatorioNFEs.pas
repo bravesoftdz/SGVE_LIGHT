@@ -72,7 +72,6 @@ type
     dsNFe: TDataSource;
     qryNFe: TFDQuery;
     ACBrMail1: TACBrMail;
-    RLPDFFilter1: TRLPDFFilter;
     qryNFeNUMERO_NOTA_FISCAL: TIntegerField;
     qryNFeSTATUS: TStringField;
     qryNFeMOTIVO: TStringField;
@@ -83,6 +82,7 @@ type
     qryNFePRODUTO: TStringField;
     qryNFeNCM_IBPT: TStringField;
     qryNFeQUANTIDADE: TBCDField;
+    RLPDFFilter1: TRLPDFFilter;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure RLReport1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure lbQtdeAfterPrint(Sender: TObject);
@@ -104,7 +104,7 @@ type
     procedure compactar;
     procedure limparDiretorio(diretorio :String);
   public
-    procedure gerarPdf;
+    function gerarPdf :Boolean;
     procedure enviarPorEmail(mes, ano :String; emailContador :String);
   end;
 
@@ -257,9 +257,10 @@ begin
   cmbAno.ItemIndex := cmbAno.Items.IndexOf(formatDateTime('yyyy',Date));
 end;
 
-procedure TfrmRelatorioNFEs.gerarPdf;
+function TfrmRelatorioNFEs.gerarPdf :Boolean;
 var xmlsGerados :integer;
     tempoMedio :integer;
+    RLPDFFilter :TRLPDFFilter;
 begin
   xmlsGerados := 0;
 
@@ -268,23 +269,40 @@ begin
 
   buscar;
   xmlsGerados := gerarXMLs;
+
+  if xmlsGerados = 0 then
+    Exit(false);
+
   SetRoundMode(rmUp);
-  //50 é uma média aproximada de xmls compactados por segundo
-  tempoMedio  := Round(xmlsGerados/50);
+  //30 é uma média aproximada de xmls compactados por segundo
+  tempoMedio  := Round(xmlsGerados/30);
   //1000 corresponde a 1 segundo
-  tempoMedio  := tempoMedio * 100;
+  tempoMedio  := tempoMedio * 1000;
+
+  if tempoMedio < 1000 then
+    tempoMedio := 1000;
+
   SetRoundMode(rmNearest);
 
-  RLPDFFilter1.ShowProgress := false;
-  RLPDFFilter1.FileName     := diretorioExecutavel+'\Docs\NFes' + cmbMes.Items[cmbMes.ItemIndex]+cmbAno.Items[cmbAno.ItemIndex]+'.PDF';
-  RLReport1.ShowProgress    := false;
-  RLReport1.Prepare;
-  RLPDFFilter1.FilterPages(RLReport1.Pages);
+  try
+    RLPDFFilter              := TRLPDFFilter.Create(self);
+    RLPDFFilter.ShowProgress := false;
+    RLPDFFilter.FileName     := diretorioExecutavel+'\Docs\NFes' + cmbMes.Items[cmbMes.ItemIndex]+cmbAno.Items[cmbAno.ItemIndex]+'.PDF';
+    RLReport1.ShowProgress   := false;
+    RLReport1.Prepare;
+    RLPDFFilter.FilterPages(RLReport1.Pages);
 
+  finally
+    FreeandNil(RLPDFFilter);
+  end;
+
+  sleep(tempoMedio);
   compactar;
   //aguarda o tempo da compactação
   sleep(tempoMedio);
   limparDiretorio(diretorioExecutavel+'Docs\');
+
+  result := true;
 end;
 
 function TfrmRelatorioNFEs.gerarXMLs :integer;
@@ -293,14 +311,16 @@ begin
   qryNFe.First;
   while not qryNFe.Eof do
   begin
-    if not FileExists(diretorioExecutavel+'\Docs\NFe'+qryNFeNUMERO_NOTA_FISCAL.AsString+'.xml') then
-    begin
-      qryNFeXML.SaveToFile(diretorioExecutavel+'\Docs\NFe'+qryNFeNUMERO_NOTA_FISCAL.AsString+'.xml');
-      inc(result);
-    end;
+    if FileExists(diretorioExecutavel+'\Docs\NFe'+qryNFeNUMERO_NOTA_FISCAL.AsString+'.xml') then
+      DeleteFile(diretorioExecutavel+'\Docs\NFe'+qryNFeNUMERO_NOTA_FISCAL.AsString+'.xml');
+
+    qryNFeXML.SaveToFile(diretorioExecutavel+'\Docs\NFe'+qryNFeNUMERO_NOTA_FISCAL.AsString+'.xml');
+    inc(result);
 
     qryNFe.Next;
   end;
+
+  result := qryNFe.RecordCount;
 end;
 
 procedure TfrmRelatorioNFEs.imprimir;

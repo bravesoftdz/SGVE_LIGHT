@@ -55,6 +55,7 @@ type
     chkContingencia: TCheckBox;
     qryCPF_CLIENTE: TStringField;
     qryVALOR_TOTAL: TBCDField;
+    BitBtn1: TBitBtn;
     procedure btnCancelarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnBuscarClick(Sender: TObject);
@@ -68,6 +69,7 @@ type
     procedure btnEnviarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridNFceDblClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
   private
     selecionados :integer;
     tipoSelecionadas :TTipoSelecionado;
@@ -82,6 +84,7 @@ type
     procedure salvaInutilizacao(nIni, nFim :integer; justificativa :String);
     procedure desabilitaHabilita;
     procedure atualizaGrid(pNFCe :TNFCe);
+    procedure consultaStatusServico;
   private
     function getTipoSelecionadas(tipo :String) :TTipoSelecionado;
 
@@ -151,6 +154,7 @@ begin
     end;
 
     qry.Filtered := false;
+    btnBuscar.Click;
     gridNFce.SetFocus;
   finally
     FimAguarda;
@@ -219,10 +223,16 @@ end;
 
 procedure TfrmNFCes.atualizaGrid(pNFCe :TNFCe);
 begin
+  // esta dando update no banco denovo e zuando
    qry.Edit;
    qrySTATUS.AsString := pNFCe.status;
    qryMOTIVO.AsString := pNFCe.motivo;
    qry.Post;
+end;
+
+procedure TfrmNFCes.BitBtn1Click(Sender: TObject);
+begin
+  consultaStatusServico;
 end;
 
 procedure TfrmNFCes.btnBuscarClick(Sender: TObject);
@@ -391,8 +401,6 @@ begin
 
    Servico.ConsultaNFCe(NFCe);
    repositorio.Salvar(NFCe);
-
-   atualizaGrid(NFCe);
  Except
    On E: Exception do begin
      Avisar(0,'Erro ao consultar NFC-e.'+#13#10+e.Message);
@@ -400,6 +408,23 @@ begin
  end;
  finally
    FreeAndNil(NFCe);
+   FreeAndNil(Servico);
+ end;
+end;
+
+procedure TfrmNFCes.consultaStatusServico;
+var
+  Servico     :TServicoEmissorNFCe;
+begin
+ try
+ try
+   Servico := TServicoEmissorNFCe.Create(dm.Empresa);
+   Servico.consultaStatus;
+ Except
+   On E: Exception do
+     avisar(1,e.Message);
+ end;
+ finally
    FreeAndNil(Servico);
  end;
 end;
@@ -456,7 +481,7 @@ begin
   btnEnviar.Enabled      := tipoSelecionadas = tsRejeitadasContingencia;
   btnCancelar.Enabled    := tipoSelecionadas = tsEnviadas;
   btnImprimir.Enabled    := tipoSelecionadas = tsEnviadas;
-  btnConsultar.Enabled   := tipoSelecionadas = tsEnviadas; //tsRejeitadasContingencia;
+  btnConsultar.Enabled   := (tipoSelecionadas = tsEnviadas) or (tipoSelecionadas = tsCanceladas) or (tipoSelecionadas = tsRejeitadasContingencia);
   btnGerarXML.Enabled    := tipoSelecionadas = tsEnviadas;
 end;
 

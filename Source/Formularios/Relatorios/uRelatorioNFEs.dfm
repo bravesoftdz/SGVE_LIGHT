@@ -1,10 +1,10 @@
 inherited frmRelatorioNFEs: TfrmRelatorioNFEs
   Caption = 'Relat'#243'rio de NF-es'
-  ClientHeight = 225
-  ClientWidth = 543
+  ClientHeight = 218
+  ClientWidth = 540
   OnShow = FormShow
-  ExplicitWidth = 559
-  ExplicitHeight = 263
+  ExplicitWidth = 556
+  ExplicitHeight = 256
   PixelsPerInch = 96
   TextHeight = 17
   object RLReport1: TRLReport
@@ -638,18 +638,16 @@ inherited frmRelatorioNFEs: TfrmRelatorioNFEs
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 174
-    Width = 543
+    Top = 167
+    Width = 540
     Height = 51
     Align = alBottom
     TabOrder = 4
-    ExplicitTop = 176
-    ExplicitWidth = 544
     DesignSize = (
-      543
+      540
       51)
     object btnImprimir: TBitBtn
-      Left = 369
+      Left = 366
       Top = 8
       Width = 155
       Height = 30
@@ -725,10 +723,9 @@ inherited frmRelatorioNFEs: TfrmRelatorioNFEs
       NumGlyphs = 2
       TabOrder = 0
       OnClick = btnImprimirClick
-      ExplicitLeft = 370
     end
     object btnVoltar: TBitBtn
-      Left = 193
+      Left = 190
       Top = 8
       Width = 155
       Height = 30
@@ -804,7 +801,6 @@ inherited frmRelatorioNFEs: TfrmRelatorioNFEs
       NumGlyphs = 2
       TabOrder = 1
       OnClick = btnVoltarClick
-      ExplicitLeft = 194
     end
   end
   object dsNFe: TDataSource
@@ -960,7 +956,7 @@ inherited frmRelatorioNFEs: TfrmRelatorioNFEs
       'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
       'ortes Inform'#225'tica'
     DisplayName = 'Documento PDF'
-    Left = 259
-    Top = 264
+    Left = 264
+    Top = 112
   end
 end

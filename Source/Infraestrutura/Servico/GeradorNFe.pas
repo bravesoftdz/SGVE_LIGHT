@@ -579,7 +579,6 @@ begin
         nfe.NFe.Ide.indFinal     := cfConsumidorFinal;
       end;
     end;
-
   end
   else if UpperCase(TRIM(NF.Destinatario.RG_IE)) = '' then
      nfe.NFe.Dest.indIEDest   := inNaoContribuinte

@@ -56,6 +56,7 @@ type
     function inutilizarNumeracao(nIni, nFim :integer; justificativa :String) :Boolean;
     procedure ConsultaNFCe(NFCe :TNFCe);
     procedure GerarXML(NFCe :TNFCe);
+    procedure consultaStatus;
 
 end;
 
@@ -140,28 +141,53 @@ end;
 
 procedure TServicoEmissorNFCe.ConsultaNFCe(NFCe :TNFCe);
 var Venda :TVenda;
+    StringStream: TStringStream;
 begin
    FACBrNFe.Configuracoes.Geral.ValidarDigest := False;
-   FACBrNFe.NotasFiscais.Clear;
+  { FACBrNFe.NotasFiscais.Clear;
    FACBrNFe.NotasFiscais.LoadFromString(NFCe.XMLText);
    FACBrNFe.Consultar;
    NFCe.status := intToStr(self.FACBrNFe.WebServices.Consulta.cStat);
    NFCe.motivo := self.FACBrNFe.WebServices.Consulta.XMotivo;
-   self.GerarXML(NFCe);
+   self.GerarXML(NFCe); }
 
-  {Venda:= getVenda(NFCe.codigo_pedido);
-  GerarNFCe(Venda);
+  GerarNFCe(getVenda(NFCe.codigo_pedido));
   FACBrNFe.NotasFiscais.Assinar;
-  FACBrNFe.Configuracoes.Geral.ValidarDigest := False;
   FACBrNFe.Consultar;
   FACBrNFe.NotasFiscais.GerarNFe;
-  FACBrNFe.WebServices.Consulta.NFeChave:= NFCe.chave;
+  FACBrNFe.WebServices.Consulta.NFeChave := NFCe.chave;
   FACBrNFe.WebServices.Consulta.Executar;
-  FACBrNFe.Configuracoes.Geral.ValidarDigest := False;
-  NFCe.status := intToStr(FACBrNFe.WebServices.Consulta.cStat);
-  NFCe.motivo := FACBrNFe.WebServices.Consulta.XMotivo;
-  NFCe.protocolo := FACBrNFe.WebServices.Consulta.Protocolo;
-  self.GerarXML(NFCe);}
+
+  FACBrNFe.Configuracoes.Geral.ValidarDigest := true;
+  NFCe.status          := intToStr(FACBrNFe.WebServices.Consulta.cStat);
+  NFCe.motivo          := FACBrNFe.WebServices.Consulta.XMotivo;
+  NFCe.protocolo       := FACBrNFe.WebServices.Consulta.Protocolo;
+  NFCe.dh_recebimento  := FACBrNFe.WebServices.Consulta.DhRecbto;
+
+  if NFCe.dh_recebimento < strToDate('01/01/1900') then
+    NFCe.dh_recebimento  := Date;
+
+  StringStream         := TStringStream.Create( FACBrNFe.NotasFiscais.Items[0].gerarXML );
+
+  NFCe.XML.LoadFromStream(StringStream);
+end;
+
+procedure TServicoEmissorNFCe.consultaStatus;
+begin
+ try
+   FACBrNFe.WebServices.StatusServico.Executar;
+ Except
+   on e :Exception do
+     raise Exception.Create('Ocorreu um erro consultar status'+#13#10+e.message);
+ end;
+
+ {MemoResp.Lines.Text := ACBrNFe1.WebServices.StatusServico.RetWS;
+ memoRespWS.Lines.Text := ACBrNFe1.WebServices.StatusServico.RetornoWS;
+ LoadXML(ACBrNFe1.WebServices.StatusServico.RetornoWS, WBResposta); }
+
+ raise Exception.Create('STATUS DO SERVIÇO'+#13#10+
+                        'Código do status    >'     +IntToStr(FACBrNFe.WebServices.StatusServico.cStat)+#13#10+
+                        'Descrição do status >'     +FACBrNFe.WebServices.StatusServico.xMotivo);
 end;
 
 constructor TServicoEmissorNFCe.Create(Empresa: TEmpresa; const modoSilencioso :Boolean);
@@ -696,7 +722,7 @@ begin
   try
     repositorio   := TFabricaRepositorio.GetRepositorio(TNFCE.ClassName);
     especificacao := TEspecificacaoNFCePorNrNota.Create(FACBrNFe.NotasFiscais.Items[0].NFe.Ide.nNF);
-    NFCe          := TNFCe(repositorio.GetPorEspecificacao(especificacao, 'DH_RECEBIMENTO between '+DataParaParametro(Date-5)+' and '+ DataParaParametro(Date+1)));
+    NFCe          := TNFCe(repositorio.GetPorEspecificacao(especificacao));
 
     if not assigned(NFCe) then
       NFCe          := TNFCE.Create;
@@ -713,7 +739,6 @@ begin
     StringStream := TStringStream.Create( FACBrNFe.NotasFiscais.Items[0].XMLOriginal );
 
     NFCe.XML.LoadFromStream(StringStream);
-
     repositorio.Salvar( NFCe );
 
   Except

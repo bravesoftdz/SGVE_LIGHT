@@ -52,7 +52,7 @@ uses
 
 function TRepositorioNotaFiscal.CondicaoSQLGetAll: String;
 begin
-  result := ' WHERE data_saida between '+FIdentificador;
+  result := ' WHERE data_emissao between '+FIdentificador;
 end;
 
 procedure TRepositorioNotaFiscal.ExecutaDepoisDeSalvar(Objeto: TObject);

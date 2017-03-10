@@ -1,10 +1,10 @@
 inherited frmRelatorioNFCes: TfrmRelatorioNFCes
   Caption = 'Relat'#243'rio de NFC-es'
-  ClientHeight = 215
+  ClientHeight = 228
   ClientWidth = 543
   OnShow = FormShow
   ExplicitWidth = 559
-  ExplicitHeight = 253
+  ExplicitHeight = 266
   PixelsPerInch = 96
   TextHeight = 17
   object RLReport1: TRLReport
@@ -648,13 +648,13 @@ inherited frmRelatorioNFCes: TfrmRelatorioNFCes
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 164
+    Top = 177
     Width = 543
     Height = 51
     Align = alBottom
     TabOrder = 4
-    ExplicitTop = 176
-    ExplicitWidth = 544
+    ExplicitTop = 444
+    ExplicitWidth = 778
     DesignSize = (
       543
       51)
@@ -735,7 +735,7 @@ inherited frmRelatorioNFCes: TfrmRelatorioNFCes
       NumGlyphs = 2
       TabOrder = 0
       OnClick = btnImprimirClick
-      ExplicitLeft = 370
+      ExplicitLeft = 604
     end
     object btnVoltar: TBitBtn
       Left = 193
@@ -814,7 +814,7 @@ inherited frmRelatorioNFCes: TfrmRelatorioNFCes
       NumGlyphs = 2
       TabOrder = 1
       OnClick = btnVoltarClick
-      ExplicitLeft = 194
+      ExplicitLeft = 428
     end
   end
   object rgpLeiaute: TRadioGroup
@@ -829,14 +829,6 @@ inherited frmRelatorioNFCes: TfrmRelatorioNFCes
       'Anal'#237'tico'
       'Sint'#233'tico')
     TabOrder = 5
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 
-      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
-      'ortes Inform'#225'tica'
-    DisplayName = 'Documento PDF'
-    Left = 403
-    Top = 272
   end
   object qryNFCe: TFDQuery
     Connection = dm.FDConnection
@@ -960,5 +952,13 @@ inherited frmRelatorioNFCes: TfrmRelatorioNFCes
     IDECharset = CP1252
     Left = 192
     Top = 112
+  end
+  object RLPDFFilter1: TRLPDFFilter
+    DocumentInfo.Creator = 
+      'FortesReport Community Edition v4.0 \251 Copyright '#169' 1999-2015 F' +
+      'ortes Inform'#225'tica'
+    DisplayName = 'Documento PDF'
+    Left = 384
+    Top = 256
   end
 end

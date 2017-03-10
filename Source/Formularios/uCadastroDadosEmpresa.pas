@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, System.Math,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uCadastroPadrao, Data.DB, Datasnap.DBClient, Vcl.StdCtrls, Vcl.Grids, Vcl.DBGrids, DBGridCBN,
   Vcl.ComCtrls, Vcl.Buttons, Vcl.ExtCtrls, frameMaskCpfCnpj, Vcl.Mask, RxToolEdit, RxCurrEdit, frameBuscaCidade, frameFone, RxDBCurrEdit,
-  Vcl.Samples.Spin, contnrs;
+  Vcl.Samples.Spin, contnrs, Vcl.Imaging.pngimage;
 
 type
   TfrmCadastroDadosEmpresa = class(TfrmCadastroPadrao)

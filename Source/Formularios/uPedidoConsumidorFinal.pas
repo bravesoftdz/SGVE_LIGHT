@@ -512,6 +512,7 @@ begin
        end;
 
        BuscaPedido1.btnCancelar.Click;
+       BuscaProduto1.edtCodigo.SetFocus;
 
      Except
        On E: Exception Do begin
@@ -526,6 +527,12 @@ begin
   end;
 
   finally
+    if assigned(frmRecebimentoPedido) then
+    begin
+      frmRecebimentoPedido.Release;
+      frmRecebimentoPedido := nil;
+    end;
+
     FreeAndNil(repositorio);
     FFinalizando := false;
 
@@ -537,12 +544,6 @@ begin
     end;
 
     verificaGenerator('GEN_PEDIDOS_ID', 'PEDIDOS');
-
-    if assigned(frmRecebimentoPedido) then
-    begin
-      frmRecebimentoPedido.Release;
-      frmRecebimentoPedido := nil;
-    end;
   end;
 end;
 
@@ -583,6 +584,7 @@ procedure TfrmPedidoConsumidorFinal.limpaCamposPedido;
 begin
   camposHabilitados(true);
   btnFinalizaPedido.Caption := '[ F6 ] Finalizar Pedido';
+  FCupomPendente := false;
 
   if FEstadoItem = teAlterando then
     btnCancelaAlteracao.Click

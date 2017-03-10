@@ -82,8 +82,8 @@ begin
        exit;
      end;
 
-   if (Nf.Entrada_saida = 'E') and ((NF.DataEmissao >= self.FDataInicial) and (NF.DataEmissao <= self.FDataFinal)) then
-     showmessage(IntToStr(Nf.CodigoNotaFiscal)+' - '+DateToStr(NF.DataEmissao));
+//   if (Nf.Entrada_saida = 'E') and ((NF.DataEmissao >= self.FDataInicial) and (NF.DataEmissao <= self.FDataFinal)) then
+//     showmessage(IntToStr(Nf.CodigoNotaFiscal)+' - '+DateToStr(NF.DataEmissao));
 
    // Verifico se nota fiscal satisfaz o período de emissão da especificação
    result := ((self.FDataInicial = 0) and (self.FDataFinal = 0)) or ((NF.DataEmissao >= self.FDataInicial) and (NF.DataEmissao <= self.FDataFinal));

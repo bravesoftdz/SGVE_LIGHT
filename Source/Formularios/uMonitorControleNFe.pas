@@ -292,7 +292,8 @@ begin
                                                              self.chkFiltroAguardandoEnvio.Checked,
                                                              self.chkFiltroAutorizada.Checked,
                                                              self.chkFiltroRejeitada.Checked,
-                                                             self.chkFiltroCancelada.Checked);
+                                                             self.chkFiltroCancelada.Checked,
+                                                             '1');
 
      Repositorio  := TFabricaRepositorio.GetRepositorio(TNotaFiscal.ClassName);
      NotasFiscais := Repositorio.GetListaPorEspecificacao<TNotaFiscal>(Esp, ''''+formatDateTime('dd.mm.yyyy hh:mm:ss',dtpFiltroDataInicial.DateTime)+ ''' and ''' +

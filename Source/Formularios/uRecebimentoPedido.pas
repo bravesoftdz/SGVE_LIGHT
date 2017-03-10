@@ -34,6 +34,8 @@ type
     Label7: TLabel;
     lbCpf: TLabel;
     edtCpf: TEdit;
+    cdsMoedasCODIGO: TIntegerField;
+    Memo1: TMemo;
     procedure btnVoltarClick(Sender: TObject);
     procedure btnConfirmarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -206,7 +208,7 @@ begin
 
    cdsMoedasCODIGO_MOEDA.AsInteger := cmbMoeda.ItemIndex;
    cdsMoedasMOEDA.AsString         := cmbMoeda.Items[cmbMoeda.ItemIndex];
-   cdsMoedasVALOR.AsFloat          := (edtValorPago.Value - edtTroco.Value);
+   cdsMoedasVALOR.AsFloat          := cdsMoedasVALOR.AsFloat + (edtValorPago.Value - edtTroco.Value);
    cdsMoedas.Post;
 
    edtValorRestante.Value := edtValorRestante.Value - (edtValorPago.Value - edtTroco.Value);
@@ -230,13 +232,29 @@ begin
     cdsMoedas.First;
     while not cdsMoedas.Eof do
     begin
-      movimento := TMovimento.Create;
+      movimento               := TMovimento.Create;
+      movimento.codigo        := cdsMoedasCODIGO.AsInteger;
       movimento.tipo_moeda    := cdsMoedasCODIGO_MOEDA.AsInteger;
       movimento.codigo_pedido := codigoPedido;
       movimento.data          := now;
       movimento.valor_pago    := cdsMoedasVALOR.AsFloat;
 
+      if movimento.valor_pago = 0 then
+      begin
+        avisar(1,'Erro ao salvar valor do pagamento, mantenha a tela e contate o suporte.');
+        Memo1.Text := 'nº moedas = '+intToStr(cdsMoedas.RecordCount)+#13#10+
+                      'pedido '+ intToStr(codigoPedido)+#13#10+
+                      'total = '+floatToStr(edtTotalPedido.Value)+#13#10+
+                      'restante = '+floatToStr(edtValorRestante.Value);
+        memo1.Lines.SaveToFile(ExtractFilePath(Application.ExeName)+'\logPagamento.txt');
+      end;
+
+
       repositorio.Salvar(movimento);
+
+      cdsMoedas.Edit;
+      cdsMoedasCODIGO.AsInteger := movimento.codigo;
+      cdsMoedas.Post;
 
       FreeAndNil(movimento);
       cdsMoedas.Next;

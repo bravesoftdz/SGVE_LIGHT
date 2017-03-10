@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPadrao, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, frameBuscaContador,
-  System.DateUtils, ACBrBase, ACBrMail;
+  System.DateUtils, ACBrBase, ACBrMail, System.StrUtils;
 
 type
   TfrmEnviaXMLsContador = class(TfrmPadrao)
@@ -40,23 +40,35 @@ uses Funcoes, uRelatorioNFCes, uRelatorioNFes, uModulo;
 {$R *.dfm}
 
 procedure TfrmEnviaXMLsContador.btnEnviarClick(Sender: TObject);
+var gerouNFCe, gerouNFe :Boolean;
 begin
-  frmRelatorioNFCes := TfrmRelatorioNFCes.Create(nil);
-  frmRelatorioNFCes.cmbMes.ItemIndex := frmRelatorioNFCes.cmbMes.Items.IndexOf(cmbMes.Items[cmbMes.ItemIndex]);
-  frmRelatorioNFCes.cmbAno.ItemIndex := frmRelatorioNFCes.cmbAno.Items.IndexOf(cmbAno.Items[cmbAno.ItemIndex]);
-  frmRelatorioNFCes.gerarPdf;
-  frmRelatorioNFCes.Release;
-  frmRelatorioNFCes := nil;
+  try
+    Aguarda('Enviando Arquivos para o contador');
+    Application.ProcessMessages;
 
-  frmRelatorioNFes := TfrmRelatorioNFes.Create(nil);
-  frmRelatorioNFes.cmbMes.ItemIndex := frmRelatorioNFes.cmbMes.Items.IndexOf(cmbMes.Items[cmbMes.ItemIndex]);
-  frmRelatorioNFes.cmbAno.ItemIndex := frmRelatorioNFes.cmbAno.Items.IndexOf(cmbAno.Items[cmbAno.ItemIndex]);
-  frmRelatorioNFes.gerarPdf;
-  frmRelatorioNFes.Release;
-  frmRelatorioNFes := nil;
+    frmRelatorioNFCes := TfrmRelatorioNFCes.Create(nil);
+    frmRelatorioNFCes.cmbMes.ItemIndex := frmRelatorioNFCes.cmbMes.Items.IndexOf(cmbMes.Items[cmbMes.ItemIndex]);
+    frmRelatorioNFCes.cmbAno.ItemIndex := frmRelatorioNFCes.cmbAno.Items.IndexOf(cmbAno.Items[cmbAno.ItemIndex]);
+    gerouNFCe := frmRelatorioNFCes.gerarPdf;
+    frmRelatorioNFCes.Release;
+    frmRelatorioNFCes := nil;
 
-  enviarPorEmail;
+    sleep(1000);
 
+    frmRelatorioNFes := TfrmRelatorioNFes.Create(nil);
+    frmRelatorioNFes.cmbMes.ItemIndex := frmRelatorioNFes.cmbMes.Items.IndexOf(cmbMes.Items[cmbMes.ItemIndex]);
+    frmRelatorioNFes.cmbAno.ItemIndex := frmRelatorioNFes.cmbAno.Items.IndexOf(cmbAno.Items[cmbAno.ItemIndex]);
+    gerouNFe := frmRelatorioNFes.gerarPdf;
+    frmRelatorioNFes.Release;
+    frmRelatorioNFes := nil;
+
+    if not gerouNFCe and not gerouNFe then
+      avisar(1,'Nenhum arquivo foi encontrado no período informado')
+    else
+      enviarPorEmail;
+  finally
+    FimAguarda();
+  end;
 end;
 
 procedure TfrmEnviaXMLsContador.cmbAnoClick(Sender: TObject);
@@ -78,7 +90,6 @@ begin
   end;
 
   try
-
     if assigned(dm.Empresa.ConfiguracoesEmail) then
     begin
       ACBrMail1.Clear;
@@ -94,19 +105,23 @@ begin
 
       ACBrMail1.Subject      := 'Notas Fiscais '+cmbMes.Items[cmbMes.ItemIndex]+' - '+cmbAno.Items[cmbAno.ItemIndex];
       ACBrMail1.Body.Text    := 'ATENÇÃO, favor não responder. E-mail enviado automaticamente. '+
-                                'Para contato utilize o e-mail: '+dm.Empresa.email +#13#10+
+                                'Para contato: '+#13#10+
+                                ifThen(dm.Empresa.email <> '', 'E-mail: '+dm.Empresa.email,'')+#13#10+
+                                'Fone: '+ ifThen(apenasNumeros(dm.Empresa.fone1) <> '',dm.Empresa.fone1,dm.Empresa.fone2)+ #13#10+
                                  dm.Empresa.ConfiguracoesEmail.mensagem.Text +
                                 'Email gerado automaticamente pelo Sistema SGVE 2.0 '+
-                                'CBN Informática - (43) 3534-2350                   '+
-                                'www.cbninfo.com.br';
+                                'CBN Informática - (43) 3534-2350                   ';
 
       ACBrMail1.AltBody.Text := ACBrMail1.Body.Text;
-      ACBrMail1.AddAttachment(TFileName( diretorioExecutavel+'Docs\XMLs\'+arquivoNFes));
-      ACBrMail1.AddAttachment(TFileName( diretorioExecutavel+'Docs\XMLs\'+arquivoNFCes));
+      if FileExists(diretorioExecutavel+'Docs\XMLs\'+arquivoNFes) then
+        ACBrMail1.AddAttachment(TFileName( diretorioExecutavel+'Docs\XMLs\'+arquivoNFes));
+      if FileExists(diretorioExecutavel+'Docs\XMLs\'+arquivoNFCes) then
+        ACBrMail1.AddAttachment(TFileName( diretorioExecutavel+'Docs\XMLs\'+arquivoNFCes));
 
       Application.ProcessMessages;
       ACBrMail1.Send;
 
+      avisar(1,'Arquivos enviados com sucesso!', 3);
     end
     else avisar(0,'Não foi possível enviar e-mail, pois não há configurações de e-mail cadastradas');
 
@@ -140,8 +155,16 @@ begin
 end;
 
 procedure TfrmEnviaXMLsContador.FormShow(Sender: TObject);
+var index :integer;
 begin
-  cmbMes.ItemIndex := MonthOf(Date)-1;
+  index            := MonthOf(Date)-1;
+
+  if index = 0 then
+    index := 11
+  else
+    dec(index);
+
+  cmbMes.ItemIndex := index;
   cmbAno.ItemIndex := cmbAno.Items.IndexOf(formatDateTime('yyyy',Date));
 end;
 

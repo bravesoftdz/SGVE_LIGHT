@@ -37,9 +37,9 @@ type
     property valor_total      :Real read Fvalor_total           write Fvalor_total;
     property cpf_cliente      :String read Fcpf_cliente         write Fcpf_cliente;
 
-    property Cliente          :TCliente read GetCliente;
+    property Cliente          :TCliente           read GetCliente;
     property Itens            :TObjectList<TItem> read GetItens;
-    property NFCe             :TNFCe    read GetNFCe;
+    property NFCe             :TNFCe              read GetNFCe;
 
   public
     destructor destroy;
@@ -103,7 +103,7 @@ begin
   begin
     especificacao := TEspecificacaoNFCePorCodigoPedido.Create(self.Fcodigo);
     repositorio   := TFabricaRepositorio.GetRepositorio(TNFCe.ClassName);
-    FNFCe         := TNFCe( repositorio.GetPorEspecificacao(especificacao, 'DH_RECEBIMENTO between '+DataParaParametro(Date-5)+' and '+ DataParaParametro(Date+1)) );
+    FNFCe         := TNFCe( repositorio.GetPorEspecificacao(especificacao));
   end;
 
   result := FNFCe;

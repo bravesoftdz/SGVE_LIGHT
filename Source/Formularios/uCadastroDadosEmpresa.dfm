@@ -7,10 +7,12 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
   PixelsPerInch = 96
   TextHeight = 17
   inherited pnlBotoes: TPanel
-    Top = 612
+    Top = 621
     Width = 1177
-    ExplicitTop = 612
+    Height = 43
+    ExplicitTop = 621
     ExplicitWidth = 1177
+    ExplicitHeight = 43
     inherited btnSalvar: TBitBtn
       Left = 390
       ExplicitLeft = 390
@@ -18,15 +20,15 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
   end
   inherited pgGeral: TPageControl
     Width = 1177
-    Height = 612
+    Height = 621
     ExplicitWidth = 1177
-    ExplicitHeight = 612
+    ExplicitHeight = 35
     inherited tsConsulta: TTabSheet
       ExplicitWidth = 1169
-      ExplicitHeight = 576
+      ExplicitHeight = 25
       inherited gridConsulta: TDBGridCBN
-        Width = 1151
-        Height = 543
+        Width = 1145
+        Height = 552
         TitleFont.Height = -15
         TitleFont.Name = 'Segoe UI'
         ConfCores.Normal.Tipo.Height = -15
@@ -53,21 +55,22 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
           end>
       end
       inherited lblAjudaSelecionar: TStaticText
-        Top = 551
+        Top = 560
         Width = 1169
-        ExplicitTop = 551
+        ExplicitTop = 0
+        ExplicitWidth = 1169
       end
     end
     inherited tsDados: TTabSheet
       ExplicitLeft = 4
       ExplicitTop = 32
       ExplicitWidth = 1169
-      ExplicitHeight = 576
+      ExplicitHeight = 25
       inherited pnlDados: TPanel
         Width = 1169
-        Height = 576
+        Height = 585
         ExplicitWidth = 1169
-        ExplicitHeight = 576
+        ExplicitHeight = 25
         inherited lblCamposObrigatorios: TLabel
           Top = 555
           ExplicitTop = 555
@@ -164,14 +167,19 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
               ExplicitLeft = -1
             end
             inherited stxTitulo: TStaticText [1]
-              Left = 12
-              ExplicitLeft = 12
             end
             inherited StaticText1: TStaticText [2]
               Left = -70
               ExplicitLeft = -70
             end
-            inherited edtCpf: TMaskEdit
+            inherited comPessoa: TComboBox [3]
+              Left = -75
+              Height = 29
+              Visible = False
+              ExplicitLeft = -75
+              ExplicitHeight = 29
+            end
+            inherited edtCpf: TMaskEdit [4]
               Left = 13
               Width = 156
               Height = 29
@@ -182,13 +190,6 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
               ParentFont = False
               ExplicitLeft = 13
               ExplicitWidth = 156
-              ExplicitHeight = 29
-            end
-            inherited comPessoa: TComboBox
-              Left = -75
-              Height = 29
-              Visible = False
-              ExplicitLeft = -75
               ExplicitHeight = 29
             end
           end
@@ -389,13 +390,14 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
             inherited edtCidade: TEdit
               Left = 116
               Width = 343
-              Height = 29
+              Height = 28
               Font.Color = 12418084
+              Font.Height = -15
               Font.Name = 'Segoe UI'
               Font.Style = [fsBold]
               ExplicitLeft = 116
               ExplicitWidth = 343
-              ExplicitHeight = 29
+              ExplicitHeight = 28
             end
             inherited btnBusca: TBitBtn
               Left = 83
@@ -406,19 +408,21 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
             inherited edtUF: TEdit
               Left = 473
               Width = 32
-              Height = 29
+              Height = 28
               Font.Color = 12418084
+              Font.Height = -15
               Font.Name = 'Segoe UI'
               Font.Style = [fsBold]
               ExplicitLeft = 473
               ExplicitWidth = 32
-              ExplicitHeight = 29
+              ExplicitHeight = 28
             end
             inherited edtCodCid: TCurrencyEdit
               Top = 25
               Width = 79
               Height = 28
               Font.Color = 12418084
+              Font.Height = -15
               Font.Name = 'Segoe UI'
               Font.Style = [fsBold]
               ExplicitTop = 25

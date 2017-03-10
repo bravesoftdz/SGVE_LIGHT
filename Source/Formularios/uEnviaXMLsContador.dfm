@@ -290,9 +290,6 @@ inherited frmEnviaXMLsContador: TfrmEnviaXMLsContador
         Caption = 'Nome'
         ExplicitWidth = 47
       end
-      inherited edtCodigo: TCurrencyEdit
-        Visible = True
-      end
     end
   end
   object ACBrMail1: TACBrMail

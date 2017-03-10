@@ -557,11 +557,24 @@ inherited frmRecebimentoPedido: TfrmRecebimentoPedido
     OnKeyDown = edtCpfKeyDown
     OnKeyPress = edtCpfKeyPress
   end
+  object Memo1: TMemo
+    Left = 136
+    Top = 256
+    Width = 185
+    Height = 89
+    Lines.Strings = (
+      'Memo1')
+    TabOrder = 9
+    Visible = False
+  end
   object cdsMoedas: TClientDataSet
     Aggregates = <>
     Params = <>
     Left = 568
     Top = 112
+    object cdsMoedasCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+    end
     object cdsMoedasMOEDA: TStringField
       FieldName = 'MOEDA'
     end

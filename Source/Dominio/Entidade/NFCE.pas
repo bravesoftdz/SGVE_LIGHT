@@ -72,7 +72,7 @@ end;
 
 function TNFCe.getXMLText: String;
 begin
-  if (FXMLStringList.Count <= 0) then
+  if FXMLStringList.Count <= 0 then
     FXMLStringList.LoadFromStream(self.XML);
 
   result := self.FXMLStringList.Text;

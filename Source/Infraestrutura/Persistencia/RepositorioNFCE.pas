@@ -99,21 +99,25 @@ end;
 procedure TRepositorioNFCe.SetParametros(Objeto: TObject);
 var
   NFCe :TNFCe;
+  campoBlob :TStream;
+  fil :TFileStream;
 begin
   NFCe := (Objeto as TNFCe);
 
-  self.FQuery.ParamByName('codigo').AsInteger         := NFCe.codigo;
-  self.FQuery.ParamByName('nr_nota').AsInteger        := NFCe.nr_nota;
-  self.FQuery.ParamByName('codigo_pedido').AsInteger  := NFCe.codigo_pedido;
-  self.FQuery.ParamByName('serie').AsString          := NFCe.serie;
-  self.FQuery.ParamByName('chave').AsString          := NFCe.chave;
-  self.FQuery.ParamByName('protocolo').AsString      := NFCe.protocolo;
+  self.FQuery.ParamByName('codigo').AsInteger          := NFCe.codigo;
+  self.FQuery.ParamByName('nr_nota').AsInteger         := NFCe.nr_nota;
+  self.FQuery.ParamByName('codigo_pedido').AsInteger   := NFCe.codigo_pedido;
+  self.FQuery.ParamByName('serie').AsString            := NFCe.serie;
+  self.FQuery.ParamByName('chave').AsString            := NFCe.chave;
+  self.FQuery.ParamByName('protocolo').AsString        := NFCe.protocolo;
   self.FQuery.ParamByName('dh_recebimento').AsDateTime := NFCe.dh_recebimento;
-  self.FQuery.ParamByName('status').AsString         := NFCe.status;
-  self.FQuery.ParamByName('motivo').AsString         := NFCe.motivo;
-  self.FQuery.ParamByName('justificativa').AsString         := NFCe.justificativa;
+  self.FQuery.ParamByName('status').AsString           := NFCe.status;
+  self.FQuery.ParamByName('motivo').AsString           := NFCe.motivo;
+  self.FQuery.ParamByName('justificativa').AsString    := NFCe.justificativa;
+  //self.FQuery.ParamByName('xml').Text                  := NFCe.XMLText;
 
   self.FQuery.ParamByName('xml').LoadFromStream(NFCe.XML, ftBlob);
+
 end;
 
 function TRepositorioNFCe.SQLGet: String;

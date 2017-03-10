@@ -1762,14 +1762,8 @@ begin
 end;
 
 function TNotaFiscal.GetNotaDeMaterias: Boolean;
-var rep :TRepositorio;
 begin
-  rep := nil;
-
- // rep := TFabricaRepositorio.GetRepositorio(TItemNfMateria.ClassName);
-  result := rep.GetExiste('codigo_nota_fiscal', self.CodigoNotaFiscal);
-
-  FreeAndNil(rep);
+  result := false;
 end;
 
 procedure TNotaFiscal.SetFinalidade(const Value: String);
