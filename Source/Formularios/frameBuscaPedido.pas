@@ -84,7 +84,7 @@ begin
          frmPesquisaSimples := TFrmPesquisaSimples.Create(Self,'Select ped.CODIGO, ped.VALOR_TOTAL, p.razao nome from Pedidos ped '+
                                                                'left join pessoas p on p.codigo = ped.codigo_cliente '+
                                                                'left join NFCE on NFCE.CODIGO_PEDIDO = ped.CODIGO '+ condicao,
-                                                         'CODIGO', 'Selecione a Cor desejada...', 800, 700);
+                                                         'CODIGO', 'Selecione o pedido desejado...', 800, 700);
 
          if frmPesquisaSimples.ShowModal = mrOk then begin
             Pedido  := TPedido(Repositorio.Get(frmPesquisaSimples.cds_retorno.Fields[0].AsInteger));

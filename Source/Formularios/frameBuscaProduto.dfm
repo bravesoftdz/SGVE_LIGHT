@@ -53,7 +53,6 @@ object BuscaProduto: TBuscaProduto
     ReadOnly = True
     TabOrder = 3
     OnEnter = edtProdutoEnter
-    OnExit = edtProdutoExit
   end
   object btnBusca: TBitBtn
     Left = 70

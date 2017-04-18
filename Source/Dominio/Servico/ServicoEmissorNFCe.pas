@@ -260,34 +260,36 @@ const
 var
   Venda :TVenda;
   numeroLote :integer;
-  erroConexao :Boolean;
+  erroConexao, erroGeracao :Boolean;
 begin
   try
   try
-  try
-    erroConexao       := false;
-    Venda             := getVenda(codigoPedido);
+    try
+      erroConexao    := false;
+      erroGeracao    := false;
+      Venda          := getVenda(codigoPedido);
 
-    if Venda.NumeroNFe = 0 then
-    begin
-      NumeroLote        := dm.GetValorGenerator('gen_lote_nfce',1);
-      Venda.NumeroNFe := dm.GetValorGenerator('gen_nrnota_nfce',1);
-    end
-    else
-      NumeroLote        := dm.GetValorGenerator('gen_lote_nfce',0);
+      if Venda.NumeroNFe = 0 then
+      begin
+        NumeroLote        := dm.GetValorGenerator('gen_lote_nfce',1);
+        Venda.NumeroNFe := dm.GetValorGenerator('gen_nrnota_nfce',1);
+      end
+      else
+        NumeroLote        := dm.GetValorGenerator('gen_lote_nfce',0);
 
-    if cpfCliente <> '' then
-      Venda.Cpf_cliente := cpfCliente;
+      if cpfCliente <> '' then
+        Venda.Cpf_cliente := cpfCliente;
 
-    GerarNFCe(Venda);
+      GerarNFCe(Venda);
 
-  Except
-    On E: Exception do begin
-      dm.GetValorGenerator('gen_lote_nfce',-1);
-      dm.GetValorGenerator('gen_nrnota_nfce',-1); //*f
+    Except
+      On E: Exception do begin
+        erroGeracao := true;
+        dm.GetValorGenerator('gen_lote_nfce',-1);
+        dm.GetValorGenerator('gen_nrnota_nfce',-1); //*f
+        raise Exception.Create('Erro na geração do NFCe. '+e.message);
+      end;
     end;
-
-  end;
 
     try
     try
@@ -308,8 +310,12 @@ begin
 
         if erroConexao then
         begin
-          dm.GetValorGenerator('gen_lote_nfce',-1);
-          dm.GetValorGenerator('gen_nrnota_nfce',-1);
+          {se houve erro na geração, o generator já foi retornado}
+          if not erroGeracao then
+          begin
+            dm.GetValorGenerator('gen_lote_nfce',-1);
+            dm.GetValorGenerator('gen_nrnota_nfce',-1);
+          end;
           enviaContingencia(codigoPedido);
         end
         else if not FModoSilencioso then
@@ -542,6 +548,8 @@ begin
     repositorio   := TFabricaRepositorio.GetRepositorio(TMovimento.ClassName);
     Movimentos    := repositorio.GetListaPorEspecificacao<TMovimento>( Especificacao, 'codigo_pedido = '+inttostr(Venda.Codigo_pedido));
 
+    if not assigned(Movimentos) then
+      raise Exception.Create('Nenhum pagamento encontrado.');
 
    for i := 0 to Movimentos.Count -1 do begin
      with NFCe.NFe.pag.Add do begin

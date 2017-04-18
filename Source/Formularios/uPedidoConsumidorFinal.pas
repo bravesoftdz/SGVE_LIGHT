@@ -201,20 +201,16 @@ var
 begin
    NFCe   := nil;
    result := false;
-
  try
  try
-
    NFCe := TServicoEmissorNFCe.Create(dm.Empresa);
    NFCe.Emitir(codigoPedido, CPF_Cliente);
 
    result := true;
-
  Except
    On E: Exception do
      raise Exception.Create('Ocorreu um erro ao enviar nota fiscal.'+#13#10+e.Message);
  end;
-
  finally
    FreeAndNil(NFCe);
  end;
@@ -472,7 +468,6 @@ begin
   repositorio := nil;
   pedido      := nil;
   try
-
     if not assigned(BuscaPedido1.Pedido) then
       if not efetuaRecebimento(finalizaRapido) then
       begin
@@ -480,6 +475,8 @@ begin
         Exit;
       end;
   try
+     dm.conexao.TxOptions.AutoCommit := false;
+
      FFinalizando := true;
      repositorio  := TFabricaRepositorio.GetRepositorio(TPedido.ClassName);
      pedido       := TPedido( repositorio.Get(BuscaPedido1.edtCodigo.AsInteger));
@@ -488,12 +485,8 @@ begin
      begin
        pedido := criaPedido;
        repositorio.Salvar(Pedido);
-
-       if not dm.Empresa.ConfiguracoesNF.ParametrosNFCe.imp_comp_pedido then
-         //*f avisar(1,'Pedido criado com sucesso!',2);
      end;
 
-     //BuscaPedido1.edtCodigo.AsInteger := Pedido.Codigo;
 
      if assigned(frmRecebimentoPedido) then
        frmRecebimentoPedido.salvaRecebimentoPedido(Pedido.Codigo);
@@ -514,19 +507,24 @@ begin
        BuscaPedido1.btnCancelar.Click;
        BuscaProduto1.edtCodigo.SetFocus;
 
+       dm.conexao.Commit;
      Except
        On E: Exception Do begin
          avisar(0,'Erro ao enviar cupom.'+#13#10+e.Message);
+         dm.conexao.Rollback;
+         FCupomPendente := false;
        end;
      end;
 
   Except
     On E: Exception Do begin
       avisar(0,'Erro ao finalizar pedido.'+#13#10+e.Message);
+      dm.conexao.Rollback;
     end;
   end;
 
   finally
+    dm.conexao.TxOptions.AutoCommit := true;
     if assigned(frmRecebimentoPedido) then
     begin
       frmRecebimentoPedido.Release;

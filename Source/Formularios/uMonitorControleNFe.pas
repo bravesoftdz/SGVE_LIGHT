@@ -732,9 +732,9 @@ begin
               GeradorNFe.EnviarEmail(NotaFiscal);
             except
               on E: Exception do
-                raise Exception.Create('Erro ao enviar e-mail da nota fiscal Nº '+IntToStr(NotaFiscal.NumeroNotaFiscal)+' destinada a '+
-                                       NotaFiscal.Destinatario.Razao+'.'+#13+
-                                       'Erro: '+E.Message);
+                avisar(0,'Erro ao enviar e-mail da nota fiscal Nº '+IntToStr(NotaFiscal.NumeroNotaFiscal)+' destinada a '+
+                         NotaFiscal.Destinatario.Razao+'.'+#13+
+                        'Erro: '+E.Message);
             end;
           end;
 
@@ -913,8 +913,8 @@ var
   nX                         :Integer;
   HouveErros                 :Boolean;
 begin
-   if not inherited Confirma('Deseja imprimir as notas selecionadas?') then
-    exit;
+//   if not inherited Confirma('Deseja imprimir as notas selecionadas?') then
+ //   exit;
 
    RepositorioNotaFiscal      := nil;
    GeradorNFe                 := nil;

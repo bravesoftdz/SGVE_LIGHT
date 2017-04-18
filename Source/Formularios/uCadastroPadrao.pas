@@ -242,13 +242,8 @@ begin
      end;
    end;
 
-   if Self.Name = 'frmCadastroProduto' then //*f
-    self.CarregarDados
-   else
-   begin
-     if (self.FEstadoTela = tetIncluir) then self.IncluirRegistroNoCDS(Registro)
-       else                                    self.AlterarRegistroNoCDS(Registro);
-   end;
+   if (self.FEstadoTela = tetIncluir) then self.IncluirRegistroNoCDS(Registro)
+   else                                    self.AlterarRegistroNoCDS(Registro);
 
    FreeAndNil(Registro);
 end;

@@ -93,26 +93,20 @@ var
   nX          :Integer;
 begin
   inherited;
-
   Repositorio := nil;
   Produtos    := nil;
-
   try
     Repositorio := TFabricaRepositorio.GetRepositorio(TProduto.ClassName);
     Produtos    := Repositorio.GetAll;
 
-
     if Assigned(Produtos) and (Produtos.Count > 0) then begin
-
        for nX := 0 to (Produtos.Count-1) do
          self.IncluirRegistroNoCDS(Produtos.Items[nX]);
-
     end;
   finally
     FreeAndNil(Repositorio);
     FreeAndNil(Produtos);
   end;
-
 end;
 
 procedure TfrmCadastroProduto.edtCodigoBarrasKeyPress(Sender: TObject; var Key: Char);
@@ -140,7 +134,6 @@ var
 begin
    Produto             := nil;
    RepositorioProduto  := nil;
-
    try
      RepositorioProduto  := TFabricaRepositorio.GetRepositorio(TProduto.ClassName);
      Produto             := TProduto(RepositorioProduto.Get(StrToIntDef(self.edtCodigo.Text, 0)));
@@ -158,7 +151,6 @@ begin
      RepositorioProduto.Salvar(Produto);
 
      result := Produto;
-
    finally
      FreeAndNil(RepositorioProduto);
    end;
@@ -177,7 +169,6 @@ var
   Produto :TProduto;
 begin
   inherited;
-
   Produto := (Registro as TProduto);
 
   self.cds.Append;

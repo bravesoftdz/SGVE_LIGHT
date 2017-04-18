@@ -65,6 +65,8 @@ destructor TPedido.destroy;
 begin
   if assigned(FItens) then
     FreeAndNil(FItens);
+  if assigned(FNFCe) then
+    FreeAndNil(FNFCe);
 
   inherited;
 end;

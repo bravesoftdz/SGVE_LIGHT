@@ -17,7 +17,6 @@ type
     procedure edtCodigoEnter(Sender: TObject);
     procedure edtCodigoExit(Sender: TObject);
     procedure edtProdutoEnter(Sender: TObject);
-    procedure edtProdutoExit(Sender: TObject);
     procedure btnBuscaClick(Sender: TObject);
     procedure edtCodigoKeyPress(Sender: TObject; var Key: Char);
   private
@@ -103,7 +102,6 @@ begin
             if Assigned(Produto) then begin
               self.Produto := Produto;
               self.FCriou  := true;
-              //keybd_event(VK_TAB, 0, 0, 0);
             end;
          end
          else begin
@@ -120,6 +118,9 @@ begin
        self.Produto  := Produto;
        self.FCriou   := true;
      end;
+
+     if (edtProduto.Text <> '') then
+       keybd_event(VK_TAB, 0, 0, 0);
 
    finally
      FreeAndNil(Repositorio);
@@ -162,11 +163,6 @@ begin
 end;
 
 procedure TBuscaProduto.edtProdutoEnter(Sender: TObject);
-begin
-  keybd_event(VK_TAB, 0,  0, 0);
-end;
-
-procedure TBuscaProduto.edtProdutoExit(Sender: TObject);
 var codigoProduto :integer;
 begin
    if length(edtCodigo.Text) > 10 then
