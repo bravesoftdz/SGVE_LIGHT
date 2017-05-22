@@ -863,7 +863,8 @@ inherited frmNotaFiscal: TfrmNotaFiscal
         Width = 97
         Height = 25
         Color = clWhite
-        DisplayFormat = ' ,0.00;- ,0.00'
+        DecimalPlaces = 3
+        DisplayFormat = ' ,0.000;- ,0.000'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = 12418084
         Font.Height = -13

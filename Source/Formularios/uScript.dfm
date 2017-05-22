@@ -904,4 +904,17 @@ object frmScript: TfrmScript
     TabOrder = 19
     WordWrap = False
   end
+  object versao21: TMemo
+    Left = 326
+    Top = 38
+    Width = 31
+    Height = 23
+    Ctl3D = False
+    Lines.Strings = (
+      'ALTER TABLE PRODUTOS ALTER DESCRICAO TYPE VARCHAR(120)'
+      '^')
+    ParentCtl3D = False
+    TabOrder = 20
+    WordWrap = False
+  end
 end
