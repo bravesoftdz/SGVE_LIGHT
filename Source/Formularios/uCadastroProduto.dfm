@@ -39,6 +39,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
   inherited pgGeral: TPageControl
     Width = 673
     Height = 438
+    ActivePage = tsDados
     ExplicitWidth = 673
     ExplicitHeight = 438
     inherited tsConsulta: TTabSheet
@@ -82,6 +83,7 @@ inherited frmCadastroProduto: TfrmCadastroProduto
         Top = 377
         Width = 665
         ExplicitTop = 377
+        ExplicitWidth = 665
       end
     end
     inherited tsDados: TTabSheet
