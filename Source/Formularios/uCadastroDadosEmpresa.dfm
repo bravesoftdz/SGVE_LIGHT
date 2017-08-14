@@ -21,11 +21,14 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
   inherited pgGeral: TPageControl
     Width = 1177
     Height = 621
+    ActivePage = tsDados
     ExplicitWidth = 1177
-    ExplicitHeight = 35
+    ExplicitHeight = 621
     inherited tsConsulta: TTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 1169
-      ExplicitHeight = 25
+      ExplicitHeight = 585
       inherited gridConsulta: TDBGridCBN
         Width = 1145
         Height = 552
@@ -56,21 +59,20 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
       end
       inherited lblAjudaSelecionar: TStaticText
         Top = 560
-        Width = 1169
-        ExplicitTop = 0
-        ExplicitWidth = 1169
+        Width = 301
+        ExplicitTop = 560
       end
     end
     inherited tsDados: TTabSheet
       ExplicitLeft = 4
       ExplicitTop = 32
       ExplicitWidth = 1169
-      ExplicitHeight = 25
+      ExplicitHeight = 585
       inherited pnlDados: TPanel
         Width = 1169
         Height = 585
         ExplicitWidth = 1169
-        ExplicitHeight = 25
+        ExplicitHeight = 585
         inherited lblCamposObrigatorios: TLabel
           Top = 555
           ExplicitTop = 555
@@ -715,7 +717,7 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
               Top = 128
               Width = 569
               Height = 401
-              ActivePage = TabSheet3
+              ActivePage = TabSheet5
               Align = alBottom
               TabOrder = 0
               object TabSheet3: TTabSheet
@@ -726,6 +728,10 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
                 Font.Name = 'Vani'
                 Font.Style = []
                 ParentFont = False
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object Label13: TLabel
                   Left = 21
                   Top = 203
@@ -924,6 +930,10 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
               object TabSheet4: TTabSheet
                 Caption = 'NFC-e'
                 ImageIndex = 1
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object Label26: TLabel
                   Left = 18
                   Top = 5
@@ -1180,6 +1190,347 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
                   TabOrder = 10
                 end
               end
+              object TabSheet5: TTabSheet
+                Caption = 'SAT'
+                ImageIndex = 2
+                object Label24: TLabel
+                  Left = 17
+                  Top = 5
+                  Width = 132
+                  Height = 21
+                  Caption = 'C'#243'digo de ativa'#231#227'o'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -16
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object Label25: TLabel
+                  Left = 226
+                  Top = 6
+                  Width = 105
+                  Height = 21
+                  Caption = 'Ind. Rat. ISSQN'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -16
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object Label34: TLabel
+                  Left = 18
+                  Top = 70
+                  Width = 175
+                  Height = 21
+                  Caption = 'Regime Tribut'#225'rio ISSQN'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -16
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object Label37: TLabel
+                  Left = 226
+                  Top = 70
+                  Width = 53
+                  Height = 21
+                  Caption = 'Modelo'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -16
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object Label38: TLabel
+                  Left = 18
+                  Top = 127
+                  Width = 94
+                  Height = 21
+                  Caption = 'Caminho DLL'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -16
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object Label39: TLabel
+                  Left = 416
+                  Top = 70
+                  Width = 72
+                  Height = 21
+                  Caption = 'Impress'#227'o'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -16
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                end
+                object cbxIndRatISSQN: TComboBox
+                  Left = 226
+                  Top = 29
+                  Width = 160
+                  Height = 25
+                  Style = csDropDownList
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -13
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ItemIndex = 1
+                  ParentFont = False
+                  TabOrder = 0
+                  Text = 'N'#227'o'
+                  Items.Strings = (
+                    'Sim'#11
+                    'N'#227'o')
+                end
+                object cbxRegTribISSQN: TComboBox
+                  Left = 18
+                  Top = 93
+                  Width = 176
+                  Height = 25
+                  Style = csDropDownList
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -13
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ItemIndex = 6
+                  ParentFont = False
+                  TabOrder = 1
+                  Text = 'RTISSNenhum'
+                  Items.Strings = (
+                    'RTISSMicroempresaMunicipal'
+                    'RTISSEstimativa'
+                    'RTISSSociedadeProfissionais'
+                    'RTISSCooperativa'
+                    'RTISSMEI'
+                    'RTISSMEEPP'
+                    'RTISSNenhum')
+                end
+                object gpbDadosSH: TGroupBox
+                  Left = 3
+                  Top = 216
+                  Width = 551
+                  Height = 144
+                  Caption = ' Dados Software House '
+                  TabOrder = 2
+                  object Label35: TLabel
+                    Left = 17
+                    Top = 24
+                    Width = 37
+                    Height = 21
+                    Caption = 'CNPJ'
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = clWindowText
+                    Font.Height = -16
+                    Font.Name = 'Segoe UI'
+                    Font.Style = []
+                    ParentFont = False
+                  end
+                  object Label36: TLabel
+                    Left = 18
+                    Top = 79
+                    Width = 73
+                    Height = 21
+                    Caption = 'Assinatura'
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = clWindowText
+                    Font.Height = -16
+                    Font.Name = 'Segoe UI'
+                    Font.Style = []
+                    ParentFont = False
+                  end
+                  object edtCNPJSH: TEdit
+                    Left = 18
+                    Top = 48
+                    Width = 135
+                    Height = 29
+                    AutoSize = False
+                    CharCase = ecUpperCase
+                    Enabled = False
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = 12418084
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI'
+                    Font.Style = [fsBold]
+                    MaxLength = 80
+                    ParentFont = False
+                    TabOrder = 0
+                    Text = '01934032000127'
+                  end
+                  object edtAssinaturaSH: TEdit
+                    Left = 18
+                    Top = 103
+                    Width = 511
+                    Height = 29
+                    AutoSize = False
+                    CharCase = ecUpperCase
+                    Enabled = False
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = 12418084
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI'
+                    Font.Style = [fsBold]
+                    MaxLength = 80
+                    ParentFont = False
+                    TabOrder = 1
+                    Text = 
+                      '9D4C4EEF8C515E2C1269C2E4FFF0719D526C5096422BF1DEFA20DF50BA06469A' +
+                      '28ADB25BA0447BEFBCED7C0F805A5CC58496B7B23497AF9A04F69C77F17C0CE6' +
+                      '8161F8E4CA7E3A94C827B6C563CA6F47AEA05FA90A8CE3E4327853BB2D664BA2' +
+                      '26728FFF1E2C6275ECC9B20129E1C1D2671A837AA1D265B36809501B519DBC08' +
+                      '129E1C1D2671A837AA1D265B36809501B519DBC08129E1C1D2671A837AA1D265' +
+                      'B36809501B519DBC08129E1C'
+                  end
+                end
+                object edtCodigoAtivacao: TCurrencyEdit
+                  Left = 16
+                  Top = 29
+                  Width = 176
+                  Height = 29
+                  DisplayFormat = '0'
+                  TabOrder = 3
+                end
+                object cbxModelo: TComboBox
+                  Left = 226
+                  Top = 93
+                  Width = 160
+                  Height = 25
+                  Style = csDropDownList
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -13
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                  TabOrder = 4
+                  Items.Strings = (
+                    'satNenhum'
+                    'satDinamico_cdecl'
+                    'satDinamico_stdcall'
+                    'mfe_Integrador_XML')
+                end
+                object edtDLL: TEdit
+                  Left = 18
+                  Top = 151
+                  Width = 495
+                  Height = 29
+                  AutoSize = False
+                  CharCase = ecUpperCase
+                  Enabled = False
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = 12418084
+                  Font.Height = -13
+                  Font.Name = 'Segoe UI'
+                  Font.Style = [fsBold]
+                  MaxLength = 80
+                  ParentFont = False
+                  ReadOnly = True
+                  TabOrder = 5
+                end
+                object btnBuscarDLL: TBitBtn
+                  Left = 516
+                  Top = 150
+                  Width = 38
+                  Height = 30
+                  Glyph.Data = {
+                    36080000424D3608000000000000360000002800000020000000100000000100
+                    2000000000000008000000000000000000000000000000000000FFFFFF00FFFF
+                    FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+                    FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+                    9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+                    9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00667BB7003370
+                    C200206DC9001E69C6001B67C6001A65C6001864C6001663C6001460C400125E
+                    C600105CC400105BC400105BC400105EC8001059C1005E77B60002175300000C
+                    5E00000965000005620000036200000162000000620000006200000060000000
+                    62000000600000006000000060000000640000005D0000135200284AA10080DF
+                    FF0041BCFF0043B8FF003FB4FF003BB1FF0036AEFF0032A9FF002EA6FF0029A1
+                    FF00259EFF00219AFF002097FF00209AFF00229FFF00063AA00000003D001C7B
+                    9B0000589B0000549B0000509B00004D9B00004A9B0000459B0000429B00003D
+                    9B00003A9B0000369B0000339B0000369B00003B9B0000003C002447A30079D3
+                    FF0040B1FE0041AEFC003FABFC0039A7FA0037A3F90033A0F9002F9CF9002C99
+                    F9002896F8002393F8001E8EF8001D8DF9001F92FF00053CA20000003F00156F
+                    9B00004D9A00004A98000047980000439600003F9500003C9500003895000035
+                    950000329400002F9400002A940000299500002E9B0000003E00254CA8007ED7
+                    FF0045B7FE0048B3FC0044B0FC0040ACFC003CA9FB0039A6FA0035A2FA00319F
+                    FA002D9BFA002998F9002594F9002292FB002095FF00063FA600000044001A73
+                    9B0000539A00004F9800004C9800004898000045970000429600003E9600003B
+                    9600003796000034950000309500002E970000319B0000004200254CA80084DB
+                    FF004CBBFE004DB8FD004AB5FD0045B1FC0041AEFC003EAAFC003AA7FA0036A4
+                    FA0032A0FA002D9DFA002B99FA002998FA002499FF000642AC00000044002077
+                    9B0000579A000054990000519900004D9800004A980000469800004396000040
+                    9600003C960000399600003596000034960000359B00000048002554B30080DD
+                    FF004EBFFE0050BDFD004FBAFD004CB6FC0046B3FC0043AFFC003FABFC003DA7
+                    FB0037A4FA0033A1FA002D9CFA002396FB00259BFF000642AC0000004F001C79
+                    9B00005B9A00005999000056990000529800004F9800004B9800004798000043
+                    970000409600003D9600003896000032970000379B00000048002554B300AAEC
+                    FF0061C9FE0053C2FD004EBDFD004AB9FD0046B5FD0042B1FC003EAEFC003AAA
+                    FC0036A6FB0031A3FA0036A2FB004DADFD006FC0FF001450B70000004F004688
+                    9B0000659A00005E9900005999000055990000519900004D9800004A98000046
+                    980000429700003F9600003E9700004999000B5C9B0000005300295ABC00BEF4
+                    FF0095DEFF0093D9FE0082D3FE0071C9FD0069C6FD0067C4FD0062C0FD005FBC
+                    FD006ABFFD0072C2FD007EC6FD007CC5FE0080CBFF001452BB00000058005A90
+                    9B00317A9B002F759A001E6F9A000D6599000562990003609900005C99000058
+                    9900065B99000E5E99001A62990018619A001C679B0000005700285DC200BDF5
+                    FF0093DFFF0094DCFE0093DAFE0091DAFE0090D8FF008DD6FF008BD4FF0087D1
+                    FF0083CDFF007EC8FF0076C5FF0076C4FF007BCBFF001456C20000005E005991
+                    9B002F7B9B0030789A002F769A002D769A002C749B0029729B0027709B00236D
+                    9B001F699B001A649B0012619B0012609B0017679B0000005E00285DC200C0F8
+                    FF0097E1FF0095DFFE0093DFFF00B4EFFF00B2EDFF00B0EBFF00AFE9FF00ACE6
+                    FF00A9E4FF00A7E2FF00A5E0FF00A7E1FF00A9E5FF001B5FCA0000005E005C94
+                    9B00337D9B00317B9A002F7B9B00508B9B004E899B004C879B004B859B004882
+                    9B0045809B00437E9B00417C9B00437D9B0045819B0000006600285DC200BFFB
+                    FF0099E5FF0098E2FF009DE9FF004881D9002B60CD002D6CD2002D6BD1002D6B
+                    D1002C6AD1002B6AD0002D6BD0002D6CD1002E6DD30085A9E20000005E005B97
+                    9B0035819B00347E9B0039859B00001D75000000690000086E0000076D000007
+                    6D0000066D0000066C0000076C0000086D0000096F0021457E002E6ED500D4FF
+                    FF00A8F1FF00A6EFFF00B1F9FF001462D200FFFFFF00FFFFFF00FFFFFF00FFFF
+                    FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00000A7100709B
+                    9B00448D9B00428B9B004D959B0000006E009B9B9B009B9B9B009B9B9B009B9B
+                    9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B001866D800B6E5
+                    FA00B3E8FB00B2E5FC00A8DEF8001667D900FFFFFF00FFFFFF00FFFFFF00FFFF
+                    FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00000274005281
+                    96004F8497004E819800447A9400000375009B9B9B009B9B9B009B9B9B009B9B
+                    9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00ACC8F2001F6C
+                    DE002B72DE002B70DE00206CDE00A2C1F000FFFFFF00FFFFFF00FFFFFF00FFFF
+                    FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0048648E000008
+                    7A00000E7A00000C7A0000087A003E5D8C009B9B9B009B9B9B009B9B9B009B9B
+                    9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00FFFFFF00FFFF
+                    FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+                    FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF009B9B9B009B9B
+                    9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B
+                    9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B009B9B9B00}
+                  NumGlyphs = 2
+                  TabOrder = 6
+                  OnClick = btnBuscarDLLClick
+                end
+                object cbxImpressao: TComboBox
+                  Left = 416
+                  Top = 93
+                  Width = 129
+                  Height = 25
+                  Style = csDropDownList
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -13
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ItemIndex = 0
+                  ParentFont = False
+                  TabOrder = 7
+                  Text = 'Normal'
+                  Items.Strings = (
+                    'Normal'
+                    'Resumida')
+                end
+              end
             end
             object edtCertificado: TEdit
               Left = 18
@@ -1234,6 +1585,10 @@ inherited frmCadastroDadosEmpresa: TfrmCadastroDadosEmpresa
           object TabSheet2: TTabSheet
             Caption = 'Informa'#231#245'es de e-mail'
             ImageIndex = 1
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object Label18: TLabel
               Left = 49
               Top = 16

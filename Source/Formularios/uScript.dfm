@@ -917,4 +917,88 @@ object frmScript: TfrmScript
     TabOrder = 20
     WordWrap = False
   end
+  object versao22: TMemo
+    Left = 366
+    Top = 38
+    Width = 31
+    Height = 23
+    Ctl3D = False
+    Lines.Strings = (
+      'CREATE TABLE PARAMETROS_SAT ('
+      '    CODIGO_EMPRESA INTEGER NOT NULL,'
+      '    CODIGO_ATIVACAO VARCHAR(15),'
+      '    VERSAO VARCHAR(10),'
+      '    IND_RAT_ISSQN SMALLINT,'
+      '    REG_TRIB_ISSQN SMALLINT,'
+      '    CNPJ_SH VARCHAR(16),'
+      '    ASSINATURA_SH VARCHAR(344),'
+      '    MODELO SMALLINT,'
+      '    CAMINHO_DLL VARCHAR(100))'
+      '^'
+      'alter table PARAMETROS_SAT'
+      'add constraint PK_PARAMETROS_SAT'
+      'primary key (CODIGO_EMPRESA)'
+      '^'
+      'CREATE GENERATOR GEN_SAT_ID'
+      '^'
+      'CREATE TABLE SAT ('
+      '    CODIGO INTEGER NOT NULL,'
+      '    NR_NOTA INTEGER,'
+      '    CODIGO_PEDIDO INTEGER,'
+      '    NR_CAIXA INTEGER,'
+      '    CHAVE VARCHAR(44),'
+      '    STATUS CHAR(5),'
+      '    MOTIVO VARCHAR(150),'
+      '    XML BLOB SUB_TYPE 0 SEGMENT SIZE 80,'
+      '    DH_ENVIO TIMESTAMP,'
+      '    CRIACAO DATE)'
+      '^'
+      'alter table SAT'
+      'add constraint PK_SAT'
+      'primary key (CODIGO)'
+      '^'
+      'CREATE TRIGGER SAT_BI FOR SAT'
+      'ACTIVE BEFORE INSERT POSITION 0'
+      'AS'
+      'BEGIN'
+      '  IF ((NEW.CODIGO IS NULL) or (NEW.CODIGO = 0))THEN'
+      '    NEW.CODIGO = GEN_ID(GEN_SAT_ID,1);'
+      'END'
+      '^'
+      'alter table SAT'
+      'add constraint FK_SAT_1'
+      'foreign key (CODIGO_PEDIDO)'
+      'references PEDIDOS(CODIGO)'
+      '^')
+    ParentCtl3D = False
+    TabOrder = 21
+    WordWrap = False
+  end
+  object versao23: TMemo
+    Left = 406
+    Top = 38
+    Width = 31
+    Height = 23
+    Ctl3D = False
+    Lines.Strings = (
+      'ALTER TABLE PARAMETROS_SAT'
+      'ADD IMPRESSAO SMALLINT'
+      '^')
+    ParentCtl3D = False
+    TabOrder = 22
+    WordWrap = False
+  end
+  object versao24: TMemo
+    Left = 446
+    Top = 38
+    Width = 31
+    Height = 23
+    Ctl3D = False
+    Lines.Strings = (
+      'ALTER TABLE NFCE ALTER MOTIVO TYPE VARCHAR(500)'
+      '^')
+    ParentCtl3D = False
+    TabOrder = 23
+    WordWrap = False
+  end
 end

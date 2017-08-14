@@ -603,7 +603,7 @@ inherited frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       1189
       50)
     object btnVoltar: TBitBtn
-      Left = 776
+      Left = 748
       Top = 9
       Width = 170
       Height = 35
@@ -854,7 +854,7 @@ inherited frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       OnClick = btnCancelaAlteracaoClick
     end
     object btnFinalizaPedido: TBitBtn
-      Left = 955
+      Left = 927
       Top = 9
       Width = 170
       Height = 35
@@ -938,7 +938,7 @@ inherited frmPedidoConsumidorFinal: TfrmPedidoConsumidorFinal
       OnClick = btnFinalizaPedidoClick
     end
     object btnFinalizaRapido: TBitBtn
-      Left = 597
+      Left = 569
       Top = 9
       Width = 170
       Height = 35

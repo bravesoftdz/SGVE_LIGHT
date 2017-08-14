@@ -17,12 +17,13 @@ type
     class function CaracterAEsquerda(Caracter :Char; Texto :String; tamanho_maximo :Integer) :String;
     class function MascaraCpfCnpj   (const CpfCnpj :String)                       :String;
     class function remove_quebras   (texto :String) :String;
+    class function salvarTexto      (texto, caminho :String) :Boolean;
 end;
 
 implementation
 
 uses
-  SysUtils, StrUtils;
+  SysUtils, StrUtils, Classes;
 
 { TStringUtilitario }
 
@@ -112,6 +113,18 @@ end;
 class function TStringUtilitario.remove_quebras(texto: String): String;
 begin
   result := StringReplace(texto, #13#10, ' ', [rfReplaceAll, rfIgnoreCase]);
+end;
+
+class function TStringUtilitario.salvarTexto(texto, caminho: String): Boolean;
+var Arquivo: TStringList;
+begin
+  try
+    Arquivo      := TStringList.Create;
+    Arquivo.Text := texto;
+    Arquivo.SaveToFile(caminho);
+  finally
+    FreeAndNil(Arquivo);
+  end;
 end;
 
 class function TStringUtilitario.StringVazia: String;

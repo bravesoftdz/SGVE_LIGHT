@@ -47,7 +47,7 @@ uses
   Empresa,
   Pessoa,
   TipoRegimeTributario,
-  SysUtils, FabricaRepositorio, ConfiguracoesNF, ConfiguracoesNFEmail, ParametrosNFCe, Endereco;
+  SysUtils, FabricaRepositorio, ConfiguracoesNF, ConfiguracoesNFEmail, ParametrosNFCe, ParametrosSAT, Endereco;
 
 { TRepositorioEmpresa }
 
@@ -57,6 +57,7 @@ var
   RepositorioConfiguracoes      :TRepositorio;
   RepositorioConfiguracoesEmail :TRepositorio;
   RepositorioParametrosNFCe     :TRepositorio;
+  RepositorioParametrosSAT      :TRepositorio;
   RepositorioEndereco           :TRepositorio;
 begin
    inherited ExecutaDepoisDeSalvar(Objeto);
@@ -78,6 +79,13 @@ begin
          RepositorioParametrosNFCe := TFabricaRepositorio.GetRepositorio(TParametrosNFCe.ClassName);
          RepositorioParametrosNFCe.Remover(Empresa.ConfiguracoesNF.ParametrosNFCe);
          RepositorioParametrosNFCe.Salvar(Empresa.ConfiguracoesNF.ParametrosNFCe);
+       end;
+
+       if Assigned(Empresa.ConfiguracoesNF.ParametrosSAT) then begin
+         Empresa.ConfiguracoesNF.ParametrosSAT.codigo_empresa := Empresa.CodigoEmpresa;
+         RepositorioParametrosSAT := TFabricaRepositorio.GetRepositorio(TParametrosSAT.ClassName);
+         RepositorioParametrosSAT.Remover(Empresa.ConfiguracoesNF.ParametrosSAT);
+         RepositorioParametrosSAT.Salvar(Empresa.ConfiguracoesNF.ParametrosSAT);
        end;
      end;
 

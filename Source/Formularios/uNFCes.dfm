@@ -179,7 +179,7 @@ inherited frmNFCes: TfrmNFCes
       item
         Expanded = False
         FieldName = 'MOTIVO'
-        Width = 480
+        Width = 900
         Visible = True
       end
       item
@@ -1108,7 +1108,7 @@ inherited frmNFCes: TfrmNFCes
     object qryMOTIVO: TStringField
       FieldName = 'MOTIVO'
       Origin = 'MOTIVO'
-      Size = 150
+      Size = 300
     end
     object qryJUSTIFICATIVA: TStringField
       FieldName = 'JUSTIFICATIVA'

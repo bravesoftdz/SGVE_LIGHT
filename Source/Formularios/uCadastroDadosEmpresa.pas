@@ -105,6 +105,25 @@ type
     cmbModeloImpressao: TComboBox;
     rgpImpComprovante: TRadioGroup;
     edtSequenciaNF: TEdit;
+    TabSheet5: TTabSheet;
+    Label24: TLabel;
+    cbxIndRatISSQN: TComboBox;
+    Label25: TLabel;
+    cbxRegTribISSQN: TComboBox;
+    Label34: TLabel;
+    gpbDadosSH: TGroupBox;
+    edtCNPJSH: TEdit;
+    Label35: TLabel;
+    Label36: TLabel;
+    edtAssinaturaSH: TEdit;
+    edtCodigoAtivacao: TCurrencyEdit;
+    Label37: TLabel;
+    cbxModelo: TComboBox;
+    edtDLL: TEdit;
+    Label38: TLabel;
+    btnBuscarDLL: TBitBtn;
+    Label39: TLabel;
+    cbxImpressao: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure edtIeKeyPress(Sender: TObject; var Key: Char);
     procedure PageControl1Change(Sender: TObject);
@@ -112,6 +131,7 @@ type
     procedure edtCreditoSNChange(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure pgGeralChange(Sender: TObject);
+    procedure btnBuscarDLLClick(Sender: TObject);
   private
     { Altera um registro existente no CDS de consulta }
     procedure AlterarRegistroNoCDS(Registro :TObject); override;
@@ -175,6 +195,22 @@ end;
 procedure TfrmCadastroDadosEmpresa.BitBtn1Click(Sender: TObject);
 begin
   memoObsGeradaSistema.Clear;
+end;
+
+procedure TfrmCadastroDadosEmpresa.btnBuscarDLLClick(Sender: TObject);
+var OpenDialog :TOpenDialog;
+begin
+  try
+    OpenDialog := TOpenDialog.Create(nil);
+    OpenDialog.FileName := 'Arquivo (DLL)';
+    OpenDialog.Filter   := '*.Dll;';
+
+    if OpenDialog.Execute then
+      if OpenDialog.FileName <> '' then
+        edtDLL.Text := OpenDialog.FileName;
+  finally
+    FreeAndNil(OpenDialog);
+  end;
 end;
 
 procedure TfrmCadastroDadosEmpresa.btnCertificadoNFeClick(Sender: TObject);
@@ -297,6 +333,16 @@ begin
                                                           rgpImprimeItens.Items[rgpImprimeItens.ItemIndex][1],
                                                           cmbModeloImpressao.ItemIndex,
                                                           rgpImpComprovante.Items[rgpImpComprovante.ItemIndex][1]);
+
+       Empresa.ConfiguracoesNF.AdicionarConfiguracoesSAT(edtCodigoAtivacao.Text,
+                                                         '0.06',
+                                                         cbxIndRatISSQN.Items[cbxIndRatISSQN.ItemIndex],
+                                                         cbxRegTribISSQN.ItemIndex,
+                                                         edtCNPJSH.Text,
+                                                         edtAssinaturaSH.Text,
+                                                         cbxModelo.ItemIndex,
+                                                         edtDLL.Text,
+                                                         cbxImpressao.ItemIndex);
      except
        on E: Exception do begin
           if (Pos('AmbienteNFe', e.Message) > 0) then begin
@@ -402,6 +448,10 @@ begin
   cmbModeloImpressao.ItemIndex := 0;
   rgpImprimeItens.ItemIndex := 1;
   edtSequenciaNF.Clear;
+  edtCodigoAtivacao.Clear;
+  cbxModelo.ItemIndex := 0;
+  edtdll.Clear;
+  cbxImpressao.ItemIndex := 0;
 end;
 
 procedure TfrmCadastroDadosEmpresa.MostrarDados;
@@ -463,6 +513,17 @@ begin
         rgpImprimeItens.ItemIndex       := IfThen(Empresa.ConfiguracoesNF.ParametrosNFCe.imprime_itens,0,1);
         cmbModeloImpressao.ItemIndex    := Empresa.ConfiguracoesNF.ParametrosNFCe.leiaute_impressao;
         rgpImpComprovante.ItemIndex     := IfThen(Empresa.ConfiguracoesNF.ParametrosNFCe.imp_comp_pedido,0,1);
+      end;
+
+      if Assigned(Empresa.ConfiguracoesNF.ParametrosSAT) then begin
+        edtCodigoAtivacao.Text          := Empresa.ConfiguracoesNF.ParametrosSAT.codigo_ativacao;
+        cbxIndRatISSQN.ItemIndex        := IfThen(Empresa.ConfiguracoesNF.ParametrosSAT.ind_rat_issqn = 'S', 0, 1);
+        cbxRegTribISSQN.ItemIndex       := Empresa.ConfiguracoesNF.ParametrosSAT.reg_trib_issqn;
+        edtCNPJSH.Text                  := Empresa.ConfiguracoesNF.ParametrosSAT.cnpj_sh;
+        edtAssinaturaSH.Text            := Empresa.ConfiguracoesNF.ParametrosSAT.assinatura_sh;
+        cbxModelo.ItemIndex             := Empresa.ConfiguracoesNF.ParametrosSAT.modelo;
+        edtDLL.Text                     := Empresa.ConfiguracoesNF.ParametrosSAT.caminhoDLL;
+        cbxImpressao.ItemIndex          := Empresa.ConfiguracoesNF.ParametrosSAT.Impressao;
       end;
     end;
 

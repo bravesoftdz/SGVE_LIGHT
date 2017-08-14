@@ -907,6 +907,7 @@ begin
    self.FACBrNFe.Configuracoes.Geral.FormaEmissao              := teNormal;
    self.FACBrNFe.Configuracoes.Geral.ModeloDF                  := moNFe;
    self.FACBrNFe.Configuracoes.Geral.VersaoDF                  := ve310;
+   self.FACBrNFe.Configuracoes.Geral.SSLLib                    := libCapicom;
 
    { DANFE (Configurações da Impressão do DANFE)}
    self.FACBrNFeDANFe                   := TACBrNFeDANFeRL.Create(nil);

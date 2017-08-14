@@ -61,7 +61,9 @@ uses
   RepositorioLoteNFe,
   RepositorioNFe,
   RepositorioAliqInternaIcms,
-  RepositorioIcmsEstado;
+  RepositorioIcmsEstado,
+  RepositorioParametrosSAT,
+  RepositorioSAT;
 
 { TFabricaRepositorio }
 
@@ -116,6 +118,8 @@ begin
    else if (NomeDaEntidade  = 'TNFe')                      then result := TRepositorioNFe.Create
    else if (NomeDaEntidade  = 'TAliqInternaIcms')          then result := TRepositorioAliqInternaIcms.Create
    else if (NomeDaEntidade  = 'TIcmsEstado')               then result := TRepositorioIcmsEstado.Create
+   else if (NomeDaEntidade  = 'TParametrosSAT')            then result := TRepositorioParametrosSAT.Create
+   else if (NomeDaEntidade  = 'TSAT')                      then result := TRepositorioSAT.Create
 
    else begin
      dm.LogErros.AdicionaErro('FabricaRepositorio', 'TExcecaoRepositorioNaoEncontrado', 'Repositório para a '+ NomeDaEntidade + ' não foi encontrado!');

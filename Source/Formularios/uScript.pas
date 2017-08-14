@@ -29,6 +29,9 @@ type
     versao19: TMemo;
     versao20: TMemo;
     versao21: TMemo;
+    versao22: TMemo;
+    versao23: TMemo;
+    versao24: TMemo;
     procedure qry2ExecuteError(Sender: TObject; Error, SQLText: String;
       LineIndex: Integer; var Ignore: Boolean);
     procedure qry2ParseError(Sender: TObject; Error, SQLText: String;
@@ -54,7 +57,7 @@ var
   frmScript: TfrmScript;
 
 const
-  UltimaVersaoSistema = 21;
+  UltimaVersaoSistema = 24;
   ScriptExterno = '<<SCRIPT EXTERNO>>';
 
 implementation

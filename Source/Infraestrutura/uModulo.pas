@@ -142,19 +142,17 @@ function Tdm.GetEmpresa: TEmpresa;
 var repositorio :TRepositorio;
     especificacao :TEspecificacaoEmpresaPorTag;
 begin
-  if not assigned(FEmpresa) then
-  begin
-    especificacao := nil;
-    repositorio   := nil;
+  FEmpresa := nil;
+  especificacao := nil;
+  repositorio   := nil;
 
-    try
-      especificacao := TEspecificacaoEmpresaPorTag.Create;
-      repositorio   := TFabricaRepositorio.GetRepositorio(TEmpresa.ClassName);
-      FEmpresa      := TEmpresa(repositorio.GetPorEspecificacao(especificacao));
-    finally
-      FreeAndNil(repositorio);
-      FreeAndNil(especificacao);
-    end;
+  try
+    especificacao := TEspecificacaoEmpresaPorTag.Create;
+    repositorio   := TFabricaRepositorio.GetRepositorio(TEmpresa.ClassName);
+    FEmpresa      := TEmpresa(repositorio.GetPorEspecificacao(especificacao));
+  finally
+    FreeAndNil(repositorio);
+    FreeAndNil(especificacao);
   end;
 
   result := FEmpresa;

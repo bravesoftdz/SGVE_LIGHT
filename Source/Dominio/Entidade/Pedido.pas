@@ -2,7 +2,7 @@ unit Pedido;
 
 interface
 
-uses SysUtils, Contnrs, Item, Generics.Collections, Cliente, NFCe;
+uses SysUtils, Contnrs, Item, Generics.Collections, Cliente, NFCe, SAT;
 
 type
   TPedido = class
@@ -20,11 +20,13 @@ type
     FItens  :TObjectList<TItem>;
     FCliente :TCliente;
     FNFCe :TNFCe;
+    FSAT :TSAT;
 
   private
     function GetItens: TObjectList<TItem>;
     function GetCliente: TCliente;
     function GetNFCe: TNFCe;
+    function GetSAT: TSAT;
 
   public
     property codigo           :Integer read Fcodigo             write Fcodigo;
@@ -40,6 +42,7 @@ type
     property Cliente          :TCliente           read GetCliente;
     property Itens            :TObjectList<TItem> read GetItens;
     property NFCe             :TNFCe              read GetNFCe;
+    property SAT              :TSAT               read GetSAT;
 
   public
     destructor destroy;
@@ -48,7 +51,7 @@ end;
 
 implementation
 
-uses repositorio, fabricaRepositorio, EspecificacaoItensDoPedido, EspecificacaoNFCePorCodigoPedido, Funcoes;
+uses repositorio, fabricaRepositorio, EspecificacaoItensDoPedido, EspecificacaoNFCePorCodigoPedido, Funcoes, EspecificacaoSATPorCodigoPedido;
 
 { TPedido }
 
@@ -67,6 +70,8 @@ begin
     FreeAndNil(FItens);
   if assigned(FNFCe) then
     FreeAndNil(FNFCe);
+  if assigned(FSAT) then
+    FreeAndNil(FSAT);
 
   inherited;
 end;
@@ -109,6 +114,20 @@ begin
   end;
 
   result := FNFCe;
+end;
+
+function TPedido.GetSAT: TSAT;
+var especificacao :TEspecificacaoSATPorCodigoPedido;
+    repositorio :TRepositorio;
+begin
+  if not assigned(FNFCe) then
+  begin
+    especificacao := TEspecificacaoSATPorCodigoPedido.Create(self.Fcodigo);
+    repositorio   := TFabricaRepositorio.GetRepositorio(TNFCe.ClassName);
+    FSAT         := TSAT( repositorio.GetPorEspecificacao(especificacao));
+  end;
+
+  result := FSAT;
 end;
 
 end.

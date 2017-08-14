@@ -35,7 +35,7 @@ type
     Utilitrios1: TMenuItem;
     XMLsaocontador1: TMenuItem;
     Image3: TImage;
-    Image4: TImage;
+    imgNFCe: TImage;
     lbVenda: TLabel;
     lbNFCes: TLabel;
     qry: TFDQuery;
@@ -54,6 +54,8 @@ type
     EFDFiscal1: TMenuItem;
     Sintegra1: TMenuItem;
     AlqeReduoBC1: TMenuItem;
+    SAT1: TMenuItem;
+    imgSAT: TImage;
     procedure Produtos1Click(Sender: TObject);
     procedure NCM1Click(Sender: TObject);
     procedure CFOP1Click(Sender: TObject);
@@ -70,11 +72,11 @@ type
     procedure XMLsaocontador1Click(Sender: TObject);
     procedure Image3MouseEnter(Sender: TObject);
     procedure Image3MouseLeave(Sender: TObject);
-    procedure Image4MouseEnter(Sender: TObject);
-    procedure Image4MouseLeave(Sender: TObject);
+    procedure imgNFCeMouseEnter(Sender: TObject);
+    procedure imgNFCeMouseLeave(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Image3Click(Sender: TObject);
-    procedure Image4Click(Sender: TObject);
+    procedure imgNFCeClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure Timer2Timer(Sender: TObject);
     procedure ransportadoras1Click(Sender: TObject);
@@ -91,6 +93,8 @@ type
     procedure EFDFiscal1Click(Sender: TObject);
     procedure Sintegra1Click(Sender: TObject);
     procedure AlqeReduoBC1Click(Sender: TObject);
+    procedure SAT1Click(Sender: TObject);
+    procedure imgSATClick(Sender: TObject);
   private
     function existeNotasEmContingencia :Boolean;
     function servicoOperante :Boolean;
@@ -102,6 +106,7 @@ type
     procedure atualizaParametros(status :integer; datafinal :TDateTime; mensagem :String; ultimaConexao :TDateTime);
     function  buscaDadosLiberacao :Boolean;
     procedure pedeSenha;
+    procedure configuraTela;
   public
     { Public declarations }
   end;
@@ -115,7 +120,7 @@ uses uCadastroProduto, uCadastroCFOP, uCadastroNcmIBPT, uCadastroPadrao, uCadast
      uPedidoConsumidorFinal, uNFCes, uModulo, ServicoEmissorNFCe, ParametrosNFCe, Repositorio, FabricaRepositorio, uRelatorioNFCes,
      uCadastroContador, uEnviaXMLsContador, Parametros, TipoStatusUso, uTelaDesbloqueio, Criptografia, uMonitorControleNFe,
      uCadastroTransportadora, uRelatorioNFes, uAtualizacaoSistema, Funcoes, uEFDFiscal, uEFDContribuicoes, uSintegra,
-     uCadastroAliqPercReducPorEstado;
+     uCadastroAliqPercReducPorEstado, uSAT, system.StrUtils;
 
 {$R *.dfm}
 
@@ -199,6 +204,16 @@ begin
   end;
 end;
 
+procedure TfrmInicial.configuraTela;
+var vSAT :boolean;
+begin
+  vSAT := dm.Empresa.Endereco.Cidade.Estado.sigla = 'SP';
+
+  imgNFCe.Visible := not vSAT;
+  imgSAT.Visible  := vSAT;
+  lbNFCes.Caption := IfThen(vSAT, 'F4 - SAT', 'F4 - NFC-es');
+end;
+
 procedure TfrmInicial.Contador1Click(Sender: TObject);
 begin
   self.AbreForm(TfrmCadastroContador);
@@ -207,6 +222,7 @@ end;
 procedure TfrmInicial.DadosdaEmpresa1Click(Sender: TObject);
 begin
   self.AbreForm(TfrmCadastroDadosEmpresa);
+  configuraTela;
 end;
 
 procedure TfrmInicial.EFDContribuies1Click(Sender: TObject);
@@ -288,7 +304,12 @@ begin
   if key = VK_F3 then
     Pedidoconsumidorfinal1Click(nil)
   else if key = VK_F4 then
-    NFCes1Click(nil)
+  begin
+    if (dm.Empresa.Endereco.Cidade.Estado.sigla <> 'SP') then
+      NFCes1Click(nil)
+    else
+      SAT1Click(nil);
+  end
   else if key = VK_F2 then
     Produtos1Click(nil)
   else if key = VK_F5 then
@@ -297,6 +318,7 @@ end;
 
 procedure TfrmInicial.FormShow(Sender: TObject);
 begin
+  configuraTela;
   verificaNFCesPendentes;
   if dm.Parametros.versao_banco_de_dados > 5 then
   begin
@@ -325,19 +347,24 @@ begin
   lbVenda.Font.Color := $008BE9D1;
 end;
 
-procedure TfrmInicial.Image4Click(Sender: TObject);
+procedure TfrmInicial.imgNFCeClick(Sender: TObject);
 begin
   NFCes1Click(nil);
 end;
 
-procedure TfrmInicial.Image4MouseEnter(Sender: TObject);
+procedure TfrmInicial.imgNFCeMouseEnter(Sender: TObject);
 begin
   lbNFCes.Font.Color := $00F4F0B9;
 end;
 
-procedure TfrmInicial.Image4MouseLeave(Sender: TObject);
+procedure TfrmInicial.imgNFCeMouseLeave(Sender: TObject);
 begin
   lbNFCes.Font.Color := $008BE9D1;
+end;
+
+procedure TfrmInicial.imgSATClick(Sender: TObject);
+begin
+  SAT1Click(nil);
 end;
 
 procedure TfrmInicial.Image5Click(Sender: TObject);
@@ -441,6 +468,11 @@ end;
 procedure TfrmInicial.RelatriodeNFes1Click(Sender: TObject);
 begin
   self.AbreForm(TfrmRelatorioNFes);
+end;
+
+procedure TfrmInicial.SAT1Click(Sender: TObject);
+begin
+  self.AbreForm(TFrmSAT);
 end;
 
 function TfrmInicial.servicoOperante: Boolean;

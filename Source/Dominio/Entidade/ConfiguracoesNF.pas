@@ -2,7 +2,7 @@ unit ConfiguracoesNF;
 
 interface
 
-uses SysUtils, Contnrs, ParametrosNFCe, TipoRegimeTributario;
+uses SysUtils, Contnrs, ParametrosNFCe, TipoRegimeTributario, ParametrosSAT;
 
 type
   TConfiguracoesNF = class
@@ -21,6 +21,7 @@ type
     Fdt_contingencia :TDateTime;
     FCRT: SmallInt;
     FParametrosNFCe :TParametrosNFCe;
+    FParametrosSAT :TParametrosSAT;
     FSequenciaNotaFiscal :integer;
     function GetParametrosNFCe: TParametrosNFCe;
 
@@ -30,6 +31,7 @@ type
     function GetCRT: Integer;
     procedure SetCRT(const Value: Integer);
     procedure SetSequenciaNotaFiscal(const Value: Integer);
+    function GetParametrosSAT: TParametrosSAT;
 
   public
     procedure AdicionarConfiguracoesNFCe(
@@ -44,6 +46,18 @@ type
                                          imprimeItens        :String;
                                          modeloImpressao     :integer;
                                          impCompPedido :String
+                                        );
+
+    procedure AdicionarConfiguracoesSAT(
+                                         codigoAtivacao    :String;
+                                         versao            :String;
+                                         indRatISSQN       :String;
+                                         regTribISSQN      :SmallInt;
+                                         cnpjSH            :String;
+                                         assinaturaSH      :String;
+                                         modelo            :SmallInt;
+                                         caminhoDLL        :String;
+                                         impressao         :SmallInt
                                         );
 
   public
@@ -64,6 +78,7 @@ type
     property RegimeTributario      :TTipoRegimeTributario read FRegimeTributario           write SetRegimeTributario;
 
     property ParametrosNFCe        :TParametrosNFCe read GetParametrosNFCe;
+    property ParametrosSAT         :TParametrosSAT  read GetParametrosSAT;
 
     function IncrementarSequencia: Integer;
 end;
@@ -122,6 +137,40 @@ begin
    end;
 
    result := self.FParametrosNFCe;
+end;
+
+function TConfiguracoesNF.GetParametrosSAT: TParametrosSAT;
+var
+  Repositorio :TRepositorio;
+begin
+   if not Assigned(self.FParametrosSAT) then begin
+     Repositorio := nil;
+
+     try
+       Repositorio          := TFabricaRepositorio.GetRepositorio(TParametrosSAT.ClassName);
+       self.FParametrosSAT  := (Repositorio.Get(self.Fcodigo_empresa) as TParametrosSAT);
+     finally
+       FreeAndNil(Repositorio);
+     end;
+   end;
+
+   result := self.FParametrosSAT;
+end;
+
+procedure TConfiguracoesNF.AdicionarConfiguracoesSAT(codigoAtivacao: String; versao, indRatISSQN: String; regTribISSQN: SmallInt; cnpjSH,
+  assinaturaSH: String; modelo :SmallInt; caminhoDLL :String; impressao :SmallInt);
+begin
+   self.FParametrosSAT                  := TParametrosSAT.Create;
+   self.FParametrosSAT.codigo_empresa   := self.codigo_empresa;
+   self.FParametrosSAT.codigo_ativacao  := codigoAtivacao;
+   self.FParametrosSAT.versao           := versao;
+   self.FParametrosSAT.ind_rat_issqn    := indRatISSQN[1];
+   self.FParametrosSAT.reg_trib_issqn   := regTribISSQN;
+   self.FParametrosSAT.cnpj_sh          := cnpjSH;
+   self.FParametrosSAT.assinatura_sh    := assinaturaSH;
+   self.FParametrosSAT.modelo           := modelo;
+   self.FParametrosSAT.Impressao        := impressao;
+   self.FParametrosSAT.caminhoDLL       := caminhoDLL;
 end;
 
 function TConfiguracoesNF.GetCRT: Integer;

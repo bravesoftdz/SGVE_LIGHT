@@ -83,7 +83,6 @@ type
     procedure enviarNFCe;
     procedure salvaInutilizacao(nIni, nFim :integer; justificativa :String);
     procedure desabilitaHabilita;
-    procedure atualizaGrid(pNFCe :TNFCe);
     procedure consultaStatusServico;
   private
     function getTipoSelecionadas(tipo :String) :TTipoSelecionado;
@@ -219,15 +218,6 @@ begin
      Avisar(0,'Erro ao gerar arquivos.'+#13#10+e.Message);
    end;
  end;
-end;
-
-procedure TfrmNFCes.atualizaGrid(pNFCe :TNFCe);
-begin
-  // esta dando update no banco denovo e zuando
-   qry.Edit;
-   qrySTATUS.AsString := pNFCe.status;
-   qryMOTIVO.AsString := pNFCe.motivo;
-   qry.Post;
 end;
 
 procedure TfrmNFCes.BitBtn1Click(Sender: TObject);
@@ -499,8 +489,6 @@ begin
 
    repositorio := TFabricaRepositorio.GetRepositorio(TNFCe.ClassName);
    NFCe        := TNFCe(repositorio.Get(qryCODIGO.AsInteger));
-
-   //atualizaGrid(NFCe);
  Except
    On E: Exception do
      raise Exception.Create('Ocorreu um erro ao enviar NFC-e nº '+qryNR_NOTA.AsString+#13#10+e.Message);

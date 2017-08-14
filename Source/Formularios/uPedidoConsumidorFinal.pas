@@ -117,6 +117,9 @@ type
     function efetuaRecebimento(finalizaRapido :Boolean) :Boolean;
     function geraCupomEletronico(codigoPedido :integer; CPF_Cliente :String) :boolean;
 
+    function emitirCupomFiscal(codigoPedido :integer; CPF_Cliente :String) :boolean;
+    function emitirSAT(codigoPedido :integer; CPF_Cliente :String) :boolean;
+
     procedure finalizaPedido(const finalizaRapido :Boolean = false);
   public
     { Public declarations }
@@ -127,7 +130,7 @@ var
 
 implementation
 
-uses repositorio, fabricaRepositorio, Item, uModulo, uRecebimentoPedido, Venda, ServicoEmissorNFCe, Produto, RepositorioItem;
+uses repositorio, fabricaRepositorio, Item, uModulo, uRecebimentoPedido, Venda, ServicoEmissorNFCe, Produto, RepositorioItem, ServicoEmissorSAT;
 
 {$R *.dfm}
 
@@ -196,24 +199,11 @@ begin
 end;
 
 function TfrmPedidoConsumidorFinal.geraCupomEletronico(codigoPedido :integer; CPF_Cliente :String) :boolean;
-var
-   NFCe  :TServicoEmissorNFCe;
 begin
-   NFCe   := nil;
-   result := false;
- try
- try
-   NFCe := TServicoEmissorNFCe.Create(dm.Empresa);
-   NFCe.Emitir(codigoPedido, CPF_Cliente);
-
-   result := true;
- Except
-   On E: Exception do
-     raise Exception.Create('Ocorreu um erro ao enviar nota fiscal.'+#13#10+e.Message);
- end;
- finally
-   FreeAndNil(NFCe);
- end;
+  if dm.Empresa.Endereco.Cidade.Estado.sigla = 'SP' then
+    result := emitirSAT(codigoPedido, CPF_Cliente)
+  else
+    result := emitirCupomFiscal(codigoPedido, CPF_Cliente);
 end;
 
 procedure TfrmPedidoConsumidorFinal.gridItensDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
@@ -457,6 +447,48 @@ begin
   result := (frmRecebimentoPedido.ShowModal = mrOk);
 end;
 
+function TfrmPedidoConsumidorFinal.emitirCupomFiscal(codigoPedido: integer; CPF_Cliente: String): boolean;
+var
+   NFCe  :TServicoEmissorNFCe;
+begin
+   NFCe   := nil;
+   result := false;
+  try
+  try
+    NFCe := TServicoEmissorNFCe.Create(dm.Empresa);
+    NFCe.Emitir(codigoPedido, CPF_Cliente);
+
+    result := true;
+  Except
+    On E: Exception do
+      raise Exception.Create('Ocorreu um erro ao emitir cupom fiscal.'+#13#10+e.Message);
+  end;
+  finally
+    FreeAndNil(NFCe);
+  end;
+end;
+
+function TfrmPedidoConsumidorFinal.emitirSAT(codigoPedido: integer; CPF_Cliente: String): boolean;
+var
+   SAT  :TServicoEmissorSAT;
+begin
+   SAT   := nil;
+   result := false;
+  try
+  try
+    SAT := TServicoEmissorSAT.Create(dm.Empresa);
+    SAT.Emitir(codigoPedido, CPF_Cliente);
+
+    result := true;
+  Except
+    on e :Exception do
+      avisar(0,'Falha na emissão do SAT.'+#13#10+e.message);
+  end;
+  finally
+    FreeAndNil(SAT);
+  end;
+end;
+
 procedure TfrmPedidoConsumidorFinal.finalizaPedido(const finalizaRapido: Boolean);
 var repositorio :TRepositorio;
     pedido      :TPedido;
@@ -485,11 +517,15 @@ begin
      begin
        pedido := criaPedido;
        repositorio.Salvar(Pedido);
+       dm.conexao.Commit;
      end;
 
 
      if assigned(frmRecebimentoPedido) then
+     begin
        frmRecebimentoPedido.salvaRecebimentoPedido(Pedido.Codigo);
+       dm.conexao.Commit;
+     end;
 
      if not FCupomPendente and dm.Empresa.ConfiguracoesNF.ParametrosNFCe.imp_comp_pedido then
        imprimePedido(Pedido);
@@ -504,17 +540,16 @@ begin
          FCupomPendente := not geraCupomEletronico(Pedido.Codigo, CPF_Cliente);
        end;
 
-       BuscaPedido1.btnCancelar.Click;
-       BuscaProduto1.edtCodigo.SetFocus;
-
-       dm.conexao.Commit;
      Except
        On E: Exception Do begin
          avisar(0,'Erro ao enviar cupom.'+#13#10+e.Message);
-         dm.conexao.Rollback;
          FCupomPendente := false;
        end;
      end;
+
+     dm.conexao.Commit;
+     BuscaPedido1.btnCancelar.Click;
+     BuscaProduto1.edtCodigo.SetFocus;
 
   Except
     On E: Exception Do begin
