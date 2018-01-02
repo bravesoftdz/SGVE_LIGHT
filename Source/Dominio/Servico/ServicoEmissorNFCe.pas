@@ -196,7 +196,7 @@ begin
    else
    begin
      FACBrNFe.DANFE                 := TACBrNFeDANFCeFortesA4.Create(nil);
-     FACBrNFe.DANFE.TipoDANFE       := tiNFCeA4;//tiNFCeA4;//tiRetrato;//tiNFCe;
+     FACBrNFe.DANFE.TipoDANFE       := tiNFCe;//tiNFCeA4;//tiRetrato;//tiNFCe;
      FACBrNFe.DANFE.ACBrNFe         := self.FACBrNFe;
    end;
 
@@ -477,7 +477,7 @@ begin
    if FEmpresa.ConfiguracoesNF.ParametrosNFCe.leiaute_impressao = 0 then
      NFCe.NFe.Ide.tpImp    := tiNFCe
    else
-     NFCe.NFe.Ide.tpImp    := tiNFCeA4;
+     NFCe.NFe.Ide.tpImp    := tiNFCe;
 
    NFCe.NFe.Ide.indFinal := cfConsumidorFinal;
    NFCe.NFe.Ide.indPres  := pcPresencial;

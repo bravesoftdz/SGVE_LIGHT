@@ -224,6 +224,7 @@ type
   private
     function ValidarNotaFiscal        :Boolean;
     function CFOPCadastrado(CFOP :String) :Boolean;
+    function semMudancaValor(Sender :TObject) :Boolean;
 
   private
     procedure AdicionarPedidoNaNotaFiscal(const CodigoPedido :Integer);
@@ -1064,7 +1065,7 @@ procedure TfrmNotaFiscal.edtFreteChange(Sender: TObject);
 begin
   inherited;
 
-  if Pos(',', TCurrencyEdit(Sender).Text) = Length(TCurrencyEdit(Sender).Text) then
+  if semMudancaValor(Sender) then
     exit;
 
   self.FNotaFiscal.Totais.Frete := TCurrencyEdit(Sender).Value;
@@ -1081,7 +1082,7 @@ end;
 procedure TfrmNotaFiscal.edtSeguroChange(Sender: TObject);
 begin
   inherited;
-  if Pos(',', TCurrencyEdit(Sender).Text) = Length(TCurrencyEdit(Sender).Text) then
+  if semMudancaValor(Sender) then
     exit;
 
   self.FNotaFiscal.Totais.Seguro := TCurrencyEdit(Sender).Value;
@@ -1116,7 +1117,7 @@ end;
 procedure TfrmNotaFiscal.edtDescontoChange(Sender: TObject);
 begin
   inherited;
-  if Pos(',', TCurrencyEdit(Sender).Text) = Length(TCurrencyEdit(Sender).Text) then
+  if semMudancaValor(Sender) then
     exit;
 
   self.FNotaFiscal.Totais.Descontos := TCurrencyEdit(Sender).Value;
@@ -1127,7 +1128,7 @@ end;
 procedure TfrmNotaFiscal.edtOutrasDespesasChange(Sender: TObject);
 begin
   inherited;
-  if Pos(',', TCurrencyEdit(Sender).Text) = Length(TCurrencyEdit(Sender).Text) then
+  if semMudancaValor(Sender) then
     exit;
 
   self.FNotaFiscal.Totais.OutrasDespesas := TCurrencyEdit(Sender).Value;
@@ -1734,6 +1735,12 @@ begin
 
   BuscaEmitente.Enabled    := fdm.qryGenerica.RecordCount > 1;
   BuscaEmitente.codigo     := fdm.qryGenerica.FieldByName('codigo').AsInteger;
+end;
+
+function TfrmNotaFiscal.semMudancaValor(Sender: TObject): Boolean;
+begin
+  result := (Pos(',', TCurrencyEdit(Sender).Text) = Length(TCurrencyEdit(Sender).Text)) or
+            ((Pos(',', TCurrencyEdit(Sender).Text) > 0) and (copy(TCurrencyEdit(Sender).Text,length(TCurrencyEdit(Sender).Text),1) = '0'));
 end;
 
 procedure TfrmNotaFiscal.cmbFinalidadeClick(Sender: TObject);
